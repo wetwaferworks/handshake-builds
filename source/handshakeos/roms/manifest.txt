@@ -1,0 +1,15 @@
+# Legal Game Boy ROMs shipped with HandshakeOS.
+# Commercial / copyrighted ROMs are never downloaded, stored, or committed.
+
+# file  sha256  license  author / notes
+handshake-demo.gb  4a56fc02118450d1ca45d954e57082f1c3d706b72882866fdfe78c8a57af3f43  MIT  Original HandshakeOS demo (title, border, bouncing gem, D-pad nudge, A beep). Built by tools/make_handshake_demo_gb.c. No third-party assets.
+libbet.gb  3607412031c8287cf878299ce96e581e85b852dde703806343b95576fa3ff1a9  zlib  Official v0.08 ROM of Libbet and the Magic Floor by Damian Yerrick (Magic Floor concept: Martin Korth). License in roms/libbet.LICENSE. Source: https://github.com/pinobatch/libbet/releases/tag/v0.08
+
+# Not included (license or official ROM not redistributable from here):
+# - Blargg cpu_instrs / instr_timing: widely used test ROMs, but the official
+#   readme does not grant a clear redistributable license, so they stay out of
+#   this tree. They can be run from a local copy if you already have them.
+# - Tobu Tobu Girl (MIT code, CC-BY 4.0 assets, Tangram Games / Simon Larsen):
+#   official ROM URLs were not reachable at packaging time.
+# - 2048-gb (zlib, Sanqui): official .gb host returned an error; source is
+#   public but we did not vendor a binary without a clean official build.

@@ -1,0 +1,193 @@
+From 205083b4df38f44bdce1eee78aed4eb1617527af Mon Sep 17 00:00:00 2001
+From: Jaydee Wetwork <jdwetwork@gmail.com>
+Date: Thu, 19 Nov 2026 17:27:09 -0500
+Subject: [PATCH 1/2] sunxi: H616 SPL: SRAM progress breadcrumbs at 0x49f00 for
+ UART-less FEL bring-up
+
+---
+ .../include/asm/arch-sunxi/spl_breadcrumb.h   | 46 +++++++++++++++++++
+ arch/arm/mach-sunxi/board.c                   |  2 +
+ arch/arm/mach-sunxi/dram_dw_helpers.c         |  6 +++
+ arch/arm/mach-sunxi/dram_helpers.c            |  6 ++-
+ board/sunxi/board.c                           |  5 ++
+ 5 files changed, 64 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/include/asm/arch-sunxi/spl_breadcrumb.h
+
+diff --git a/arch/arm/include/asm/arch-sunxi/spl_breadcrumb.h b/arch/arm/include/asm/arch-sunxi/spl_breadcrumb.h
+new file mode 100644
+index 00000000..d5c12a51
+--- /dev/null
++++ b/arch/arm/include/asm/arch-sunxi/spl_breadcrumb.h
+@@ -0,0 +1,46 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * SPL progress breadcrumbs for FEL bring-up without a UART.
++ *
++ * The SPL writes {magic, stage, value, sequence} to a fixed SRAM C
++ * address that neither the H616/H700 BootROM FEL code nor sunxi-fel
++ * uses (xfel loads its 40 KiB H616 DRAM blob at 0x48000 through FEL,
++ * so 0x48000..0x51e50 is free while FEL is active; the SPL stack sits
++ * at 0x52a00 and grows down, staying well above 0x4a000).
++ *
++ * Read it back over FEL with:  sunxi-fel hexdump 0x49f00 0x20
++ * This only uses SRAM, so it is safe to read even when DRAM is dead.
++ */
++#ifndef _SUNXI_SPL_BREADCRUMB_H
++#define _SUNXI_SPL_BREADCRUMB_H
++
++#include <linux/types.h>
++#include <asm/io.h>
++
++#define SUNXI_SPL_BC_ADDR		0x00049f00UL
++#define SUNXI_SPL_BC_MAGIC		0x5053544cU	/* "LTSP" */
++
++#define SUNXI_SPL_BC_BOARD_INIT		0x01	/* LED on, about to init PMIC */
++#define SUNXI_SPL_BC_PMIC_DONE		0x02	/* value = power_failed */
++#define SUNXI_SPL_BC_DRAM_TRY		0x10	/* +n: rank/width attempt n */
++#define SUNXI_SPL_BC_DRAM_OK		0x03	/* value = DRAM size in MiB */
++#define SUNXI_SPL_BC_RETURN_TO_FEL	0x04	/* about to return to BROM */
++#define SUNXI_SPL_BC_DRAM_TIMEOUT	0xe1	/* value = polled reg address */
++#define SUNXI_SPL_BC_DRAM_NO_CONFIG	0xef	/* every rank/width failed */
++
++static inline void sunxi_spl_breadcrumb(u32 stage, u32 value)
++{
++#if defined(CONFIG_XPL_BUILD) && defined(CONFIG_MACH_SUN50I_H616)
++	void __iomem *bc = (void __iomem *)SUNXI_SPL_BC_ADDR;
++	u32 seq = readl(bc + 12);
++
++	if (readl(bc) != SUNXI_SPL_BC_MAGIC)
++		seq = 0;
++	writel(stage, bc + 4);
++	writel(value, bc + 8);
++	writel(seq + 1, bc + 12);
++	writel(SUNXI_SPL_BC_MAGIC, bc);
++#endif
++}
++
++#endif /* _SUNXI_SPL_BREADCRUMB_H */
+diff --git a/arch/arm/mach-sunxi/board.c b/arch/arm/mach-sunxi/board.c
+index 432b1c10..8fbf7e45 100644
+--- a/arch/arm/mach-sunxi/board.c
++++ b/arch/arm/mach-sunxi/board.c
+@@ -23,6 +23,7 @@
+ #include <asm/arch/clock.h>
+ #include <asm/arch/spl.h>
+ #include <asm/arch/sys_proto.h>
++#include <asm/arch/spl_breadcrumb.h>
+ #include <asm/arch/timer.h>
+ #include <asm/arch/tzpc.h>
+ #include <asm/arch/mmc.h>
+@@ -216,6 +217,7 @@ static int spl_board_load_image(struct spl_image_info *spl_image,
+ 				struct spl_boot_device *bootdev)
+ {
+ 	debug("Returning to FEL sp=%x, lr=%x\n", fel_stash.sp, fel_stash.lr);
++	sunxi_spl_breadcrumb(SUNXI_SPL_BC_RETURN_TO_FEL, fel_stash.lr);
+ 	return_to_fel(fel_stash.sp, fel_stash.lr);
+ 
+ 	return 0;
+diff --git a/arch/arm/mach-sunxi/dram_dw_helpers.c b/arch/arm/mach-sunxi/dram_dw_helpers.c
+index d2af2d57..e16dff39 100644
+--- a/arch/arm/mach-sunxi/dram_dw_helpers.c
++++ b/arch/arm/mach-sunxi/dram_dw_helpers.c
+@@ -8,6 +8,7 @@
+ 
+ #include <init.h>
+ #include <asm/arch/dram_dw_helpers.h>
++#include <asm/arch/spl_breadcrumb.h>
+ 
+ void mctl_auto_detect_rank_width(const struct dram_para *para,
+ 				 struct dram_config *config)
+@@ -27,27 +28,32 @@ void mctl_auto_detect_rank_width(const struct dram_para *para,
+ 	debug("testing 32-bit width, rank = 2\n");
+ 	config->bus_full_width = 1;
+ 	config->ranks = 2;
++	sunxi_spl_breadcrumb(SUNXI_SPL_BC_DRAM_TRY + 0, 0);
+ 	if (mctl_core_init(para, config))
+ 		return;
+ 
+ 	debug("testing 32-bit width, rank = 1\n");
+ 	config->bus_full_width = 1;
+ 	config->ranks = 1;
++	sunxi_spl_breadcrumb(SUNXI_SPL_BC_DRAM_TRY + 1, 0);
+ 	if (mctl_core_init(para, config))
+ 		return;
+ 
+ 	debug("testing 16-bit width, rank = 2\n");
+ 	config->bus_full_width = 0;
+ 	config->ranks = 2;
++	sunxi_spl_breadcrumb(SUNXI_SPL_BC_DRAM_TRY + 2, 0);
+ 	if (mctl_core_init(para, config))
+ 		return;
+ 
+ 	debug("testing 16-bit width, rank = 1\n");
+ 	config->bus_full_width = 0;
+ 	config->ranks = 1;
++	sunxi_spl_breadcrumb(SUNXI_SPL_BC_DRAM_TRY + 3, 0);
+ 	if (mctl_core_init(para, config))
+ 		return;
+ 
++	sunxi_spl_breadcrumb(SUNXI_SPL_BC_DRAM_NO_CONFIG, 0);
+ 	panic("This DRAM setup is currently not supported.\n");
+ }
+ 
+diff --git a/arch/arm/mach-sunxi/dram_helpers.c b/arch/arm/mach-sunxi/dram_helpers.c
+index 376b7d14..d2416fbf 100644
+--- a/arch/arm/mach-sunxi/dram_helpers.c
++++ b/arch/arm/mach-sunxi/dram_helpers.c
+@@ -11,6 +11,7 @@
+ #include <asm/barriers.h>
+ #include <asm/io.h>
+ #include <asm/arch/dram.h>
++#include <asm/arch/spl_breadcrumb.h>
+ 
+ /*
+  * Wait up to 1s for value to be set in given part of reg.
+@@ -20,8 +21,11 @@ void mctl_await_completion(u32 *reg, u32 mask, u32 val)
+ 	unsigned long tmo = timer_get_us() + 1000000;
+ 
+ 	while ((readl(reg) & mask) != val) {
+-		if (timer_get_us() > tmo)
++		if (timer_get_us() > tmo) {
++			sunxi_spl_breadcrumb(SUNXI_SPL_BC_DRAM_TIMEOUT,
++					     (u32)(uintptr_t)reg);
+ 			panic("Timeout initialising DRAM\n");
++		}
+ 	}
+ }
+ 
+diff --git a/board/sunxi/board.c b/board/sunxi/board.c
+index 3d1afec7..188cac50 100644
+--- a/board/sunxi/board.c
++++ b/board/sunxi/board.c
+@@ -28,6 +28,7 @@
+ #include <asm/arch/dram.h>
+ #include <asm/arch/mmc.h>
+ #include <asm/arch/prcm.h>
++#include <asm/arch/spl_breadcrumb.h>
+ #include <asm/arch/pmic_bus.h>
+ #include <asm/arch/spl.h>
+ #include <asm/arch/sys_proto.h>
+@@ -578,6 +579,8 @@ void sunxi_board_init(void)
+ 	if (CONFIG_IS_ENABLED(SUNXI_LED_STATUS))
+ 		status_led_init();
+ 
++	sunxi_spl_breadcrumb(SUNXI_SPL_BC_BOARD_INIT, 0);
++
+ #ifdef CONFIG_SY8106A_POWER
+ 	power_failed = sy8106a_set_vout1(CONFIG_SY8106A_VOUT1_VOLT);
+ #endif
+@@ -652,9 +655,11 @@ void sunxi_board_init(void)
+ 	power_failed |= axp_set_sw(IS_ENABLED(CONFIG_AXP_SW_ON));
+ #endif
+ #endif	/* CONFIG_AXPxxx_POWER */
++	sunxi_spl_breadcrumb(SUNXI_SPL_BC_PMIC_DONE, power_failed);
+ 	printf("DRAM:");
+ 	gd->ram_size = sunxi_dram_init();
+ 	printf(" %d MiB\n", (int)(gd->ram_size >> 20));
++	sunxi_spl_breadcrumb(SUNXI_SPL_BC_DRAM_OK, (u32)(gd->ram_size >> 20));
+ 	if (!gd->ram_size)
+ 		hang();
+ 
+-- 
+2.47.3
+

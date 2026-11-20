@@ -1,0 +1,57 @@
+hc: /mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/hc (hc 0.1.4) sha256=ee626d46371d2a5e
+compiled 20 objects (component: 9 TUs x 2 arches, runtime shim: 1 x 2)
+hc --audit-elf: 20/20 PASS; nm banned lock/thread/clock/rng symbols in 18 component objects: 0; mutable .data/.bss symbols in core objects: 0
+source lines (src+include+test+tools):   5254 total
+BUILD+AUDIT OK
+[x86_64] RESULT 282/282
+[aarch64] RESULT 282/282
+cross-arch HASH lines: 11 identical
+cross-arch output files byte-identical: 7/7
+5d6d4bc5b6ed8e2b66ced504300f5dc98c7155ff47436799ec008fe4f06a421a  n64_3d_1x_640x480.png
+d206fe40a3a26fe63364c4747ed5897494c1fc635c9446e27b7d94117f0a0c77  n64_3d_2x_640x480.png
+32d042c9605bd230579816c5007631379309ebf03951eb9959493dec00379ad8  n64_3d_4x_640x480.png
+f30ad51b683e58a15e51712fecb04b018da30625c6eb76856b3a1ece7049a9ab  n64_3d_8x_640x480.png
+e40baa31f263054a4e818210af47c34adec2e5000b2b89e1c48b2bd52b9ef27f  n64_3d_fxaa_640x480.png
+0fbef1599b64a436b53ac2390d74c527fd2e3400430c41dba74b5bb60eff0e8a  n64_ssaa_compare.png
+e42b46e85ed6c96f8910dcc09c8b597682cb46d9600579b23fd68fda5cf44de6  n64_audio_48k.wav
+== x86_64 ==
+INFO ssaa_grey_levels 2x=3 4x=15 8x=63
+INFO demo frames=90 max_tris=93 pcm_frames=71987 instret=70312500 pi_dma=2 si_dma=180 ai_dma=90 sp_dma=0 gfx_hle=90 audio_hle=90
+TIME phase0_cpu_rsp_ms_per_frame 3.536
+TIME phase1_render_1x_ms_per_frame 14.860
+TIME phase2_audio_ms_per_frame 0.003
+TIME phase1_render_1x_ms 14.630
+TIME phase1_render_fxaa_ms 17.145
+TIME phase1_render_2x_ms 54.694
+TIME phase1_render_4x_ms 211.146
+TIME phase1_render_8x_ms 840.247
+RMS vs_8x 1x all=2.423 edge=5.870 (edge px=34421)
+RMS vs_8x fxaa all=2.954 edge=6.683 (edge px=34421)
+RMS vs_8x 2x all=0.800 edge=1.827 (edge px=34421)
+RMS vs_8x 4x all=0.334 edge=0.682 (edge px=34421)
+INFO fxaa_changed_px=32497 within_2px_of_8x_edge=29871
+INFO compare_crop x=200 y=160 w=80 h=60 zoom=4 (top row: 1x fxaa 2x 4x 8x; bottom: full 1x | full 8x)
+INFO backend_walk prims=96 tris=93 textured=93 fills=2 texrects=1
+TIME sequential_1x_ms_per_frame 18.399
+TIME pipelined_3core_bound_1x_ms_per_frame 14.860 (max of phases; computed, no threads in this test)
+== aarch64 ==
+INFO ssaa_grey_levels 2x=3 4x=15 8x=63
+INFO demo frames=90 max_tris=93 pcm_frames=71987 instret=70312500 pi_dma=2 si_dma=180 ai_dma=90 sp_dma=0 gfx_hle=90 audio_hle=90
+TIME phase0_cpu_rsp_ms_per_frame 23.050
+TIME phase1_render_1x_ms_per_frame 135.019
+TIME phase2_audio_ms_per_frame 0.011
+TIME phase1_render_1x_ms 134.737
+TIME phase1_render_fxaa_ms 147.078
+TIME phase1_render_2x_ms 543.868
+TIME phase1_render_4x_ms 2136.701
+TIME phase1_render_8x_ms 8550.643
+RMS vs_8x 1x all=2.423 edge=5.870 (edge px=34421)
+RMS vs_8x fxaa all=2.954 edge=6.683 (edge px=34421)
+RMS vs_8x 2x all=0.800 edge=1.827 (edge px=34421)
+RMS vs_8x 4x all=0.334 edge=0.682 (edge px=34421)
+INFO fxaa_changed_px=32497 within_2px_of_8x_edge=29871
+INFO compare_crop x=200 y=160 w=80 h=60 zoom=4 (top row: 1x fxaa 2x 4x 8x; bottom: full 1x | full 8x)
+INFO backend_walk prims=96 tris=93 textured=93 fills=2 texrects=1
+TIME sequential_1x_ms_per_frame 158.079
+TIME pipelined_3core_bound_1x_ms_per_frame 135.019 (max of phases; computed, no threads in this test)
+RC=0

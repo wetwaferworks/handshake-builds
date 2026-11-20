@@ -1,0 +1,18 @@
+* text=auto eol=lf
+*.c text eol=lf
+*.h text eol=lf
+*.S text eol=lf
+*.sh text eol=lf
+*.patch text eol=lf -whitespace
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+*.gb binary
+*.gbc binary
+*.gba binary
+*.sfc binary
+roms/*.md binary
+*.z64 binary
+*.exe binary
+*.png binary
+*.dtb binary
+*.bin binary

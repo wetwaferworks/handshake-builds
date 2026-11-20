@@ -1,0 +1,25 @@
+build/
+*.o
+*.a
+*~
+*.swp
+.cache/
+*.img
+*.img.gz
+*.dtb
+*.bin
+bl31.bin
+u-boot-sunxi-with-spl.bin
+linux-*/
+u-boot-*/
+arm-trusted-firmware-*/
+cscope.out
+tags
+# push prep (REVIEW.md)
+out/
+logs/
+*.log
+*.tmp
+*.uimg
+*.cpio.gz
+*.zst

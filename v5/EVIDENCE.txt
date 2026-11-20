@@ -1,0 +1,249 @@
+HandshakeOS RG35XX 2024 v5 - EVIDENCE (generated in-tree 2026-11-20 09:28 EST)
+Tree: C:\Users\jdwetwork\.aaa.www.inc\handshake\builds\v5  (not listed in SHA256SUMS: it quotes sha256sum -c of SHA256SUMS)
+
+== Toolchain ==
+gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+aarch64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+GNU ld (GNU Binutils for Ubuntu) 2.42
+hc 0.1.4
+ad4d8cbd9e43c0591204fc41547397845a9a67fe
+ee626d46371d2a5ebe3177d76f45c3ce4d88262b49ce5da189e64ade5ca4a9c9  /mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/hc
+
+== (a) Rescan of shipped binaries (tools/zero-mutex-scan.sh) ==
+SCAN handshake-init nm_pthread_mutex=0 nm_lock_syms=0 strings_nptl_mutex=0 strings_glibc=0 PT_TLS=0 PT_INTERP=0
+SCAN handshake-gb nm_pthread_mutex=0 nm_lock_syms=0 strings_nptl_mutex=0 strings_glibc=0 PT_TLS=0 PT_INTERP=0
+nm | grep -c pthread_mutex:
+  aarch64/handshake-init 0
+  aarch64/handshake-gb 0
+strings | rg -i 'nptl|pthread_mutex|lll_lock|__libc_lock' | wc -l:
+  aarch64/handshake-init 0
+  aarch64/handshake-gb 0
+strings | rg -i 'glibc|GNU C Library|GLIBC_' | wc -l:
+  aarch64/handshake-init 0
+  aarch64/handshake-gb 0
+aarch64/handshake-init: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, BuildID[sha1]=c73af044a7265300d66d01efe82734676aba68a8, not stripped
+aarch64/handshake-gb:   ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, BuildID[sha1]=cece55826dabaa213410b825718f1f9822c259bd, not stripped
+
+== (b) Object scan ==
+ELF_AUDIT pass=134 fail=0
+NM_SUMMARY objects=134 lock_dirty=0 component_objects=104 component_thread_clock_rng_dirty=0
+NM_HS_RT objects=4 lock_dirty=0
+STRINGS_SUMMARY binary_hits=0 source_hits=0
+
+== (c) Pack (pack-v5.sh, run1 == run2) ==
+INPUTS PINNED: uboot 17ce4fb5 dtb 814740b1 kernel c206e1bc init 3cb5a8b1 gb 11505247 flash-instructions f471a0ca
+CPIO_ENTRIES 26
+Image Name:   HandshakeOS initramfs
+Created:      Thu Nov 19 00:00:00 2026
+Image Type:   AArch64 Linux RAMDisk Image (gzip compressed)
+Data Size:    435148 Bytes = 424.95 KiB = 0.41 MiB
+Load Address: 00000000
+Entry Point:  00000000
+fsck.fat 4.2 (2021-01-31)
+/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/.p1.fat: 17 files, 31308/250012 clusters
+PACK OK
+PACK_RUN1_EQ_RUN2 identical (21 files)
+506db2872f1d75071f4b01f8c726f1dc9b52431bb37016e0a778e7fe7dd75794  handshakeos-rg35xx-2024-v5.img
+6b9f2058846668f595d6288b4dab48e1bafa1c5ab8da1c770827bd01300370ef  handshakeos-rg35xx-2024-v5.img.zst
+815981776d5736ff2bad361b0170666696f6162931f189fd603dea6557936bd8  handshakeos-initramfs-v5.uimg
+4914fdbd8c1a0b8592555f7c7b9bb5e6359d5904da0ce4585028b2d90143473a  handshakeos-initramfs-v5.cpio.gz
+39ab11cd5223894e9845b5ae182cc91b1dbeb30d8ad54676be6abf95280b47d7  roms-manifest-v5.txt
+8e84a1812b19b12a3d3abf689e75b30af806ab8d8263c9370af5c570630a74af  fel/07-ramboot-v5.cmd
+c206e1bc408715553cc96473da09ee8462b962f6c755911563b4e3354a8b56a5  fel/Image-v3-audio.gz
+371b22fcae4ed69f63e5fead88474a635b3324ae9c891df44eb888267c3c250f  fel/boot-v5-fel.scr
+e71dc47a89e831cc0ec9913d8c0143fb1d92d9030be3f9d4cda6af57a70990b4  fel/boot-v5-fel.txt
+815981776d5736ff2bad361b0170666696f6162931f189fd603dea6557936bd8  fel/handshakeos-initramfs-v5.uimg
+814740b1b25b160f1109febe66e0ec26bf261fc169368126612bcc40113d4547  fel/sun50i-h700-rg35xx-2024-nv3052c-proven.dtb
+17ce4fb5ce831b9f5c656b508e18e65ce1e184451ae412e1fedaf82a0f2d8d8d  fel/u-boot-sunxi-with-spl-lpddr3.bin
+f471a0ca08f31c8c442e6c3fccee04bdf2979026a28e0e9df465b23ccc58f086  staging/FLASH-INSTRUCTIONS.txt
+c206e1bc408715553cc96473da09ee8462b962f6c755911563b4e3354a8b56a5  staging/Image.gz
+3ec5fe3e60395a8f255eccc56cfdcca67ffadeb5485c4cfd2169cffc2bfac8f8  staging/README.txt
+a3a776a9e668c4f35ce65848e25ff6bf92e25253e417a0ec42e33f7e429917ab  staging/boot.cmd
+1b81bbaedf6372779f240bfd1dffa2ca62d044623c4e2f6171e7dc0f8ce59f9a  staging/boot.scr
+815981776d5736ff2bad361b0170666696f6162931f189fd603dea6557936bd8  staging/handshakeos-initramfs-v5.uimg
+814740b1b25b160f1109febe66e0ec26bf261fc169368126612bcc40113d4547  staging/sun50i-h700-anbernic-rg35xx-2024.dtb
+17ce4fb5ce831b9f5c656b508e18e65ce1e184451ae412e1fedaf82a0f2d8d8d  staging/u-boot-sunxi-with-spl.bin
+f07f22872e191649feabf19ba7c9087f121cacc5bba17e6d3393bfafb1be34f6  staging/ROMS/README.txt
+
+== (d) Gate (run-verify.sh) ==
+PASS  host-01  rc=0  t=1.060s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-02  rc=0  t=1.059s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-03  rc=0  t=1.051s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-04  rc=0  t=1.061s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-05  rc=0  t=1.053s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-06  rc=0  t=1.055s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-07  rc=0  t=1.061s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-08  rc=0  t=1.064s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-09  rc=0  t=1.058s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-10  rc=0  t=1.060s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-11  rc=0  t=1.059s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-12  rc=0  t=1.062s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-13  rc=0  t=1.052s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-14  rc=0  t=1.056s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-15  rc=0  t=1.055s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-16  rc=0  t=1.055s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-17  rc=0  t=1.057s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-18  rc=0  t=1.053s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-19  rc=0  t=1.054s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-20  rc=0  t=1.062s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+HOST_HANDSHAKE 20/20
+PASS  qemu-01  rc=0  t=1.332s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-02  rc=0  t=1.316s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-03  rc=0  t=1.319s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-04  rc=0  t=1.304s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-05  rc=0  t=1.304s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-06  rc=0  t=1.303s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-07  rc=0  t=1.302s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-08  rc=0  t=1.340s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-09  rc=0  t=1.315s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-10  rc=0  t=1.329s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-11  rc=0  t=1.307s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-12  rc=0  t=1.311s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-13  rc=0  t=1.307s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-14  rc=0  t=1.306s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-15  rc=0  t=1.318s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+QEMU_HANDSHAKE 15/15
+HOST_GB 1 rc=0
+QEMU_GB 1 rc=0
+GAMES host_rc=0 qemu_rc=0 ok=1
+AUDIO host_rc=0 qemu_rc=0 ok=1
+MULTI host_rc=0 qemu_rc=0 cross_arch_lines_identical=1 (35 lines) png_identical=18/18 ok=1
+SELFTEST host_rc=0 qemu_rc=0 identical=1 ok=1
+PICKER rc=0 (host+qemu byte-identical when 0)
+V4MULTI_2D_LINES identical=1 (12 lines)  V4MULTI_SELFTEST_2D identical=1 (6 lines)
+EQUIVALENCE ok=1
+HOST 20/20  QEMU 15/15  HOST_GB 1  QEMU_GB 1  GAMES 1  AUDIO 1  MULTI 1  SELFTEST 1  PICKER 0  EQUIV 1
+GATE_PASS
+CORE_SUITE_PNG identical=20/20
+
+== (e) Ledger ==
+ledger 5f44cefa72e8ac19  epoch 128  workers 3  p50 542944 ns  overruns 0
+ledger 5f44cefa72e8ac19
+run-verify lines with hash=5f44cefa72e8ac19: 35
+GB ledger 5a45548614037e20
+GB xruns  0
+GB overruns 0
+QEMU_EXIT 0
+
+== (f) SHA256SUMS ==
+506db2872f1d75071f4b01f8c726f1dc9b52431bb37016e0a778e7fe7dd75794  handshakeos-rg35xx-2024-v5.img
+6b9f2058846668f595d6288b4dab48e1bafa1c5ab8da1c770827bd01300370ef  handshakeos-rg35xx-2024-v5.img.zst
+815981776d5736ff2bad361b0170666696f6162931f189fd603dea6557936bd8  handshakeos-initramfs-v5.uimg
+4914fdbd8c1a0b8592555f7c7b9bb5e6359d5904da0ce4585028b2d90143473a  handshakeos-initramfs-v5.cpio.gz
+f471a0ca08f31c8c442e6c3fccee04bdf2979026a28e0e9df465b23ccc58f086  FLASH-INSTRUCTIONS.txt
+b41b01b0c92babbfe6c939a415037741381924aac8c136f79404813002850337  BUILD-NOTES.md
+695573d262e1a5804e242a21d98add4f7c383aeebdece254537f20690e9ad9b3  PROVENANCE.txt
+39ab11cd5223894e9845b5ae182cc91b1dbeb30d8ad54676be6abf95280b47d7  roms-manifest-v5.txt
+5d5d3e12a30ab7c6fa9f700d7fa0dc96391df9b9be4e17920e01539a163310f1  pack-v5.sh
+189d19012be970b0447c566de5a18efddadd3fed836cb109834d5cc5bf4f1996  run-verify.sh
+415d679a11d060cadbee88743d35834a4996b0eed78c4a2853ee7b599c3aa158  build-v5.sh
+ee626d46371d2a5ebe3177d76f45c3ce4d88262b49ce5da189e64ade5ca4a9c9  hc
+3cb5a8b165083b9fc1b5956de4ef78d864297a18ffe9dca85f8ef97972707a08  aarch64/handshake-init
+11505247e14c9df34f83af2619af32f1e31e8a0355f96f21d35b997c730b9a05  aarch64/handshake-gb
+4c05c98a20c45a3efffbdc7525d8ac6e8a3d637ed6c7d6bf33b036193d1baa7b  tools/mkcpio.py
+5ff8b9a22b38a73216fa058ed2a43b286a3738cbd806b25b67a10fa240c02268  tools/qemu-pid1-v5.sh
+4c59401fb18c91f168eeb1107a6ed867d9e07c8c7504d817f51306546f50e97d  tools/prior-manifest.sh
+e85ef2dc17e5f361dd8b585fb61e03ca3de2df5ab0db61ddd8a6563485bbf504  tools/zero-mutex-scan.sh
+8e84a1812b19b12a3d3abf689e75b30af806ab8d8263c9370af5c570630a74af  fel/07-ramboot-v5.cmd
+c206e1bc408715553cc96473da09ee8462b962f6c755911563b4e3354a8b56a5  fel/Image-v3-audio.gz
+371b22fcae4ed69f63e5fead88474a635b3324ae9c891df44eb888267c3c250f  fel/boot-v5-fel.scr
+e71dc47a89e831cc0ec9913d8c0143fb1d92d9030be3f9d4cda6af57a70990b4  fel/boot-v5-fel.txt
+815981776d5736ff2bad361b0170666696f6162931f189fd603dea6557936bd8  fel/handshakeos-initramfs-v5.uimg
+814740b1b25b160f1109febe66e0ec26bf261fc169368126612bcc40113d4547  fel/sun50i-h700-rg35xx-2024-nv3052c-proven.dtb
+17ce4fb5ce831b9f5c656b508e18e65ce1e184451ae412e1fedaf82a0f2d8d8d  fel/u-boot-sunxi-with-spl-lpddr3.bin
+-- sha256sum -c SHA256SUMS
+handshakeos-rg35xx-2024-v5.img: OK
+handshakeos-rg35xx-2024-v5.img.zst: OK
+handshakeos-initramfs-v5.uimg: OK
+handshakeos-initramfs-v5.cpio.gz: OK
+FLASH-INSTRUCTIONS.txt: OK
+BUILD-NOTES.md: OK
+PROVENANCE.txt: OK
+roms-manifest-v5.txt: OK
+pack-v5.sh: OK
+run-verify.sh: OK
+build-v5.sh: OK
+hc: OK
+aarch64/handshake-init: OK
+aarch64/handshake-gb: OK
+tools/mkcpio.py: OK
+tools/qemu-pid1-v5.sh: OK
+tools/prior-manifest.sh: OK
+tools/zero-mutex-scan.sh: OK
+fel/07-ramboot-v5.cmd: OK
+fel/Image-v3-audio.gz: OK
+fel/boot-v5-fel.scr: OK
+fel/boot-v5-fel.txt: OK
+fel/handshakeos-initramfs-v5.uimg: OK
+fel/sun50i-h700-rg35xx-2024-nv3052c-proven.dtb: OK
+fel/u-boot-sunxi-with-spl-lpddr3.bin: OK
+rc=0
+
+== (g) Prior builds pre/post ==
+PRIOR v1-firstboot IDENTICAL files=8 manifest=cd909f8263a309ba
+PRIOR v2-bigtext IDENTICAL files=15 manifest=fea8bbb741e67a37
+PRIOR v2-stable-sd IDENTICAL files=12 manifest=3958226bb128b65b
+PRIOR v2-hc IDENTICAL files=63 manifest=386e9fb1d52dbeae
+PRIOR v3-play IDENTICAL files=116 manifest=fc2c68b07ab7c789
+PRIOR v3-audio IDENTICAL files=144 manifest=2503f86545f0ebad
+PRIOR v4-multi IDENTICAL files=247 manifest=d62105947f2549e9
+PRIOR v4-full IDENTICAL files=396 manifest=2000dfe733533299
+
+== Move verification (283 box v5 files vs tmp/box-v5.sha256, done before rebuild) ==
+283 OK, 0 not OK
+
+== FLASH-INSTRUCTIONS Get-FileHash (PowerShell 5.1, TheWorkstation) ==
+SHA256  F471A0CA08F31C8C442E6C3FCCEE04BDF2979026A28E0E9DF465B23CCC58F086  C:\Users\jdwetwork\.aaa.www.inc\handshake\builds\v5\FLASH-INSTRUCTIONS.txt
+SHA256  F471A0CA08F31C8C442E6C3FCCEE04BDF2979026A28E0E9DF465B23CCC58F086  C:\Users\jdwetwork\.aaa.www.inc\handshake\handshakeos\board\rg35xx-2024\FLASH-INSTRUCTIONS.txt
+
+== (h) Pure C tooling, 2026-11-20 10:28 AM ET (Python/C++/CUDA removed) ==
+Inventory before: 9 .py files (builds/v5/tools/mkcpio.py, handshakeos/board/qemu-virt/pack-initramfs.py,
+handshakeos/tools/make_handshake_demo_gb.py, hs-cores/gba/build/bench.py, hs-cores/genesis/tools/gen_ym_tables.py,
+hs-cores/n64/tools/mk_n64_demo.py, hs-cores/psx/tools/gen_demo.py, hs-cores/psx/tools/gen_spu_gauss.py,
+hs-cores/tests/acid2_compare.py) and python3 calls in builds/v5/run-verify.sh (2), builds/v5/pack-v5.sh,
+hs-cores/run-tests.sh, hs-cores/psx/build.sh, hs-cores/n64/build.sh, handshakeos/board/qemu-virt/run-pid1.sh,
+handshakeos/board/rg35xx-2024/assemble-img.sh. C++/CUDA: 0 files, 0 invocations.
+C ports (HC --allow-runtime), outputs vs committed:
+  make_handshake_demo_gb.c  roms/handshake-demo.gb   IDENTICAL 4a56fc02118450d1
+  gen_demo.c                tests/psx_3d_demo.exe    IDENTICAL 6e31fc927f8021b8
+  mk_n64_demo.c             roms/hs_n64_demo.z64     IDENTICAL 3ca4749de78c891d
+  gen_spu_gauss.c / gen_ym_tables.c  headers: only the generator-name comment line differs
+  hs_mkcpio.c  repack of the previous v5 cpio.gz: IDENTICAL 4914fdbd8c1a0b85...
+  hs_pngcmp.c  negative control DIFF rc=1, positive PIXELS_IDENTICAL rc=0
+Rebuild: ELF_AUDIT pass=134 fail=0; NM lock_dirty=0; NM_HS_RT lock_dirty=0; BUILD_V5_OK;
+  init 3cb5a8b1 gb 11505247 (unchanged). hs-mkcpio cd5161d3, hs-pngcmp 838863ba.
+Pack: run1==run2 IDENTICAL; CPIO_ENTRIES 26; PACK OK; img ef22151f649350b3..., zst 1b3f9f1f...,
+  uimg 15d15e91..., cpio.gz 3b16e1f2..., roms-manifest-v5.txt 1d199fce... (generator names now .c).
+Gate: HOST 20/20 QEMU 15/15, 35x hash=5f44cefa72e8ac19, GATE_PASS; CORE-SUITE 21 lines identical to the
+  previous comparison output.
+SHA256SUMS: 26 entries, sha256sum -c 26 OK. MANIFEST-SHA256.txt: 2179 entries, verify-manifest.ps1
+  PASS=2179 FAIL=0 MISSING=0. Prior builds v1..v4-full IDENTICAL (8/15/12/63/116/144/247/396 files).
+Zero-result: rg --files *.py/*.pyc/*.cpp/*.cc/*.cxx/*.hpp/*.cu/*.cuh (frozen builds excluded) -> none;
+  rg python/PIL in *.sh *.ps1 *.cmd Makefile *.c *.h *.S -> none; g++/c++/clang++/nvcc/extern "C++" -> none.
+  python3-pil removed from WSL (dpkg: not installed).
+Frozen-build note (not modified): python3 calls remain in builds/v2-hc, v3-play, v3-audio, v4-multi,
+  v4-full run-verify.sh.
+
+(i) v5.1 review re-proof 2026-11-20 (REVIEW.md; v5 artifacts untouched)
+build-v5.1: ELF_AUDIT pass=134 fail=0; NM lock_dirty=0; component_thread_clock_rng_dirty=0; hs_rt lock_dirty=0; strings 0/0
+regress: PID1_GUARD PASS faults=3 log_lines=3 boot_reentries=3 poweroff_calls=0 drivers_open=1 (host + qemu/hs_rt); HS_RT_REVIEW PASS
+shipped: handshake-init 4633a842..., handshake-gb 3d7f9708...
+gate run-verify-v5.1: HOST 20/20 QEMU 15/15 HOST_GB 1 QEMU_GB 1 GAMES 1 AUDIO 1 MULTI 1 SELFTEST 1 PICKER 0 EQUIV 1 -> GATE_PASS
+PID1 qemu boot: ledger 5f44cefa72e8ac19, GB ledger 5a45548614037e20, 8/8 MULTI demos freezes=0, QEMU_EXIT 0
+zero-mutex scan v5.1: init/gb nm_pthread_mutex=0 nm_lock_syms=0 nptl=0 glibc=0 PT_TLS=0 PT_INTERP=0
+pack-v5.1: run1==run2; img 3f61164274733b79a15f7536d336af4c0f8600a94a98280b979df47f2bbe7f9d (134217728 B)
+SHA256SUMS-v5.1: 21/21 OK; v5 SHA256SUMS still all OK; v5 img ef22151f...60af unchanged; priors 8/8 IDENTICAL
+sanitizers: ASan/UBSan strict multi-emu + 2400 ROM fuzz + 7 core suites + png fuzz 0 reports; hc fuzz 480 cases 0 findings
+core suites HC x86_64+ARM64: gbc 83/83, video 55/55, psx 108/108, n64 282/282 (after HS-L9 fix), gba/snes/genesis rc=0
+
+(j) v5.2 = v5.1 + HS-O1 (hs_rt fatal paths PID-1 safe) re-proof 2026-11-20 (v5 and v5.1 artifacts untouched)
+build-v5.2: ELF_AUDIT pass=134 fail=0; NM lock_dirty=0; component_thread_clock_rng_dirty=0; hs_rt lock_dirty=0; strings 0/0
+regress: PID1_GUARD PASS x2 (host + qemu/hs_rt) fault_ledger=527fa503de2cbf33 poweroff_calls=0 drivers_open=1; HS_RT_REVIEW PASS fails=0
+HS-O1: HS_RT_FAULT 14/14 PASS (invalid free, qsort overflow, qsort OOM, __memcpy/__memmove/__memset/__strncpy_chk, __snprintf/__fgets/__fread_chk, printf %Q, __stack_chk_fail, exit() in PID 1, real execve re-entry seq=14 ledger=536f42b2b902bd81); HANDSHAKE-FAULTS.log 14 lines; reboot/exit_group calls in fault path 0 (v5.2/logs/hs-rt-fault-HANDSHAKE-FAULTS.log)
+shipped: handshake-init b646132f..., handshake-gb b7b5fbbc...
+gate run-verify-v5.2: HOST 20/20 QEMU 15/15 HOST_GB 1 QEMU_GB 1 GAMES 1 AUDIO 1 MULTI 1 SELFTEST 1 PICKER 0 EQUIV 1 -> GATE_PASS; ledger 5f44cefa72e8ac19 (unchanged)
+PID1 qemu boot: ledger 5f44cefa72e8ac19, GB ledger 5a45548614037e20, MULTI freezes=0, FAULT lines 0, QEMU_EXIT 0
+zero-mutex scan v5.2: init/gb nm_pthread_mutex=0 nm_lock_syms=0 nptl=0 glibc=0 PT_TLS=0 PT_INTERP=0
+pack-v5.2: run1==run2; img ef19b2f5453c81f067e83f290dd016456ae86f279be77f11280ab8b634323e4e
+SHA256SUMS-v5.2: 21/21 OK; SHA256SUMS-v5.1 21/21 OK; v5 SHA256SUMS 26/26 OK; priors 8/8 IDENTICAL
+Get-FileHash: v5 EF22151F649350B37BB31C147F05347471C925138E31B68971A29BBEEAAF60AF, v5.1 3F61164274733B79A15F7536D336AF4C0F8600A94A98280B979DF47F2BBE7F9D, v5.2 EF19B2F5453C81F067E83F290DD016456AE86F279BE77F11280AB8B634323E4E

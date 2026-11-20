@@ -1,0 +1,18 @@
+[    0.000000] Linux version 6.12.107+deb13-arm64 (debian-kernel@lists.debian.org) (aarch64-linux-gnu-gcc-14 (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44) #1 SMP Debian 6.12.107-1 (2026-08-29)
+[    0.000000] Kernel command line: console=ttyAMA0 earlycon=pl011,0x9000000 rdinit=/init handshakeos.serial handshakeos.once
+[    1.201362] Run /init as init process
+ledger 5f44cefa72e8ac19  epoch 128  workers 3  p50 261408 ns  overruns 1
+======== HandshakeOS PID 1 ========
+Timing Handshake 3+1
+ledger 5f44cefa72e8ac19
+epoch  128
+workers 3
+overruns 1
+GB rom /roms/handshake-demo.gb
+GB ledger 5a45548614037e20
+GB frame  33e3294d476b16a6
+GB audio  8c6078dd78fa5589
+GB xruns  0
+GB overruns 0
+================================
+[    3.861804] reboot: Restarting system

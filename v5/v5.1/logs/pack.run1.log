@@ -1,0 +1,12 @@
+INPUTS PINNED: uboot 17ce4fb5 dtb 814740b1 kernel c206e1bc init 4633a842 gb 3d7f9708 flash-instructions f471a0ca
+CPIO_ENTRIES 26
+Image Name:   HandshakeOS initramfs
+Created:      Thu Nov 19 00:00:00 2026
+Image Type:   AArch64 Linux RAMDisk Image (gzip compressed)
+Data Size:    437392 Bytes = 427.14 KiB = 0.42 MiB
+Load Address: 00000000
+Entry Point:  00000000
+fsck.fat 4.2 (2021-01-31)
+/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.1/.p1.fat: 17 files, 31312/250012 clusters
+PACK OK
+PACK1_RC=0

@@ -1,0 +1,38 @@
+HandshakeOS RG35XX 2024 (Allwinner H700, 1 GiB LPDDR3 default) FEL RAM map
+==============================================================
+DRAM window: 0x40000000 .. 0x7FFFFFFF
+
+From our compiled U-Boot v2026.10 (CONFIG_ARM64, anbernic_rg35xx_h700_lpddr3_defconfig;
+LPDDR3 1024 MiB, DCDC3 1.2 V, 672 MHz. LPDDR4 is the alternate board revision):
+  CONFIG_TEXT_BASE      0x4A000000   U-Boot proper (~0.76-0.80 MiB)
+  kernel_addr_r         0x40080000   ARM64 Image (43,735,552 bytes = 0x029B5A00)
+  kernel_comp_addr_r    0x44000000   optional Image.gz (15,316,385 bytes)
+  kernel_comp_size      0x0B000000   advertised unzip window (we do not use the full window)
+  fdt_addr_r            0x4FA00000   sun50i-h700-anbernic-rg35xx-2024-nv3052c.dtb (NV3052C-clean)
+  scriptaddr            0x4FC00000   boot-ram.scr / boot-ums.scr (mkimage -A arm -T script)
+                           sunxi-fel only passes fel_scriptaddr for IH_ARCH_ARM, not arm64
+  ramdisk_addr_r        0x4FF00000   handshakeos-initramfs.uimg (761,417 bytes)
+
+Overlap check (uncompressed RAM boot, the default):
+  Image  0x40080000 .. 0x42A35A00    117.8 MiB below U-Boot at 0x4A000000  OK
+  U-Boot 0x4A000000 .. ~0x4A0C4000
+  FDT    0x4FA00000 .. 0x4FA08688   OK
+  script 0x4FC00000 .. 0x4FC0017C   OK
+  ramdisk 0x4FF00000 .. 0x4FFB9E49  OK (768 MiB below 0x80000000)
+
+Optional gzip path:
+  Image.gz at 0x44000000 .. 0x44E9B5A1, 81.4 MiB below U-Boot  OK
+  unzip destination is kernel_addr_r (0x40080000), which does not overlap 0x44000000.
+
+sunxi-tools master (34dfa20) confirmed:
+  `sunxi-fel uboot file` loads SPL (DRAM init) + U-Boot, then any following
+  `write` commands run BEFORE U-Boot is entered (fel.c: U-Boot execution takes
+  place when the fel utility exits). Writing a mkimage script automatically
+  sets the sunxi SPL fel_script_address so U-Boot sources it (BOOTENV_DEV_FEL).
+  Write boot-*.scr LAST so that address is the script.
+
+Script architecture
+-------------------
+Always build boot-*.scr with `mkimage -A arm -T script` (see mk-boot-scripts.sh).
+An -A arm64 script will not be started by sunxi-fel, so U-Boot lights the green
+LED and waits at its prompt.

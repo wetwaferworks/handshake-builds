@@ -1,0 +1,5 @@
+echo "HandshakeOS FEL UMS: TF1 (mmc 0) as a USB mass-storage gadget"
+echo "Windows should see a raw disk. Use Rufus on handshakeos-rg35xx-2024.img."
+mmc dev 0
+mmc rescan
+ums 0 mmc 0

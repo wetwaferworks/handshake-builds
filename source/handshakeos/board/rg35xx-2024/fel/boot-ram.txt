@@ -1,0 +1,5 @@
+echo "HandshakeOS FEL RAM boot"
+echo "kernel  ${kernel_addr_r}  fdt ${fdt_addr_r}  ramdisk ${ramdisk_addr_r}"
+setenv bootargs "console=ttyS0,115200 console=tty0 earlycon=uart8250,mmio32,0x05000000 fbcon=map:0"
+# Do not set handshakeos.once — handshake-init must stay on the glass.
+booti 0x40080000 0x4ff00000 0x4fa00000

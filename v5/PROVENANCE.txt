@@ -1,0 +1,43 @@
+HandshakeOS RG35XX 2024 v5 - PROVENANCE
+Every binary in or used by this package that was NOT built in-tree,
+with its project of origin and full SHA-256, plus the third-party
+build tools used to make it.
+
+1. sunxi-fel.exe
+   Origin:  linux-sunxi (sunxi-tools)
+   SHA-256: 39749ec323a7049b5dc0993e33345ccd17e77f44d4f79564fb85e389b4c7cd1f
+   Tree:    C:\Users\jdwetwork\.aaa.www.inc\handshake\builds\v4-full\fel\sunxi-fel.exe
+   Used by: fel/07-ramboot-v5.cmd (FEL RAM boot only; not in the image)
+
+2. libbet.gb
+   Origin:  Libbet and the Magic Floor v0.08, Damian Yerrick (pinobatch),
+            https://github.com/pinobatch/libbet/releases/tag/v0.08, zlib License
+   SHA-256: 3607412031c8287cf878299ce96e581e85b852dde703806343b95576fa3ff1a9
+   Shipped: initramfs /roms/libbet.gb (license at /roms/libbet.LICENSE)
+
+3. Build toolchain (WSL Ubuntu-24.04 on TheWorkstation, Ubuntu archive packages).
+   Used to build and pack; none of their code is in the shipped handshake-init or
+   handshake-gb (linked -nostdlib; -lgcc resolves no member).
+   gcc-aarch64-linux-gnu        4:13.2.0-7ubuntu1
+   gcc-13-aarch64-linux-gnu     13.3.0-6ubuntu2~24.04.1cross1
+   binutils-aarch64-linux-gnu   2.42-4ubuntu2.10
+   libc6-dev-arm64-cross        2.39-0ubuntu8cross1   (headers; static glibc for the
+                                                       non-shipped aarch64 test binaries)
+   qemu-user-static             1:8.2.2+ds-0ubuntu1.18
+   qemu-system-arm              1:8.2.2+ds-0ubuntu1.18
+   mtools                       4.0.43-1build1
+   dosfstools                   4.2-1.1build1
+   zstd                         1.5.5+dfsg2-2build1.1
+   u-boot-tools                 2025.10-0ubuntu0.24.04.4
+   cpio                         2.15+dfsg-1ubuntu2.1
+   ripgrep                      14.1.0-1
+   gzip                         1.12-1ubuntu3.2
+   (python3-pil 10.2.0-1ubuntu1.5 was removed 2026-11-20: the gate PNG comparison is now
+    tools/hs-pngcmp, pure C11. No Python is used by any build, pack or gate step.)
+   libgcc.a (gcc-13 cross) SHA-256:
+            4bc354241987926aa0489ba1d925e8b10356556323307944f08209f370a28ad6
+
+Built in-tree (not listed): hc, hs_rt, handshake-init, handshake-gb and all test
+binaries, all hs-* cores, U-Boot 17ce4fb5 (U-Boot v2026.10 source,
+anbernic_rg35xx_h700_lpddr3_defconfig), Linux 7.3.5 Image-v3-audio.gz c206e1bc,
+NV3052C DTB 814740b1, initramfs, boot scripts, all original demo ROMs.
