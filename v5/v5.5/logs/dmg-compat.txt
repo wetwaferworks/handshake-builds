@@ -1,0 +1,10 @@
+YELLOW checksum=0x15 combo=3 default=0 yellow=1 bg=7FFF,03FF,001F,0000 obp0=7FFF,03FF,001F,0000 obp1=7FFF,03FF,001F,0000
+UNKNOWN combo=0 default=1 yellow=0 bg=7FFF,1BEF,6180,0000
+RED checksum=0x14 combo=13
+BLUE checksum=0x61 fourth=E combo=11
+VEGAS checksum=0x61 fourth=A combo=41
+CURVE $03EF raw=7BFF00 lcd=80C926 (R=128 G=201 B=38)
+CURVE $7FFF lcd=F0F0F0
+CURVE $03FF raw=FFFF00 lcd=E8D92E
+DMG_COMPAT checks passed yellow=combo3 unknown=default curve=cgb-lcd
+ALL DMG COMPAT TESTS PASSED

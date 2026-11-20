@@ -1,0 +1,272 @@
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x410fd034]
+[    0.000000] Linux version 7.3.5 (box@grok-bot-vm-391710511) (aarch64-linux-gnu-gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44) #3 SMP PREEMPT Thu Nov 19 21:38:54 EST 2026
+[    0.000000] KASLR enabled
+[    0.000000] random: crng init done
+[    0.000000] Machine model: linux,dummy-virt
+[    0.000000] efi: UEFI not found.
+[    0.000000] OF: reserved mem: Reserved memory: No reserved-memory node in the DT
+[    0.000000] NUMA: Faking a node at [mem 0x0000000040000000-0x000000007fffffff]
+[    0.000000] NODE_DATA(0) allocated [mem 0x7fdefb00-0x7fdf21ff]
+[    0.000000] cma: Reserved 32 MiB at 0x000000007dc00000
+[    0.000000] psci: probing for conduit method from DT.
+[    0.000000] psci: PSCIv1.1 detected in firmware.
+[    0.000000] psci: Using standard PSCI v0.2 function IDs
+[    0.000000] psci: Trusted OS migration not required
+[    0.000000] psci: SMC Calling Convention v1.0
+[    0.000000] Zone ranges:
+[    0.000000]   DMA      [mem 0x0000000040000000-0x000000007fffffff]
+[    0.000000]   DMA32    empty
+[    0.000000]   Normal   empty
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000040000000-0x000000007fffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000040000000-0x000000007fffffff]
+[    0.000000] percpu: Embedded 26 pages/cpu s69272 r8192 d29032 u106496
+[    0.000000] Detected VIPT I-cache on CPU0
+[    0.000000] CPU features: kernel page table isolation forced ON by KASLR
+[    0.000000] CPU features: detected: Kernel page table isolation (KPTI)
+[    0.000000] CPU features: detected: ARM erratum 843419
+[    0.000000] CPU features: detected: ARM erratum 845719
+[    0.000000] alternatives: applying boot alternatives
+[    0.000000] Kernel command line: console=ttyAMA0 handshakeos.once handshakeos.usbselftest panic=-1
+[    0.000000] printk: log buffer data + meta data: 131072 + 458752 = 589824 bytes
+[    0.000000] Dentry cache hash table entries: 131072 (order: 8, 1048576 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 65536 (order: 7, 524288 bytes, linear)
+[    0.000000] software IO TLB: SWIOTLB bounce buffer size adjusted to 1MB
+[    0.000000] software IO TLB: area num 4.
+[    0.000000] software IO TLB: mapped [mem 0x000000007ca80000-0x000000007cb80000] (1MB)
+[    0.000000] Fallback order for Node 0: 0 
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 262144
+[    0.000000] Policy zone: DMA
+[    0.000000] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
+[    0.000000] rcu: Preemptible hierarchical RCU implementation.
+[    0.000000] rcu: 	RCU event tracing is enabled.
+[    0.000000] rcu: 	RCU restricting CPUs from NR_CPUS=512 to nr_cpu_ids=4.
+[    0.000000] 	Trampoline variant of Tasks RCU enabled.
+[    0.000000] 	Tracing variant of Tasks RCU enabled.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 100 jiffies.
+[    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=4
+[    0.000000] RCU Tasks: Setting shift to 2 and lim to 1 rcu_task_cb_adjust=1 rcu_task_cpu_ids=4.
+[    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+[    0.000000] Root IRQ handler: gic_handle_irq
+[    0.000000] GICv2m: range[mem 0x08020000-0x08020fff], SPI[80:143]
+[    0.000000] rcu: srcu_init: Setting srcu_struct sizes based on contention.
+[    0.000000] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1911260446275000 ns
+[    0.000000] arch_timer: cp15 timer running at 62.50MHz (virt).
+[    0.000000] clocksource: arch_sys_counter: mask: 0x1ffffffffffffff max_cycles: 0x1cd42e208c, max_idle_ns: 881590405314 ns
+[    0.000045] sched_clock: 57 bits at 63MHz, resolution 16ns, wraps every 4398046511096ns
+[    0.009050] Console: colour dummy device 80x25
+[    0.011242] Calibrating delay loop (skipped), value calculated using timer frequency.. 125.00 BogoMIPS (lpj=62500)
+[    0.011334] pid_max: default: 32768 minimum: 301
+[    0.018314] Mount-cache hash table entries: 2048 (order: 2, 16384 bytes, linear)
+[    0.018424] Mountpoint-cache hash table entries: 2048 (order: 2, 16384 bytes, linear)
+[    0.028487] VFS: Finished mounting rootfs on nullfs
+[    0.061782] rcu: Hierarchical SRCU implementation.
+[    0.061825] rcu: 	Max phase no-delay instances is 400.
+[    0.063574] Timer migration: 1 hierarchy levels; 8 children per group; 1 crossnode level
+[    0.068048] EFI services will not be available.
+[    0.069191] smp: Bringing up secondary CPUs ...
+[    0.076290] Detected VIPT I-cache on CPU1
+[    0.077246] CPU1: Booted secondary processor 0x0000000001 [0x410fd034]
+[    0.082749] Detected VIPT I-cache on CPU2
+[    0.083133] CPU2: Booted secondary processor 0x0000000002 [0x410fd034]
+[    0.084714] Detected VIPT I-cache on CPU3
+[    0.084940] CPU3: Booted secondary processor 0x0000000003 [0x410fd034]
+[    0.085749] smp: Brought up 1 node, 4 CPUs
+[    0.085776] SMP: Total of 4 processors activated.
+[    0.085801] CPU: All CPU(s) started at EL1
+[    0.085987] CPU features: detected: 32-bit EL0 Support
+[    0.086000] CPU features: detected: 32-bit EL1 Support
+[    0.086053] CPU features: detected: CRC32 instructions
+[    0.086228] CPU features: detected: PMUv3
+[    0.096170] alternatives: applying system-wide alternatives
+[    0.125788] Memory: 943932K/1048576K available (18752K kernel code, 5678K rwdata, 15168K rodata, 3584K init, 704K bss, 68536K reserved, 32768K cma-reserved)
+[    0.155781] devtmpfs: initialized
+[    0.178106] posixtimers hash table entries: 2048 (order: 3, 32768 bytes, linear)
+[    0.180507] futex hash table entries: 1024 (65536 bytes on 1 NUMA nodes, total 64 KiB, linear).
+[    0.183834] 2G module region forced by RANDOMIZE_MODULE_REGION_FULL
+[    0.183892] 0 pages in range for non-PLT usage
+[    0.183927] 513248 pages in range for PLT usage
+[    0.200028] DMI: not present or invalid.
+[    0.234711] NET: Registered PF_NETLINK/PF_ROUTE protocol family
+[    0.247849] DMA: preallocated 128 KiB GFP_KERNEL|GFP_DMA pool for atomic allocations
+[    0.248144] audit: initializing netlink subsys (disabled)
+[    0.249829] audit: type=2000 audit(0.204:1): state=initialized audit_enabled=0 res=1
+[    0.257622] thermal_sys: Registered thermal governor 'step_wise'
+[    0.257654] thermal_sys: Registered thermal governor 'power_allocator'
+[    0.259451] cpuidle: using governor ladder
+[    0.259889] cpuidle: using governor menu
+[    0.261915] hw-breakpoint: found 6 breakpoint and 4 watchpoint registers.
+[    0.263332] ASID allocator initialised with 32768 entries
+[    0.273250] Serial: AMBA PL011 UART driver
+[    0.324021] 9000000.pl011: ttyAMA0 MMIO:0x0000000009000000 (irq = 13, base_baud = 0) is a PL011 rev1
+[    0.325873] printk: console [ttyAMA0] enabled
+[    2.301708] HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
+[    2.302019] HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
+[    2.302044] HugeTLB: registered 32.0 MiB page size, pre-allocated 0 pages
+[    2.302049] HugeTLB: 0 KiB vmemmap can be freed for a 32.0 MiB page
+[    2.302055] HugeTLB: registered 2.00 MiB page size, pre-allocated 0 pages
+[    2.302058] HugeTLB: 0 KiB vmemmap can be freed for a 2.00 MiB page
+[    2.302063] HugeTLB: registered 64.0 KiB page size, pre-allocated 0 pages
+[    2.302067] HugeTLB: 0 KiB vmemmap can be freed for a 64.0 KiB page
+[    2.489559] ACPI: Interpreter disabled.
+[    2.513258] iommu: Default domain type: Translated
+[    2.513298] iommu: DMA domain TLB invalidation policy: strict mode
+[    2.550679] SCSI subsystem initialized
+[    2.565999] usbcore: registered new interface driver usbfs
+[    2.566212] usbcore: registered new interface driver hub
+[    2.571352] usbcore: registered new device driver usb
+[    2.618018] pps_core: LinuxPPS API ver. 1 registered
+[    2.618044] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+[    2.618096] PTP clock support registered
+[    2.618510] EDAC MC: Ver: 3.0.0
+[    2.655068] scmi_core: SCMI protocol bus registered
+[    2.713312] FPGA manager framework
+[    2.714764] Advanced Linux Sound Architecture Driver Initialized.
+[    2.766319] vgaarb: loaded
+[    2.779667] clocksource: Switched to clocksource arch_sys_counter
+[    2.807244] VFS: Disk quotas dquot_6.6.0
+[    2.807584] VFS: Dquot-cache hash table entries: 512 (4096 bytes)
+[    2.843916] pnp: PnP ACPI: disabled
+[    2.891891] NET: Registered PF_INET protocol family
+[    2.909451] IP idents hash table entries: 16384 (order: 5, 131072 bytes, linear)
+[    2.914926] tcp_listen_portaddr_hash hash table entries: 512 (order: 1, 8192 bytes, linear)
+[    2.915192] Table-perturb hash table entries: 65536 (order: 6, 262144 bytes, linear)
+[    2.915455] TCP established hash table entries: 8192 (order: 4, 65536 bytes, linear)
+[    2.915699] TCP bind hash table entries: 8192 (order: 6, 262144 bytes, linear)
+[    2.915960] TCP: Hash tables configured (established 8192 bind 8192)
+[    2.917352] UDP hash table entries: 512 (order: 3, 32768 bytes, linear)
+[    2.918766] NET: Registered PF_UNIX/PF_LOCAL protocol family
+[    3.093994] RPC: Registered named UNIX socket transport module.
+[    3.094044] RPC: Registered udp transport module.
+[    3.094052] RPC: Registered tcp transport module.
+[    3.094058] RPC: Registered tcp-with-tls transport module.
+[    3.094063] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    3.094172] PCI: CLS 0 bytes, default 64
+[    3.096813] kvm [1]: HYP mode not available
+[    3.100394] Unpacking initramfs...
+[    3.100517] Initialise system trusted keyrings
+[    3.152392] workingset: timestamp_bits=42 (anon: 37) max_order=18 bucket_order=0 (anon: 0)
+[    3.271500] squashfs: version 4.0 (2009/01/31) Phillip Lougher
+[    3.296288] NFS: Registering the id_resolver key type
+[    3.297305] Key type id_resolver registered
+[    3.297814] Key type id_legacy registered
+[    3.323637] nfs4filelayout_init: NFSv4 File Layout Driver Registering...
+[    3.334515] nfs4flexfilelayout_init: NFSv4 Flexfile Layout Driver Registering...
+[    3.406726] Key type asymmetric registered
+[    3.406835] Asymmetric key parser 'x509' registered
+[    3.407044] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 242)
+[    3.407159] io scheduler mq-deadline registered
+[    3.407208] io scheduler kyber registered
+[    3.408680] io scheduler bfq registered
+[    3.532227] Freeing initrd memory: 1776K
+[    3.560608] pl061_gpio 9030000.pl061: PL061 GPIO chip registered
+[    3.585567] ledtrig-cpu: registered to indicate activity on CPUs
+[    3.606611] pci-host-generic 4010000000.pcie: host bridge /pcie@10000000 ranges:
+[    3.607630] pci-host-generic 4010000000.pcie:       IO 0x003eff0000..0x003effffff -> 0x0000000000
+[    3.610322] pci-host-generic 4010000000.pcie:      MEM 0x0010000000..0x003efeffff -> 0x0010000000
+[    3.613154] pci-host-generic 4010000000.pcie:      MEM 0x8000000000..0xffffffffff -> 0x8000000000
+[    3.631940] pci-host-generic 4010000000.pcie: Memory resource size exceeds max for 32 bits
+[    3.632657] pci-host-generic 4010000000.pcie: ECAM at [mem 0x4010000000-0x401fffffff] for [bus 00-ff]
+[    3.634165] pci-host-generic 4010000000.pcie: PCI host bridge to bus 0000:00
+[    3.636161] pci_bus 0000:00: root bus resource [bus 00-ff]
+[    3.636504] pci_bus 0000:00: root bus resource [io  0x0000-0xffff]
+[    3.636894] pci_bus 0000:00: root bus resource [mem 0x10000000-0x3efeffff]
+[    3.640037] pci_bus 0000:00: root bus resource [mem 0x8000000000-0xffffffffff]
+[    3.644407] pci 0000:00:00.0: [1b36:0008] type 00 class 0x060000 conventional PCI endpoint
+[    3.967205] pci 0000:00:01.0: [1af4:1000] type 00 class 0x020000 conventional PCI endpoint
+[    3.967815] pci 0000:00:01.0: BAR 0 [io  0x0000-0x001f]
+[    3.971573] pci 0000:00:01.0: BAR 1 [mem 0x00000000-0x00000fff]
+[    3.982669] pci 0000:00:01.0: BAR 4 [mem 0x00000000-0x00003fff 64bit pref]
+[    3.984297] pci 0000:00:01.0: ROM [mem 0x00000000-0x0007ffff pref]
+[    4.059046] pci 0000:00:01.0: ROM [mem 0x10000000-0x1007ffff pref]: assigned
+[    4.059261] pci 0000:00:01.0: BAR 4 [mem 0x8000000000-0x8000003fff 64bit pref]: assigned
+[    4.060040] pci 0000:00:01.0: BAR 1 [mem 0x10080000-0x10080fff]: assigned
+[    4.062262] pci 0000:00:01.0: BAR 0 [io  0x1000-0x101f]: assigned
+[    4.108615] pci_bus 0000:00: resource 4 [io  0x0000-0xffff]
+[    4.116213] pci_bus 0000:00: resource 5 [mem 0x10000000-0x3efeffff]
+[    4.116771] pci_bus 0000:00: resource 6 [mem 0x8000000000-0xffffffffff]
+[    4.301755] virtio-pci 0000:00:01.0: enabling device (0000 -> 0003)
+[    4.349543] Serial: 8250/16550 driver, 4 ports, IRQ sharing enabled
+[    4.383776] msm_serial: driver initialized
+[    4.398236] SuperH (H)SCI(F) driver initialized
+[    4.400229] STM32 USART driver initialized
+[    4.480377] loop: module loaded
+[    4.498534] megasas: 07.734.00.00-rc1
+[    4.503575] physmap-flash 0.flash: physmap platform flash device: [mem 0x00000000-0x03ffffff]
+[    4.505042] 0.flash: Found 2 x16 devices at 0x0 in 32-bit bank. Manufacturer ID 0x000000 Chip ID 0x000000
+[    4.505615] Intel/Sharp Extended Query Table at 0x0031
+[    4.506961] Using buffer write method
+[    4.507502] physmap-flash 0.flash: physmap platform flash device: [mem 0x04000000-0x07ffffff]
+[    4.508133] 0.flash: Found 2 x16 devices at 0x0 in 32-bit bank. Manufacturer ID 0x000000 Chip ID 0x000000
+[    4.508192] Intel/Sharp Extended Query Table at 0x0031
+[    4.508748] Using buffer write method
+[    4.508872] Concatenating MTD devices:
+[    4.508891] (0): "0.flash"
+[    4.508900] (1): "0.flash"
+[    4.508916] into device "0.flash"
+[    4.815487] tun: Universal TUN/TAP device driver, 1.6
+[    4.863891] VFIO - User Level meta-driver version: 0.3
+[    4.900018] usbcore: registered new interface driver usb-storage
+[    4.909805] rtc-pl031 9010000.pl031: registered as rtc0
+[    4.910360] rtc-pl031 9010000.pl031: setting system clock to 2026-11-20T20:18:27 UTC (1795205907)
+[    4.912196] i2c_dev: i2c /dev entries driver
+[    5.084883] usbcore: registered new interface driver usbhid
+[    5.084921] usbhid: USB HID core driver
+[    5.124848] hw perfevents: enabled with armv8_pmuv3 PMU driver, 7 (0,8000003f) counters available
+[    5.173235] NET: Registered PF_INET6 protocol family
+[    5.199762] Segment Routing with IPv6
+[    5.199926] In-situ OAM (IOAM) with IPv6
+[    5.201242] NET: Registered PF_PACKET protocol family
+[    5.215822] Key type dns_resolver registered
+[    5.289246] registered taskstats version 1
+[    5.302260] Loading compiled-in X.509 certificates
+[    5.334092] Demotion targets for Node 0: null
+[    5.357696] input: gpio-keys as /devices/platform/gpio-keys/input/input0
+[    5.383227] clk: Disabling unused clocks
+[    5.383404] PM: genpd: Disabling unused power domains
+[    5.383489] ALSA device list:
+[    5.383568]   No soundcards found.
+[    5.530157] Freeing unused kernel memory: 3584K
+[    5.545955] Run /init as init process
+HandshakeOS v4-full scanout: headless XRGB8888 640x480
+HandshakeOS v4-full: SD not found (DEMO ONLY), audio SYNTH ONLY (rc -19, card "", 0 mixer ctls set)
+ledger 5f44cefa72e8ac19  epoch 128  workers 3  p50 526416 ns  overruns 0
+
+======== HandshakeOS PID 1 ========
+Timing Handshake 3+1
+ledger 5f44cefa72e8ac19
+epoch  128
+workers 3
+overruns 0
+GB rom /roms/handshake-demo.gb
+GB ledger 5a45548614037e20
+GB frame  33e3294d476b16a6
+GB audio  8c6078dd78fa5589
+GB xruns  0
+GB overruns 0
+HandshakeOS v4-full: 7-system registry, all 7 clean-room systems live (GB GBC GBA SNES GEN PS1 N64), PS1/N64 AA 1X FXAA 2X 4X 8X
+MULTI GB   handshake-demo.gb  frames=90 ledger=1b85582349652db7 video=4ef42180bf174365 audio=bd2d57b835f81bc5 pcm_nonzero=144552 freezes=0
+MULTI GBC  hs_cgb_test.gbc    frames=90 ledger=d163a40bcc700691 video=afe9abf5f771d18d audio=6a72b8aa6a940b95 pcm_nonzero=145056 freezes=0
+MULTI GBA  hs_gba_demo.gba    frames=90 ledger=d9e8d419cee421a7 video=7052cc1187e5d2e5 audio=87721e09801d4c95 pcm_nonzero=144644 freezes=0
+MULTI SNES hs_mode1_demo.sfc  frames=90 ledger=d9bc1c0fccc36df8 video=5f11da7bfac428f6 audio=2c872068cf70ad2f pcm_nonzero=142747 freezes=0
+MULTI SNES hs_mode7_floor.sfc frames=90 ledger=10832093a622e20a video=5ad931c793859504 audio=08623b931f1a0165 pcm_nonzero=0 freezes=0
+MULTI GEN  hs_genesis_demo.md frames=90 ledger=6da6409f38e25a5e video=8830e52ce6d59225 audio=b3369fc1cd277f91 pcm_nonzero=143438 freezes=0
+MULTI PS1  psx/psx_3d_demo.exe frames=90 ledger=2a8d7ebeafe11657 video=6e9500e471963b35 audio=3e02bb66050a364d pcm_nonzero=143884 freezes=0
+MULTI-AA PS1  1X=74a51acff67b2651 FXAA=5742ac71e106a65b 2X=8827acaf99b73896 4X=c6863d80ac175587 8X=3ff968fece054d96 edge_black=0 OK
+MULTI N64  n64/hs_n64_demo.z64 frames=90 ledger=260d8bd4f5b1c274 video=48cc0825b4d2c846 audio=7acb2c727728770f pcm_nonzero=143848 freezes=0
+MULTI-AA N64  1X=e425796967467306 FXAA=c53aa51988c0e29c 2X=ad4599a4b8adf7c0 4X=5b4bee0a06294c26 8X=bbaf59ac49ce80be edge_black=0 OK
+MULTI systems_ok=7 demos_ok=8
+[   25.486796] dummy_hcd dummy_hcd.0: USB Host+Gadget Emulator, driver 02 May 2005
+[   25.487261] dummy_hcd dummy_hcd.0: Dummy host controller
+[   25.487626] dummy_hcd dummy_hcd.0: new USB bus registered, assigned bus number 1
+[   25.549019] hub 1-0:1.0: USB hub found
+[   25.559024] hub 1-0:1.0: 1 port detected
+USB_SELFTEST dummy_hcd OK loaded=1 already=0
+USB_SELFTEST modules OK loaded=2 already=0
+USB_SELFTEST enable=-1 step=BLOCKDEV errno=2 udc=dummy_udc.0 blockdev= state= host_disk=none fat_readback=none
+USB_SELFTEST disable=0 state=ERROR sd_remounted=0 FAIL
+================================
+[   25.673780] reboot: Restarting system
+QEMU_EXIT 0

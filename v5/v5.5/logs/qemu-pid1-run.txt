@@ -1,0 +1,21 @@
+===== once =====
+HandshakeOS v4-full scanout: headless XRGB8888 640x480
+HandshakeOS v4-full: SD not found (DEMO ONLY), audio SYNTH ONLY (rc -19, card "", 0 mixer ctls set)
+======== HandshakeOS PID 1 ========
+HandshakeOS v4-full: 7-system registry, all 7 clean-room systems live (GB GBC GBA SNES GEN PS1 N64), PS1/N64 AA 1X FXAA 2X 4X 8X
+MULTI systems_ok=7 demos_ok=8
+QEMU_EXIT 0
+===== usbselftest =====
+HandshakeOS v4-full scanout: headless XRGB8888 640x480
+HandshakeOS v4-full: SD not found (DEMO ONLY), audio SYNTH ONLY (rc -19, card "", 0 mixer ctls set)
+======== HandshakeOS PID 1 ========
+HandshakeOS v4-full: 7-system registry, all 7 clean-room systems live (GB GBC GBA SNES GEN PS1 N64), PS1/N64 AA 1X FXAA 2X 4X 8X
+MULTI systems_ok=7 demos_ok=8
+USB_SELFTEST dummy_hcd OK loaded=1 already=0
+USB_SELFTEST modules OK loaded=2 already=0
+USB_SELFTEST enable=-1 step=BLOCKDEV errno=2 udc=dummy_udc.0 blockdev= state= host_disk=none fat_readback=none
+USB_SELFTEST disable=0 state=ERROR sd_remounted=0 FAIL
+QEMU_EXIT 0
+-rwxrwxrwx 1 root root 922218 Nov 20 15:18 /mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/previews/bootmenu-v5.5.png
+-rwxrwxrwx 1 root root 922218 Nov 20 15:18 /mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/previews/splash-v5.5.png
+QEMU_PID1_DONE

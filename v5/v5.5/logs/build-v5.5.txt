@@ -1,0 +1,327 @@
+===== BUILD-V5.5 Fri Nov 20 15:08:21 EST 2026 =====
+===== host compile (hc 0.1.4) =====
+PASS host --allow-runtime src/handshake.c
+PASS host --allow-runtime src/fb.c
+PASS host --profile=component src/ui.c
+PASS host --allow-runtime src/input.c
+PASS host --profile=component src/theme.c
+PASS host --profile=component src/font.c
+PASS host --profile=component src/pngenc.c
+PASS host --allow-runtime src/battery.c
+PASS host --profile=component src/scoreboard.c
+PASS host --profile=component src/gb_emu.c
+PASS host --profile=component src/gb_scale.c
+PASS host --allow-runtime src/games.c
+PASS host --allow-runtime src/games_multi.c
+PASS host --allow-runtime src/play.c
+PASS host --allow-runtime src/audio.c
+PASS host --profile=component src/emu_sys.c
+PASS host --profile=component src/emu_cores.c
+PASS host --allow-runtime src/emu_save.c
+PASS host --allow-runtime src/usb.c
+PASS host --profile=component src/fps.c
+PASS host --allow-runtime src/bootlog.c
+PASS host --allow-runtime src/cfg.c
+PASS host --allow-runtime src/sha256.c
+PASS host --allow-runtime src/mod.c
+PASS host --allow-runtime src/splash.c
+PASS host --allow-runtime src/bootmenu.c
+PASS host --allow-runtime src/update.c
+PASS host --allow-runtime src/init.c
+PASS host --allow-runtime src/gb_host.c
+PASS host --profile=component third_party/minigb_apu/minigb_apu.c
+PASS host --profile=component cores/common/hs_video.c
+PASS host --profile=component cores/gbc/gbc_cpu.c
+PASS host --profile=component cores/gbc/gbc_mmu.c
+PASS host --profile=component cores/gbc/gbc_ppu.c
+PASS host --profile=component cores/gbc/gbc_apu.c
+PASS host --profile=component cores/gbc/gbc_core.c
+PASS host --profile=component cores/gbc/gbc_compat_pal.c
+PASS host --profile=component cores/gba/gba_cpu.c
+PASS host --profile=component cores/gba/gba_bus.c
+PASS host --profile=component cores/gba/gba_bios.c
+PASS host --profile=component cores/gba/gba_ppu.c
+PASS host --profile=component cores/gba/gba_apu.c
+PASS host --profile=component cores/gba/gba_core.c
+PASS host --profile=component cores/snes/hs_snes.c
+PASS host --profile=component cores/snes/snes_cpu.c
+PASS host --profile=component cores/snes/snes_bus.c
+PASS host --profile=component cores/snes/snes_ppu.c
+PASS host --profile=component cores/snes/snes_apu.c
+PASS host --profile=component cores/genesis/m68k_cpu.c
+PASS host --profile=component cores/genesis/gen_bus.c
+PASS host --profile=component cores/genesis/gen_vdp.c
+PASS host --profile=component cores/genesis/gen_render.c
+PASS host --profile=component cores/genesis/gen_z80.c
+PASS host --profile=component cores/genesis/gen_ym2612.c
+PASS host --profile=component cores/genesis/gen_psg.c
+PASS host --profile=component cores/genesis/gen_audio.c
+PASS host --profile=component cores/genesis/hs_genesis.c
+PASS host --profile=component cores/psx/psx_cpu.c
+PASS host --profile=component cores/psx/psx_gte.c
+PASS host --profile=component cores/psx/psx_bus.c
+PASS host --profile=component cores/psx/psx_gpu_cap.c
+PASS host --profile=component cores/psx/psx_gpu_raster.c
+PASS host --profile=component cores/psx/psx_spu.c
+PASS host --profile=component cores/psx/psx_bios_hle.c
+PASS host --profile=component cores/psx/hs_psx.c
+PASS host --profile=component cores/n64/n64_cpu.c
+PASS host --profile=component cores/n64/n64_bus.c
+PASS host --profile=component cores/n64/n64_rsp.c
+PASS host --profile=component cores/n64/n64_rdp.c
+PASS host --profile=component cores/n64/n64_audio.c
+PASS host --profile=component cores/n64/n64_save.c
+PASS host --profile=component cores/n64/n64_pf.c
+PASS host --profile=component cores/n64/hs_n64.c
+PASS host --allow-runtime tests/test_handshake.c
+PASS host --profile=component tests/bench_jitter.c
+PASS host --profile=component tests/test_gb_handshake.c
+PASS host --allow-runtime tests/test_games.c
+PASS host --allow-runtime tests/test_audio.c
+PASS host --allow-runtime tests/test_multi_emu.c
+PASS host --allow-runtime tests/test_cfg.c
+PASS host --allow-runtime tests/test_update.c
+PASS host --allow-runtime tests/test_bootlog.c
+PASS host --allow-runtime tests/test_splash_pack.c
+PASS host --allow-runtime tests/test_audio_pace.c
+PASS host --allow-runtime tests/test_dmg_compat.c
+===== aarch64 compile (hc 0.1.4) =====
+PASS aarch64 --allow-runtime src/handshake.c
+PASS aarch64 --allow-runtime src/fb.c
+PASS aarch64 --profile=component src/ui.c
+PASS aarch64 --allow-runtime src/input.c
+PASS aarch64 --profile=component src/theme.c
+PASS aarch64 --profile=component src/font.c
+PASS aarch64 --profile=component src/pngenc.c
+PASS aarch64 --allow-runtime src/battery.c
+PASS aarch64 --profile=component src/scoreboard.c
+PASS aarch64 --profile=component src/gb_emu.c
+PASS aarch64 --profile=component src/gb_scale.c
+PASS aarch64 --allow-runtime src/games.c
+PASS aarch64 --allow-runtime src/games_multi.c
+PASS aarch64 --allow-runtime src/play.c
+PASS aarch64 --allow-runtime src/audio.c
+PASS aarch64 --profile=component src/emu_sys.c
+PASS aarch64 --profile=component src/emu_cores.c
+PASS aarch64 --allow-runtime src/emu_save.c
+PASS aarch64 --allow-runtime src/usb.c
+PASS aarch64 --profile=component src/fps.c
+PASS aarch64 --allow-runtime src/bootlog.c
+PASS aarch64 --allow-runtime src/cfg.c
+PASS aarch64 --allow-runtime src/sha256.c
+PASS aarch64 --allow-runtime src/mod.c
+PASS aarch64 --allow-runtime src/splash.c
+PASS aarch64 --allow-runtime src/bootmenu.c
+PASS aarch64 --allow-runtime src/update.c
+PASS aarch64 --allow-runtime src/init.c
+PASS aarch64 --allow-runtime src/gb_host.c
+PASS aarch64 --profile=component third_party/minigb_apu/minigb_apu.c
+PASS aarch64 --profile=component cores/common/hs_video.c
+PASS aarch64 --profile=component cores/gbc/gbc_cpu.c
+PASS aarch64 --profile=component cores/gbc/gbc_mmu.c
+PASS aarch64 --profile=component cores/gbc/gbc_ppu.c
+PASS aarch64 --profile=component cores/gbc/gbc_apu.c
+PASS aarch64 --profile=component cores/gbc/gbc_core.c
+PASS aarch64 --profile=component cores/gbc/gbc_compat_pal.c
+PASS aarch64 --profile=component cores/gba/gba_cpu.c
+PASS aarch64 --profile=component cores/gba/gba_bus.c
+PASS aarch64 --profile=component cores/gba/gba_bios.c
+PASS aarch64 --profile=component cores/gba/gba_ppu.c
+PASS aarch64 --profile=component cores/gba/gba_apu.c
+PASS aarch64 --profile=component cores/gba/gba_core.c
+PASS aarch64 --profile=component cores/snes/hs_snes.c
+PASS aarch64 --profile=component cores/snes/snes_cpu.c
+PASS aarch64 --profile=component cores/snes/snes_bus.c
+PASS aarch64 --profile=component cores/snes/snes_ppu.c
+PASS aarch64 --profile=component cores/snes/snes_apu.c
+PASS aarch64 --profile=component cores/genesis/m68k_cpu.c
+PASS aarch64 --profile=component cores/genesis/gen_bus.c
+PASS aarch64 --profile=component cores/genesis/gen_vdp.c
+PASS aarch64 --profile=component cores/genesis/gen_render.c
+PASS aarch64 --profile=component cores/genesis/gen_z80.c
+PASS aarch64 --profile=component cores/genesis/gen_ym2612.c
+PASS aarch64 --profile=component cores/genesis/gen_psg.c
+PASS aarch64 --profile=component cores/genesis/gen_audio.c
+PASS aarch64 --profile=component cores/genesis/hs_genesis.c
+PASS aarch64 --profile=component cores/psx/psx_cpu.c
+PASS aarch64 --profile=component cores/psx/psx_gte.c
+PASS aarch64 --profile=component cores/psx/psx_bus.c
+PASS aarch64 --profile=component cores/psx/psx_gpu_cap.c
+PASS aarch64 --profile=component cores/psx/psx_gpu_raster.c
+PASS aarch64 --profile=component cores/psx/psx_spu.c
+PASS aarch64 --profile=component cores/psx/psx_bios_hle.c
+PASS aarch64 --profile=component cores/psx/hs_psx.c
+PASS aarch64 --profile=component cores/n64/n64_cpu.c
+PASS aarch64 --profile=component cores/n64/n64_bus.c
+PASS aarch64 --profile=component cores/n64/n64_rsp.c
+PASS aarch64 --profile=component cores/n64/n64_rdp.c
+PASS aarch64 --profile=component cores/n64/n64_audio.c
+PASS aarch64 --profile=component cores/n64/n64_save.c
+PASS aarch64 --profile=component cores/n64/n64_pf.c
+PASS aarch64 --profile=component cores/n64/hs_n64.c
+PASS aarch64 --allow-runtime tests/test_handshake.c
+PASS aarch64 --profile=component tests/bench_jitter.c
+PASS aarch64 --profile=component tests/test_gb_handshake.c
+PASS aarch64 --allow-runtime tests/test_games.c
+PASS aarch64 --allow-runtime tests/test_audio.c
+PASS aarch64 --allow-runtime tests/test_multi_emu.c
+PASS aarch64 --allow-runtime tests/test_cfg.c
+PASS aarch64 --allow-runtime tests/test_update.c
+PASS aarch64 --allow-runtime tests/test_bootlog.c
+PASS aarch64 --allow-runtime tests/test_splash_pack.c
+PASS aarch64 --allow-runtime tests/test_audio_pace.c
+PASS aarch64 --allow-runtime tests/test_dmg_compat.c
+BUILTIN ROMS identical to handshakeos/roms
+===== hs_rt compile (aarch64-linux-gnu-gcc, freestanding) =====
+PASS hs_rt start.S
+PASS hs_rt sys.c
+PASS hs_rt mem.c
+PASS hs_rt stdio.c
+===== LINK =====
+BUILD LINK OK
+/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/host/handshake-audio-test:    ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=6ba0a23a601e09ac3a9da29659a15cd402abd7ce, for GNU/Linux 3.2.0, not stripped
+/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/host/handshake-bench:         ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=b3465eb92b76fa778c741167a803bd908d45aa9e, for GNU/Linux 3.2.0, not stripped
+/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/host/handshake-games-test:    ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=e2a5ffb7f27d599f521dcc72d1846d507cc2634d, for GNU/Linux 3.2.0, not stripped
+/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/host/handshake-gb:            ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=1fe55a29c0274765a9a33a0288ecad33e944867b, for GNU/Linux 3.2.0, not stripped
+/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/host/handshake-gb-test:       ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=9cb7114a5bc6d5af67e742ca1a2c9b1533bd766d, for GNU/Linux 3.2.0, not stripped
+/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/host/handshake-init:          ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=23025e72910f0de10af21c307fd4038382ca7a26, for GNU/Linux 3.2.0, not stripped
+/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/host/handshake-multi-test:    ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=10c27bc61265e44a6b59988aca7f1e972a49e27f, for GNU/Linux 3.2.0, not stripped
+/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/host/handshake-test:          ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=914f114a1b029aef0c6617191682c09ef0e80eba, for GNU/Linux 3.2.0, not stripped
+/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/aarch64/handshake-audio-test: ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=b5d7cc3e560f7add801471319c40aac3cea354ed, for GNU/Linux 3.7.0, not stripped
+/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/aarch64/handshake-bench:      ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=72a38b9ca86ea2059e109145886e70d32a1dfde0, for GNU/Linux 3.7.0, not stripped
+/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/aarch64/handshake-games-test: ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=aeb826c6a607e227ee4ca539ce13cca8d38a8a6a, for GNU/Linux 3.7.0, not stripped
+/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/aarch64/handshake-gb:         ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, BuildID[sha1]=20934a0a3b188678fc2edac98deff349895bde24, not stripped
+/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/aarch64/handshake-gb-test:    ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=f5d3ecef13640a231b6ba1efb3ed4268da749cda, for GNU/Linux 3.7.0, not stripped
+/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/aarch64/handshake-init:       ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, BuildID[sha1]=204c0536e1424a4cc1fe8041d794c2e279260a7f, not stripped
+/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/aarch64/handshake-multi-test: ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=55d6e7738a05baab141d45b98be264bc5f8861d8, for GNU/Linux 3.7.0, not stripped
+/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/aarch64/handshake-test:       ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=9460743caef521dc7a36145b7d7f6d9f77f99fb9, for GNU/Linux 3.7.0, not stripped
+184b80419a3fd1f09ee8f7381e65ed134372ec66eba7586a74c360fcd7ef9c65  /mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/aarch64/handshake-init
+29301bc1ed931205d3d36be851324e6f5560c832e412484480894b555d3ac483  /mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/aarch64/handshake-gb
+===== ELF audit (hc --audit-elf, per profile) =====
+ELF_AUDIT pass=170 fail=0
+NM_SUMMARY objects=170 lock_dirty=0 component_objects=112 component_thread_clock_rng_dirty=0
+STRINGS_SUMMARY binary_hits=0 source_hits=0
+NM_HS_RT objects=4 lock_dirty=0
+HOST_TOOL hs-mkcpio (hs_mkcpio.c) sha256=cd5161d30d9f6871
+HOST_TOOL hs-pngcmp (hs_pngcmp.c) sha256=838863ba7b418edb
+PID1_GUARD PASS faults=3 log_lines=3 boot_reentries=3 poweroff_calls=0 drivers_open=1 fault_ledger=527fa503de2cbf33
+PID1_GUARD PASS faults=3 log_lines=3 boot_reentries=3 poweroff_calls=0 drivers_open=1 fault_ledger=527fa503de2cbf33
+  ok   aligned_alloc(2^62, 64) -> NULL
+  ok   aligned_alloc(4096, SIZE_MAX-64) -> NULL
+  ok   aligned_alloc(256, 1000) aligned
+  ok   qsort sorts
+  ok   fopen w
+  ok   fwrite overflow -> 0
+  ok   fwrite 9 bytes
+  ok   fopen r
+  ok   fread overflow -> 0, dst untouched
+  ok   fread round trip
+  ok   calloc overflow -> NULL
+  ok   pthread_create/join
+HS_RT_REVIEW PASS fails=0
+HS_RT_FAULT stage=1 PASS seq=1 log_lines=1 ledger=0b17d763a172f6ea reenter=boot exit_avoided=1
+HS_RT_FAULT stage=2 PASS seq=2 log_lines=2 ledger=23101ba071a8f445 reenter=boot exit_avoided=1
+HS_RT_FAULT stage=3 PASS seq=3 log_lines=3 ledger=c507bb91913dcd09 reenter=boot exit_avoided=1
+HS_RT_FAULT stage=4 PASS seq=4 log_lines=4 ledger=21f325d069921d44 reenter=boot exit_avoided=1
+HS_RT_FAULT stage=5 PASS seq=5 log_lines=5 ledger=af79953859ef906b reenter=boot exit_avoided=1
+HS_RT_FAULT stage=6 PASS seq=6 log_lines=6 ledger=67203a286197ddf2 reenter=boot exit_avoided=1
+HS_RT_FAULT stage=7 PASS seq=7 log_lines=7 ledger=9edbea88a4f1c339 reenter=boot exit_avoided=1
+HS_RT_FAULT stage=8 PASS seq=8 log_lines=8 ledger=f6845d8f5994a478 reenter=boot exit_avoided=1
+HS_RT_FAULT stage=9 PASS seq=9 log_lines=9 ledger=c2b482e41ac8d25f reenter=boot exit_avoided=1
+HS_RT_FAULT stage=10 PASS seq=10 log_lines=10 ledger=3eb8d051b5195eb6 reenter=boot exit_avoided=1
+HS_RT_FAULT stage=11 PASS seq=11 log_lines=11 ledger=f026652afefb5eea reenter=boot exit_avoided=1
+HS_RT_FAULT stage=12 PASS seq=12 log_lines=12 ledger=102d7ce223d247f6 reenter=boot exit_avoided=1
+HS_RT_FAULT stage=13 PASS seq=13 log_lines=13 ledger=2119351364a542cc reenter=boot exit_avoided=1
+HS_RT_FAULT stage=14 PASS reexec=1 seq=14 log_lines=14 ledger=536f42b2b902bd81 exit_avoided=1
+HS_RT_FAULT_SUMMARY pass=14 log_lines=14 reboot_syscalls_in_fault_path=0
+[host] USB_SIM scenario=1 enable PASS
+[host] USB_SIM scenario=2 poll PASS
+[host] USB_SIM scenario=3 disable PASS
+[host] USB_SIM scenario=4 reuse PASS
+[host] USB_SIM scenario=5 umount_busy PASS
+[host] USB_SIM scenario=6 no_udc PASS
+[host] USB_SIM scenario=7 bind_fail PASS
+[host] USB_SIM scenario=8 remount_retry PASS
+[host] USB_SIM scenario=9 remount_fail PASS
+[host] USB_SIM fault_log: HandshakeOS FAULT #1 USB_TRANSFER_FAILED code=5 usb_step=3 errno=16 epoch=0 fault_ledger=e23077a6856c0e42 -> GAMES
+[host] USB_SIM scenario=10 fault_record PASS
+[host] USB_SIM scenarios=10/10 checks=35 failed=0 PASS
+[qemu] USB_SIM scenario=1 enable PASS
+[qemu] USB_SIM scenario=2 poll PASS
+[qemu] USB_SIM scenario=3 disable PASS
+[qemu] USB_SIM scenario=4 reuse PASS
+[qemu] USB_SIM scenario=5 umount_busy PASS
+[qemu] USB_SIM scenario=6 no_udc PASS
+[qemu] USB_SIM scenario=7 bind_fail PASS
+[qemu] USB_SIM scenario=8 remount_retry PASS
+[qemu] USB_SIM scenario=9 remount_fail PASS
+[qemu] USB_SIM fault_log: HandshakeOS FAULT #1 USB_TRANSFER_FAILED code=5 usb_step=3 errno=16 epoch=0 fault_ledger=e23077a6856c0e42 -> GAMES
+[qemu] USB_SIM scenario=10 fault_record PASS
+[qemu] USB_SIM scenarios=10/10 checks=35 failed=0 PASS
+[host] HandshakeOS FPS v5.3 sys=GB core=hs-gbc game=handshake-demo seconds=3.9 game_fps=59.8 draw_fps=44.8 worst_1s_game_fps=59.5 target_ms=16.74 frame_ms_avg=11.13 frame_ms_max=25.00 emu_ms_avg=8.66 emu_ms_max=20.00 blit_flip_ms_avg=2.46 blit_flip_ms_max=5.00 late=60 catchup=60 draws=180 game_frames=240 hist_ms<4,8,12,16.7,25,33,50,inf=0,120,0,0,0,60,0,0
+[host] FPS_TEST checks=8 failed=0 PASS
+[qemu] HandshakeOS FPS v5.3 sys=GB core=hs-gbc game=handshake-demo seconds=3.9 game_fps=59.8 draw_fps=44.8 worst_1s_game_fps=59.5 target_ms=16.74 frame_ms_avg=11.13 frame_ms_max=25.00 emu_ms_avg=8.66 emu_ms_max=20.00 blit_flip_ms_avg=2.46 blit_flip_ms_max=5.00 late=60 catchup=60 draws=180 game_frames=240 hist_ms<4,8,12,16.7,25,33,50,inf=0,120,0,0,0,60,0,0
+[qemu] FPS_TEST checks=8 failed=0 PASS
+USB_FPS_TESTS_OK
+REGRESS_OK
+PACKED entries=9 bytes=4918976 out=/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/splashes/pack.bin
+  01 type=graphic theme=purple artist=CloudAtlas title=Silicon Wafer Pulse size=614400 frames=1
+  02 type=graphic theme=purple artist=CloudAtlas title=Field of Handshakes size=614400 frames=1
+  03 type=graphic theme=purple artist=CloudAtlas title=Handheld Phosphor size=614400 frames=1
+  04 type=graphic theme=purple artist=CloudAtlas title=Timing Loop Gears size=614400 frames=1
+  05 type=graphic theme=purple artist=CloudAtlas title=Minimal Swiss Signal size=614400 frames=1
+  06 type=graphic theme=purple artist=CloudAtlas title=Cyber Owl Sprite size=614400 frames=1
+  07 type=graphic theme=green artist=CloudAtlas title=Oscilloscope Dual-Wave size=614400 frames=1
+  08 type=graphic theme=purple artist=CloudAtlas title=Liquid Glass Orb size=614400 frames=1
+  ascii-oo type=ascii theme=purple artist=HandshakeOS title=HandshakeOS o.O size=2736 frames=8
+CFG_ROUNDTRIP PASS
+CFG_CORRUPT PASS err=corrupt
+ALL CFG TESTS PASSED
+BOOTLOG PASS last=usb modules=OK loaded=2 already=0 first=boot mode=drm wait_ms=10000 kernel=7.3.5 modules=idle
+ALL BOOTLOG TESTS PASSED
+HSU_VERIFY PASS files=2 OK files=2
+HSU_CORRUPT PASS msg=package sha256 mismatch
+HSU_APPLY PASS dest=B fallback=A applied slot B files=2
+HSU_FALLBACK_INTACT PASS slot=B
+SHA256_SMOKE e5fd42fd35333f8ed1be0d9bac08a017f1c4c5c8911fda7fb00af18620fd9690
+ALL UPDATE TESTS PASSED
+SPLASH_PACK PASS entries=9 cloudatlas=8 ascii-oo frames=8 pack=/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/splashes/pack.bin
+ALL SPLASH PACK TESTS PASSED
+PACE GBA frames=598 src=480583 out=480583 xruns=0 dropped=0 fill=2560 clip=0 period=512 buffer=2560 (53.3 ms) start_thr=1536
+CONT GBA max_step=1 (threshold 64)
+PACE GB frames=598 src=327704 out=480586 xruns=0 dropped=0 fill=2560 clip=0 period=512 buffer=2560 (53.3 ms) start_thr=1536
+CONT GB max_step=64 (threshold 64)
+PACE GBC frames=598 src=327704 out=480586 xruns=0 dropped=0 fill=2560 clip=0 period=512 buffer=2560 (53.3 ms) start_thr=1536
+CONT GBC max_step=64 (threshold 64)
+PACE SNES frames=602 src=480808 out=480808 xruns=0 dropped=0 fill=2560 clip=0 period=512 buffer=2560 (53.3 ms) start_thr=1536
+CONT SNES max_step=1 (threshold 64)
+PACE GENESIS frames=600 src=480619 out=480619 xruns=0 dropped=0 fill=2560 clip=0 period=512 buffer=2560 (53.3 ms) start_thr=1536
+CONT GENESIS max_step=1 (threshold 64)
+AUDIO_PACE checks passed systems=5 seconds=10 xruns=0 dropped=0 clips=0
+ALL AUDIO PACE TESTS PASSED
+PACE GBA frames=598 src=480583 out=480583 xruns=0 dropped=0 fill=2560 clip=0 period=512 buffer=2560 (53.3 ms) start_thr=1536
+CONT GBA max_step=1 (threshold 64)
+PACE GB frames=598 src=327704 out=480586 xruns=0 dropped=0 fill=2560 clip=0 period=512 buffer=2560 (53.3 ms) start_thr=1536
+CONT GB max_step=64 (threshold 64)
+PACE GBC frames=598 src=327704 out=480586 xruns=0 dropped=0 fill=2560 clip=0 period=512 buffer=2560 (53.3 ms) start_thr=1536
+CONT GBC max_step=64 (threshold 64)
+PACE SNES frames=602 src=480808 out=480808 xruns=0 dropped=0 fill=2560 clip=0 period=512 buffer=2560 (53.3 ms) start_thr=1536
+CONT SNES max_step=1 (threshold 64)
+PACE GENESIS frames=600 src=480619 out=480619 xruns=0 dropped=0 fill=2560 clip=0 period=512 buffer=2560 (53.3 ms) start_thr=1536
+CONT GENESIS max_step=1 (threshold 64)
+AUDIO_PACE checks passed systems=5 seconds=10 xruns=0 dropped=0 clips=0
+ALL AUDIO PACE TESTS PASSED
+YELLOW checksum=0x15 combo=3 default=0 yellow=1 bg=7FFF,03FF,001F,0000 obp0=7FFF,03FF,001F,0000 obp1=7FFF,03FF,001F,0000
+UNKNOWN combo=0 default=1 yellow=0 bg=7FFF,1BEF,6180,0000
+RED checksum=0x14 combo=13
+BLUE checksum=0x61 fourth=E combo=11
+VEGAS checksum=0x61 fourth=A combo=41
+CURVE $03EF raw=7BFF00 lcd=80C926 (R=128 G=201 B=38)
+CURVE $7FFF lcd=F0F0F0
+CURVE $03FF raw=FFFF00 lcd=E8D92E
+DMG_COMPAT checks passed yellow=combo3 unknown=default curve=cgb-lcd
+ALL DMG COMPAT TESTS PASSED
+V55_UNIT_OK
+BUILD_V5_5_OK
+BUILD_V5_5_DONE
+BUILD_V5_5_DONE

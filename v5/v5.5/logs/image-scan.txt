@@ -1,0 +1,93 @@
+CPIO_LIST
+./bin/bench_n64
+./bin/handshake-gb
+./bin/hs_pf_probe
+./etc/handshakeos-release
+./init
+./modules/libcomposite.ko
+./modules/usb_f_mass_storage.ko
+./roms/handshake-demo.gb
+./roms/hs_cgb_test.gbc
+./roms/hs_gba_demo.gba
+./roms/hs_genesis_demo.md
+./roms/hs_mode1_demo.sfc
+./roms/hs_mode7_floor.sfc
+./roms/libbet.LICENSE
+./roms/libbet.gb
+./roms/manifest-v5.txt
+./roms/manifest.txt
+./roms/n64/hs_n64_demo.z64
+./roms/psx/psx_3d_demo.exe
+./splashes/pack.bin
+CPIO_DUMMY_HCD 0 (want 0)
+CPIO_LIBCOMPOSITE PRESENT
+CPIO_MASS_STORAGE PRESENT
+CPIO_BENCH_N64 PRESENT
+CPIO_HS_PF_PROBE PRESENT
+CPIO_PACK PRESENT
+===== NM LOCK SCAN =====
+HIT /mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/tmp/image-scan/bin/bench_n64
+0000000000447330 T ___pthread_mutex_lock
+0000000000447cb4 T ___pthread_mutex_unlock
+0000000000447f40 T ___pthread_rwlock_init
+0000000000447f90 T ___pthread_rwlock_rdlock
+0000000000448230 T ___pthread_rwlock_unlock
+0000000000448450 T ___pthread_rwlock_wrlock
+00000000004b1908 D __mutex_aconf
+0000000000447330 T __pthread_mutex_lock
+0000000000446c70 t __pthread_mutex_lock_full
+0000000000447cb4 T __pthread_mutex_unlock
+0000000000447630 t __pthread_mutex_unlock_full
+0000000000447b40 T __pthread_mutex_unlock_usercnt
+0000000000447f40 T __pthread_rwlock_init
+0000000000447f90 T __pthread_rwlock_rdlock
+0000000000448230 T __pthread_rwlock_unlock
+0000000000448450 T __pthread_rwlock_wrlock
+0000000000000000 a pthread_mutex_conf.o
+0000000000447330 W pthread_mutex_lock
+0000000000000000 a pthread_mutex_lock.o
+0000000000447cb4 W pthread_mutex_unlock
+0000000000000000 a pthread_mutex_unlock.o
+0000000000447f40 W pthread_rwlock_init
+0000000000000000 a pthread_rwlock_init.o
+0000000000447f90 W pthread_rwlock_rdlock
+0000000000000000 a pthread_rwlock_rdlock.o
+0000000000448230 W pthread_rwlock_unlock
+0000000000000000 a pthread_rwlock_unlock.o
+0000000000448450 W pthread_rwlock_wrlock
+0000000000000000 a pthread_rwlock_wrlock.o
+CLEAN /mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/tmp/image-scan/bin/handshake-gb
+HIT /mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/tmp/image-scan/bin/hs_pf_probe
+000000000041b690 T ___pthread_mutex_lock
+000000000041c014 T ___pthread_mutex_unlock
+000000000043f3e0 T ___pthread_rwlock_init
+000000000043f430 T ___pthread_rwlock_rdlock
+000000000043f6d0 T ___pthread_rwlock_unlock
+000000000043f8f0 T ___pthread_rwlock_wrlock
+0000000000491578 D __mutex_aconf
+000000000041b690 T __pthread_mutex_lock
+000000000041afd0 t __pthread_mutex_lock_full
+000000000041c014 T __pthread_mutex_unlock
+000000000041b990 t __pthread_mutex_unlock_full
+000000000041bea0 T __pthread_mutex_unlock_usercnt
+000000000043f3e0 T __pthread_rwlock_init
+000000000043f430 T __pthread_rwlock_rdlock
+000000000043f6d0 T __pthread_rwlock_unlock
+000000000043f8f0 T __pthread_rwlock_wrlock
+0000000000000000 a pthread_mutex_conf.o
+000000000041b690 W pthread_mutex_lock
+0000000000000000 a pthread_mutex_lock.o
+000000000041c014 W pthread_mutex_unlock
+0000000000000000 a pthread_mutex_unlock.o
+000000000043f3e0 W pthread_rwlock_init
+0000000000000000 a pthread_rwlock_init.o
+000000000043f430 W pthread_rwlock_rdlock
+0000000000000000 a pthread_rwlock_rdlock.o
+000000000043f6d0 W pthread_rwlock_unlock
+0000000000000000 a pthread_rwlock_unlock.o
+000000000043f8f0 W pthread_rwlock_wrlock
+0000000000000000 a pthread_rwlock_wrlock.o
+CLEAN /mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/tmp/image-scan/init
+CLEAN /mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/tmp/image-scan/modules/libcomposite.ko
+CLEAN /mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/tmp/image-scan/modules/usb_f_mass_storage.ko
+LOCK_HITS 2

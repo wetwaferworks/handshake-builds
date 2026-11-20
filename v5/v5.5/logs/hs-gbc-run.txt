@@ -1,0 +1,100 @@
+===== HS-GBC Fri Nov 20 14:57:47 EST 2026 =====
+hc: /mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/hc/build/current/hc (hc 0.1.4) sha256=ee626d46371d2a5e
+compiled 22 objects (component: 10 TUs x 2 arches, runtime shim: 1 x 2)
+hc --audit-elf: 22/22 PASS; nm banned lock/thread/clock/rng symbols: 0
+build/x86_64/test_hs_gbc: pthread_mutex symbols linked = 0 (static libc stdio may carry its own internal locks)
+build/aarch64/test_hs_gbc: pthread_mutex symbols linked = 3 (static libc stdio may carry its own internal locks)
+BUILD+AUDIT OK
+test_hs_gbc.aarch64.log: RESULT hs-gbc: 83 passed, 0 failed rc=0
+test_hs_gbc.x86_64.log: RESULT hs-gbc: 83 passed, 0 failed rc=0
+test_hs_video.aarch64.log: RESULT hs-video: 55 passed, 0 failed rc=0
+test_hs_video.x86_64.log: RESULT hs-video: 55 passed, 0 failed rc=0
+CROSS-ARCH: 40/40 hashes bit-identical (x86_64 == ARM64)
+ACID2 out/x86_64/dmg-acid2.gb_native.png: 23040/23040 pixels match reference -> PASS
+ACID2 out/x86_64/cgb-acid2.gbc_native.png: 23040/23040 pixels match reference -> PASS
+ACID2 out/aarch64/dmg-acid2.gb_native.png: 23040/23040 pixels match reference -> PASS
+ACID2 out/aarch64/cgb-acid2.gbc_native.png: 23040/23040 pixels match reference -> PASS
+===== HASH FILES =====
+HASH cgb_synth.audio d761dccae297c019
+HASH cgb_synth.snap 59903f43c609472a
+HASH cgb_synth.video 910dbfcb63fd250b
+HASH ext.cgb-acid2.gbc.cgb.snapvideo f9f88e27f81ea0e0
+HASH ext.cpu_instrs.gb.cgb.snapvideo 194cf1a5be2f6882
+HASH ext.cpu_instrs.gb.dmg.snapvideo 2c82ce14162b099e
+HASH ext.dmg-acid2.gb.dmg.snapvideo 1cf2597ef6505997
+HASH ext.halt_bug.gb.dmg.snapvideo 915b9a11e0c530a8
+HASH ext.instr_timing.gb.dmg.snapvideo fa5b34c9e0532bad
+HASH ext.mem_timing.gb.dmg.snapvideo 4f9913963b1b01d5
+HASH fxaa_edge fd30759fea91126c
+HASH handshake-demo.gb.audio 1bf78e3b0e65d815
+HASH handshake-demo.gb.final_640x480_fxaa c59c0d39bed9c3ad
+HASH handshake-demo.gb.final_640x480_nearest f6e1edf8736a7525
+HASH handshake-demo.gb.final_640x480_sharp 7a56c7527f852265
+HASH handshake-demo.gb.snap d1709165780a5ef9
+HASH handshake-demo.gb.video bd98f7d5718dd8d9
+HASH libbet.gb.audio c4f1e6232504a3e5
+HASH libbet.gb.final_640x480_fxaa ff6d60d354b5f07c
+HASH libbet.gb.final_640x480_nearest d7d675a45fe0822d
+HASH libbet.gb.final_640x480_sharp 42a53d45e76ca755
+HASH libbet.gb.snap 3082d01ee2055658
+HASH libbet.gb.video 64e4779cf769c3e7
+HASH scale_160x144.nearest 878e282023a91a1d
+HASH scale_160x144.sharp 31e58189cd57c385
+HASH scale_240x160.nearest 1a20ae52cd39206c
+HASH scale_240x160.sharp e6c3c336bd3392f8
+HASH scale_256x224.nearest 9cc8d7a1c24629fa
+HASH scale_256x224.sharp ec7aef63e9f7c143
+HASH scale_320x224.nearest 7018dfd0a3d2bd5d
+HASH scale_320x224.sharp 890b5e47a7a36771
+HASH scale_320x240.nearest 00cbe23c3aef7c55
+HASH scale_320x240.sharp 00cbe23c3aef7c55
+HASH scale_640x480.nearest 239736c6231f8a67
+HASH scale_640x480.sharp 239736c6231f8a67
+HASH ssaa_1x 6aa78a288073f5e5
+HASH ssaa_2x d885092f01614a5b
+HASH ssaa_4x b7256409d365c65b
+HASH ssaa_8x c09cdf8331788e7c
+HASH ssaa_fxaa 9e6828c9863f9c0d
+----- aarch64 -----
+HASH cgb_synth.audio d761dccae297c019
+HASH cgb_synth.snap 59903f43c609472a
+HASH cgb_synth.video 910dbfcb63fd250b
+HASH ext.cgb-acid2.gbc.cgb.snapvideo f9f88e27f81ea0e0
+HASH ext.cpu_instrs.gb.cgb.snapvideo 194cf1a5be2f6882
+HASH ext.cpu_instrs.gb.dmg.snapvideo 2c82ce14162b099e
+HASH ext.dmg-acid2.gb.dmg.snapvideo 1cf2597ef6505997
+HASH ext.halt_bug.gb.dmg.snapvideo 915b9a11e0c530a8
+HASH ext.instr_timing.gb.dmg.snapvideo fa5b34c9e0532bad
+HASH ext.mem_timing.gb.dmg.snapvideo 4f9913963b1b01d5
+HASH fxaa_edge fd30759fea91126c
+HASH handshake-demo.gb.audio 1bf78e3b0e65d815
+HASH handshake-demo.gb.final_640x480_fxaa c59c0d39bed9c3ad
+HASH handshake-demo.gb.final_640x480_nearest f6e1edf8736a7525
+HASH handshake-demo.gb.final_640x480_sharp 7a56c7527f852265
+HASH handshake-demo.gb.snap d1709165780a5ef9
+HASH handshake-demo.gb.video bd98f7d5718dd8d9
+HASH libbet.gb.audio c4f1e6232504a3e5
+HASH libbet.gb.final_640x480_fxaa ff6d60d354b5f07c
+HASH libbet.gb.final_640x480_nearest d7d675a45fe0822d
+HASH libbet.gb.final_640x480_sharp 42a53d45e76ca755
+HASH libbet.gb.snap 3082d01ee2055658
+HASH libbet.gb.video 64e4779cf769c3e7
+HASH scale_160x144.nearest 878e282023a91a1d
+HASH scale_160x144.sharp 31e58189cd57c385
+HASH scale_240x160.nearest 1a20ae52cd39206c
+HASH scale_240x160.sharp e6c3c336bd3392f8
+HASH scale_256x224.nearest 9cc8d7a1c24629fa
+HASH scale_256x224.sharp ec7aef63e9f7c143
+HASH scale_320x224.nearest 7018dfd0a3d2bd5d
+HASH scale_320x224.sharp 890b5e47a7a36771
+HASH scale_320x240.nearest 00cbe23c3aef7c55
+HASH scale_320x240.sharp 00cbe23c3aef7c55
+HASH scale_640x480.nearest 239736c6231f8a67
+HASH scale_640x480.sharp 239736c6231f8a67
+HASH ssaa_1x 6aa78a288073f5e5
+HASH ssaa_2x d885092f01614a5b
+HASH ssaa_4x b7256409d365c65b
+HASH ssaa_8x c09cdf8331788e7c
+HASH ssaa_fxaa 9e6828c9863f9c0d
+HS_GBC_ALL_OK
+HS_GBC_ALL_OK

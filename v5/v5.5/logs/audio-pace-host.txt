@@ -1,0 +1,12 @@
+PACE GBA frames=598 src=480583 out=480583 xruns=0 dropped=0 fill=2560 clip=0 period=512 buffer=2560 (53.3 ms) start_thr=1536
+CONT GBA max_step=1 (threshold 64)
+PACE GB frames=598 src=327704 out=480586 xruns=0 dropped=0 fill=2560 clip=0 period=512 buffer=2560 (53.3 ms) start_thr=1536
+CONT GB max_step=64 (threshold 64)
+PACE GBC frames=598 src=327704 out=480586 xruns=0 dropped=0 fill=2560 clip=0 period=512 buffer=2560 (53.3 ms) start_thr=1536
+CONT GBC max_step=64 (threshold 64)
+PACE SNES frames=602 src=480808 out=480808 xruns=0 dropped=0 fill=2560 clip=0 period=512 buffer=2560 (53.3 ms) start_thr=1536
+CONT SNES max_step=1 (threshold 64)
+PACE GENESIS frames=600 src=480619 out=480619 xruns=0 dropped=0 fill=2560 clip=0 period=512 buffer=2560 (53.3 ms) start_thr=1536
+CONT GENESIS max_step=1 (threshold 64)
+AUDIO_PACE checks passed systems=5 seconds=10 xruns=0 dropped=0 clips=0
+ALL AUDIO PACE TESTS PASSED

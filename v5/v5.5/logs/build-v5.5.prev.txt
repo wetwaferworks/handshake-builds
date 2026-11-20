@@ -1,0 +1,34 @@
+===== BUILD-V5.5 Fri Nov 20 14:52:38 EST 2026 =====
+===== host compile (hc 0.1.4) =====
+PASS host --allow-runtime src/handshake.c
+PASS host --allow-runtime src/fb.c
+PASS host --profile=component src/ui.c
+PASS host --allow-runtime src/input.c
+PASS host --profile=component src/theme.c
+PASS host --profile=component src/font.c
+PASS host --profile=component src/pngenc.c
+PASS host --allow-runtime src/battery.c
+PASS host --profile=component src/scoreboard.c
+PASS host --profile=component src/gb_emu.c
+PASS host --profile=component src/gb_scale.c
+PASS host --allow-runtime src/games.c
+PASS host --allow-runtime src/games_multi.c
+PASS host --allow-runtime src/play.c
+PASS host --allow-runtime src/audio.c
+PASS host --profile=component src/emu_sys.c
+PASS host --profile=component src/emu_cores.c
+PASS host --allow-runtime src/emu_save.c
+PASS host --allow-runtime src/usb.c
+PASS host --profile=component src/fps.c
+PASS host --allow-runtime src/bootlog.c
+PASS host --allow-runtime src/cfg.c
+PASS host --allow-runtime src/sha256.c
+PASS host --allow-runtime src/mod.c
+PASS host --allow-runtime src/splash.c
+PASS host --allow-runtime src/bootmenu.c
+src/update.c: In function ‘slot_marker’:
+src/update.c:272:11: error: ignoring return value of ‘write’ declared with attribute ‘warn_unused_result’ [-Werror=unused-result]
+  272 |     (void)write(fd, &empty, 0);
+      |           ^~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+hc: backend gcc failed (rc=1) on src/update.c

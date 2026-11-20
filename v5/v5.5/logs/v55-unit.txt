@@ -1,0 +1,14 @@
+CFG_ROUNDTRIP PASS
+CFG_CORRUPT PASS err=corrupt
+ALL CFG TESTS PASSED
+BOOTLOG PASS last=usb modules=OK loaded=2 already=0 first=boot mode=drm wait_ms=10000 kernel=7.3.5 modules=idle
+ALL BOOTLOG TESTS PASSED
+HSU_VERIFY PASS files=2 OK files=2
+HSU_CORRUPT PASS msg=package sha256 mismatch
+HSU_APPLY PASS dest=B fallback=A applied slot B files=2
+HSU_FALLBACK_INTACT PASS slot=B
+SHA256_SMOKE e5fd42fd35333f8ed1be0d9bac08a017f1c4c5c8911fda7fb00af18620fd9690
+ALL UPDATE TESTS PASSED
+SPLASH_PACK PASS entries=9 cloudatlas=8 ascii-oo frames=8 pack=/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/splashes/pack.bin
+ALL SPLASH PACK TESTS PASSED
+V55_UNIT_OK

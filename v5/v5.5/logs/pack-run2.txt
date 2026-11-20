@@ -1,0 +1,16 @@
+INPUTS PINNED: uboot 17ce4fb5 dtb 814740b1 kernel c206e1bc (v5.2 / v3-audio) flash-instructions f471a0ca
+CPIO_ENTRIES 33
+Image Name:   HandshakeOS initramfs
+Created:      Thu Nov 19 00:00:00 2026
+Image Type:   AArch64 Linux RAMDisk Image (gzip compressed)
+Data Size:    1767642 Bytes = 1726.21 KiB = 1.69 MiB
+Load Address: 00000000
+Entry Point:  00000000
+fsck.fat 4.2 (2021-01-31)
+/mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/v5.5/.p1.fat: 21 files, 101550/250012 clusters
+aee856069633715e1712d943fa8ca74ce7b01483f9f85af5e55f00c681abbfed  /mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/handshakeos-rg35xx-2024-v5.5.img
+cc27bc550a69dc414377e497a3fc2d17b50143077bc1808e20a4329948327267  /mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/handshakeos-rg35xx-2024-v5.5.img.zst
+1616671eeb14e806a89489825ce766331623a1ad8df85ded4df14e020b874811  /mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/handshakeos-initramfs-v5.5.uimg
+f741ac9ac2720f58b3769301da68dbb7c4ab794e3a20b861b09f61dad486e17f  /mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/handshakeos-initramfs-v5.5.cpio.gz
+f5b9e37cc31f072158a92129a73a63a8ef534abbdac24b17fc40c5a100778a53  /mnt/c/Users/jdwetwork/.aaa.www.inc/handshake/builds/v5/roms-manifest-v5.5.txt
+PACK OK
