@@ -80,7 +80,7 @@ Older images are never modified. Each version keeps its own `SHA256SUMS-*`, buil
 
 ## What is in this repo
 
-- `v*/`: images, initramfs, FEL RAM-boot files, `SHA256SUMS*`, `EVIDENCE.txt`, `BUILD-NOTES.md`, `PROVENANCE.txt`
+- `v*/`: images, initramfs, FEL RAM-boot files and `SHA256SUMS*`. From v2 onward each folder also has `BUILD-NOTES.md`. `EVIDENCE.txt` and `PROVENANCE.txt` are in `v5/`.
 - `v5/build-v5.5.sh`, `v5/pack-twice-v5.5.sh`: the exact v5.5 build and the reproducibility check
 - `source/`: snapshots of [handshakecompiler](https://github.com/wetwaferworks/handshakecompiler), [arm-handshakeos](https://github.com/wetwaferworks/arm-handshakeos) and [handshake-cores](https://github.com/wetwaferworks/handshake-cores)
 
