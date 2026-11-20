@@ -1,0 +1,14 @@
+HandshakeOS FAULT #1 HS_RT code=134 fault_ledger=0b17d763a172f6ea -> boot screen: hs_rt: free() of invalid pointer
+HandshakeOS FAULT #2 HS_RT code=134 fault_ledger=23101ba071a8f445 -> boot screen: hs_rt: qsort size overflow
+HandshakeOS FAULT #3 HS_RT code=134 fault_ledger=c507bb91913dcd09 -> boot screen: hs_rt: qsort out of memory
+HandshakeOS FAULT #4 HS_RT code=134 fault_ledger=21f325d069921d44 -> boot screen: *** buffer overflow detected ***: terminated
+HandshakeOS FAULT #5 HS_RT code=134 fault_ledger=af79953859ef906b -> boot screen: *** buffer overflow detected ***: terminated
+HandshakeOS FAULT #6 HS_RT code=134 fault_ledger=67203a286197ddf2 -> boot screen: *** buffer overflow detected ***: terminated
+HandshakeOS FAULT #7 HS_RT code=134 fault_ledger=9edbea88a4f1c339 -> boot screen: *** buffer overflow detected ***: terminated
+HandshakeOS FAULT #8 HS_RT code=134 fault_ledger=f6845d8f5994a478 -> boot screen: *** buffer overflow detected ***: terminated
+HandshakeOS FAULT #9 HS_RT code=134 fault_ledger=c2b482e41ac8d25f -> boot screen: *** buffer overflow detected ***: terminated
+HandshakeOS FAULT #10 HS_RT code=134 fault_ledger=3eb8d051b5195eb6 -> boot screen: *** buffer overflow detected ***: terminated
+HandshakeOS FAULT #11 HS_RT code=134 fault_ledger=f026652afefb5eea -> boot screen: hs_rt: unsupported printf conversion
+HandshakeOS FAULT #12 HS_RT code=134 fault_ledger=102d7ce223d247f6 -> boot screen: *** stack smashing detected ***: terminated
+HandshakeOS FAULT #13 HS_RT code=3 fault_ledger=2119351364a542cc -> boot screen: hs_rt: exit() called in PID 1
+HandshakeOS FAULT #14 HS_RT code=5 fault_ledger=536f42b2b902bd81 -> boot screen: hs_rt: exit() called in PID 1

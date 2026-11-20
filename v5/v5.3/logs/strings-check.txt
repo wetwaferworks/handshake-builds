@@ -1,0 +1,2 @@
+======= word / branding hygiene =======
+STRINGS_SUMMARY binary_hits=0 source_hits=0

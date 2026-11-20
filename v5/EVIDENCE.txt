@@ -247,3 +247,34 @@ zero-mutex scan v5.2: init/gb nm_pthread_mutex=0 nm_lock_syms=0 nptl=0 glibc=0 P
 pack-v5.2: run1==run2; img ef19b2f5453c81f067e83f290dd016456ae86f279be77f11280ab8b634323e4e
 SHA256SUMS-v5.2: 21/21 OK; SHA256SUMS-v5.1 21/21 OK; v5 SHA256SUMS 26/26 OK; priors 8/8 IDENTICAL
 Get-FileHash: v5 EF22151F649350B37BB31C147F05347471C925138E31B68971A29BBEEAAF60AF, v5.1 3F61164274733B79A15F7536D336AF4C0F8600A94A98280B979DF47F2BBE7F9D, v5.2 EF19B2F5453C81F067E83F290DD016456AE86F279BE77F11280AB8B634323E4E
+
+(k) v5.3 = v5.2 + USB file transfer (mass storage gadget) + live FPS readout, 2026-11-20 (v1..v5.2 artifacts untouched)
+kernel: Linux 7.3.5 (v3-audio tree) rebuilt with: USB_LIBCOMPOSITE=y USB_CONFIGFS=y USB_F_MASS_STORAGE=y USB_CONFIGFS_MASS_STORAGE=y;
+  unused configfs functions off (SERIAL ACM OBEX NCM ECM ECM_SUBSET RNDIS EEM F_FS). Already on: MUSB_HDRC/DUAL_ROLE/SUNXI, PHY_SUN4I_USB, CONFIGFS_FS, VFAT.
+  v5.3/kernel/config-delta-vs-v3-audio.txt; Image.gz bf581c902ad5b49f... ; built on the Grok Bot box (aarch64-linux-gnu-gcc 14.2.0),
+  KERNEL_REPRO run1==run2 IDENTICAL for the same O= path (different O= path changes only the 20-byte build-id x2). v5.3/kernel/kernel-repro-v5.3.txt
+DT: unchanged (proven DTB 814740b1, usb@5100000 dr_mode=otg). PID 1 sets musb role peripheral/otg at runtime via musb-hdrc.*/mode.
+PID 1 (pure C): src/usb.c + include/hs_usb.h (configfs gadget hs, 1d6b:0104, mass_storage lun.0 = SD FAT partition;
+  sync+umount before export, unbind+remount after, rollback on any failure), src/fps.c + include/hs_fps.h (component),
+  play.c/ui.c/init.c/games.c/hs_pid1.h/hs_play.h/hs_ui.h edits, hs_rt umount2/symlink (+rmdir/readlink for tests).
+  USB fault = HS_FAULT_USB(5) USB_TRANSFER_FAILED -> ledger + HANDSHAKE-FAULTS.log -> GAMES (no power-off).
+  UI: GAMES START = USB TRANSFER screen, B = eject/back + ROM rescan; SELECT+L2 toggles FPS strip; HANDSHAKE-FPS.log per session.
+HC: hc 0.1.4 binary ee626d46... unchanged; hc repo HEAD now 4b940a3 (publish commit, tests/fuzz only, 7 files +90) - build-v5.3 pins the
+  binary hash + ancestor ad4d8cb instead of HEAD==ad4d8cb (logs/hc.diff-since-ad4d8cb.txt). First attempt build-v5.3-x.console.txt failed on the old HEAD check.
+build-v5.3: ELF_AUDIT pass=138 fail=0; NM lock_dirty=0; component_thread_clock_rng_dirty=0 (106 component objects); hs_rt lock_dirty=0; strings 0/0
+regress: PID1_GUARD PASS x2 fault_ledger=527fa503de2cbf33; HS_RT_REVIEW PASS; HS_RT_FAULT 14/14
+new tests: USB_SIM scenarios=10/10 checks=35 failed=0 PASS (host + qemu/hs_rt, simulated configfs/sysfs tree in-tree);
+  FPS_TEST checks=8 failed=0 PASS (host + qemu)
+shipped: handshake-init d2db4a0623a81b9f..., handshake-gb e588245c73ce1427...
+gate run-verify-v5.3: HOST 20/20 QEMU 15/15 HOST_GB 1 QEMU_GB 1 GAMES 1 AUDIO 1 MULTI 1 SELFTEST 1 PICKER 0 USBPREVIEW 0 USBSIM_FPS 1 EQUIV 1 -> GATE_PASS; ledger 5f44cefa72e8ac19 (unchanged)
+PID1 qemu boot (shipped v5.3 kernel): ledger 5f44cefa72e8ac19, GB ledger 5a45548614037e20, MULTI systems_ok=7 demos_ok=8, FAULT lines 0, QEMU_EXIT 0
+PID1 qemu USB boot (TEST-ONLY kernel = v5.3 config + USB_DUMMY_HCD, v5.3/qemu-test, never shipped; disk = copy of the v5.3 img):
+  USB_SELFTEST enable=0 udc=dummy_udc.0 blockdev=/dev/vda1 state=configured host_disk=sda fat_readback=ROMS/README.txt;
+  disable=0 state=IDLE sd_remounted=1 PASS; FAULT lines 0; QEMU_EXIT 0
+zero-mutex scan v5.3: init/gb nm_pthread_mutex=0 nm_lock_syms=0 nptl=0 glibc=0 PT_TLS=0 PT_INTERP=0
+pack-v5.3: run1==run2 IDENTICAL (12 files); fsck.fat clean; FAT free 111,923,200 B;
+  img 5c63bd36c496ffef91386ce554b8e027634e5e6824d310541a6b721d139d6dbc (134217728 B), zst b5543b27... (16162316 B)
+SHA256SUMS-v5.3: 31/31 OK; SHA256SUMS 26/26, -v5.1 21/21, -v5.2 21/21 OK; priors 8/8 IDENTICAL before and after;
+  builds/v5 non-v5.3 manifest (886 files) before==after ce3bc476c7530919
+Get-FileHash: v5.3 5C63BD36C496FFEF91386CE554B8E027634E5E6824D310541A6B721D139D6DBC, v5.2 EF19B2F5453C81F067E83F290DD016456AE86F279BE77F11280AB8B634323E4E (unchanged)
+NOT tested on hardware: H700 MUSB peripheral mode, Windows enumeration/copy, VBUS/ID role behaviour, real-device FPS numbers.

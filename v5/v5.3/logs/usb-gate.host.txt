@@ -1,0 +1,12 @@
+USB_SIM scenario=1 enable PASS
+USB_SIM scenario=2 poll PASS
+USB_SIM scenario=3 disable PASS
+USB_SIM scenario=4 reuse PASS
+USB_SIM scenario=5 umount_busy PASS
+USB_SIM scenario=6 no_udc PASS
+USB_SIM scenario=7 bind_fail PASS
+USB_SIM scenario=8 remount_retry PASS
+USB_SIM scenario=9 remount_fail PASS
+USB_SIM fault_log: HandshakeOS FAULT #1 USB_TRANSFER_FAILED code=5 usb_step=3 errno=16 epoch=0 fault_ledger=e23077a6856c0e42 -> GAMES
+USB_SIM scenario=10 fault_record PASS
+USB_SIM scenarios=10/10 checks=35 failed=0 PASS

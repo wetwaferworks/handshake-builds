@@ -1,0 +1,8 @@
+ .gitattributes                                     |  6 +++
+ .gitignore                                         |  5 +++
+ .../herominde/scripts/nm-zero-lock-audit.sh        |  0
+ tests/cheaters/herominde/scripts/verify-corpus.sh  |  0
+ tests/fuzz/fuzz-hc.sh                              | 30 +++++++++++++
+ tests/fuzz/hc_mutate.c                             | 49 ++++++++++++++++++++++
+ tests/run_pass.sh                                  |  0
+ 7 files changed, 90 insertions(+)

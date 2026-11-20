@@ -1,0 +1,4 @@
+===== v5.3 USB TRANSFER screen preview + USB/FPS tests =====
+HandshakeOS v4-full scanout: headless XRGB8888 640x480
+HandshakeOS v4-full scanout: headless XRGB8888 640x480
+USBPREVIEW rc=0 (host+qemu byte-identical when 0)  USBSIM+FPS ok=1 (host==qemu output)

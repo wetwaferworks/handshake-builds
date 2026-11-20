@@ -1,0 +1,2 @@
+HandshakeOS FPS v5.3 sys=GB core=hs-gbc game=handshake-demo seconds=3.9 game_fps=59.8 draw_fps=44.8 worst_1s_game_fps=59.5 target_ms=16.74 frame_ms_avg=11.13 frame_ms_max=25.00 emu_ms_avg=8.66 emu_ms_max=20.00 blit_flip_ms_avg=2.46 blit_flip_ms_max=5.00 late=60 catchup=60 draws=180 game_frames=240 hist_ms<4,8,12,16.7,25,33,50,inf=0,120,0,0,0,60,0,0
+FPS_TEST checks=8 failed=0 PASS
