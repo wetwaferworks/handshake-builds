@@ -20,6 +20,15 @@
 #include "hs_battery.h"
 #include "hs_emusave.h"
 #include "emu_sys.h"
+#include "hs_fps.h"
+#include "hs_usb.h"
+#include "hs_mod.h"
+#include "hs_bootlog.h"
+#include "hs_update.h"
+#include "hs_bootlog.h"
+
+#include <fcntl.h>
+#include <unistd.h>
 
 #include <errno.h>
 #include <sys/stat.h>
@@ -45,9 +54,10 @@
 #define J_UP     0x40u
 #define J_DOWN   0x80u
 
-static unsigned g_palette = 0;       /* DMG palette (GB mode) */
+static unsigned g_palette = 4;       /* 0..3 generic, 4 = CGB boot-ROM auto */
 static int g_nearest = 0;            /* 0 SHARP UPSAMPLED, 1 NEAREST */
 static int g_hud = 0;                /* L1 stats overlay (non-GB systems) */
+static int g_fpsbar = 1;             /* v5.3: FPS / DRAW / MS readout, SELECT+L2 toggles */
 static emu_aa_t g_aa = EMU_AA_1X;    /* v4-full: PS1 / N64 AA mode, 1X at boot */
 static int16_t g_pcm[16384 * 2];     /* legacy GB audio test */
 static int16_t g_epcm[EMU_PCM_RING * 2]; /* registry PCM drained per frame */
@@ -245,6 +255,71 @@ static void draw_hud(struct hs_fb *fb, const struct emu_sys_info *in, int fps10,
     (void)hs_fb_text_ex(fb, 22, 72, 2, 0xB0B8C0u, 0x000000u, HS_TEXT_NICE, l3);
 }
 
+/* v5.3: live FPS readout, top-right (clear of the L1 HUD at x 10..398). */
+static void draw_fps_strip(struct hs_fb *fb, const struct hs_fps *f)
+{
+    char l1[24], l2[24], l3[24];
+    int x = fb->w - 10 - 164;
+
+    hs_fps_hud(f, l1, sizeof(l1), l2, sizeof(l2), l3, sizeof(l3));
+    hs_fb_fill_round(fb, x, 10, 164, 84, 8, 0x101418u);
+    hs_fb_rect(fb, x, 10, 164, 84, 2, 0x40C060u);
+    (void)hs_fb_text_ex(fb, x + 10, 16, 2, 0xFFFFFFu, 0x000000u, HS_TEXT_NICE, l1);
+    (void)hs_fb_text_ex(fb, x + 10, 42, 2, 0xB0B8C0u, 0x000000u, HS_TEXT_NICE, l2);
+    (void)hs_fb_text_ex(fb, x + 10, 68, 2, 0xB0B8C0u, 0x000000u, HS_TEXT_NICE, l3);
+}
+
+/* v5.3: one timing line per play session: console + HANDSHAKE-FPS.log on the SD FAT partition. */
+static void log_fps_session(const struct hs_play_ctx *c, const struct emu_sys_info *info,
+                            const struct hs_game *game, const struct hs_fps *f)
+{
+    char line[640], path[HS_GAMES_PATH_MAX + 24];
+    int len = hs_fps_report(f, info->tag, info->core, game->name, line, sizeof(line));
+    int fd;
+
+    if (len <= 0) {
+        return;
+    }
+    fputs(line, stderr);
+    if (!c->try_mount || c->sd_root == NULL) {
+        return; /* host runs: console only */
+    }
+    if (snprintf(path, sizeof(path), "%s/HANDSHAKE-FPS.log", c->sd_root) >= (int)sizeof(path)) {
+        return;
+    }
+    fd = open(path, O_WRONLY | O_CREAT | O_APPEND | O_CLOEXEC, 0644);
+    if (fd >= 0) {
+        (void)!write(fd, line, (size_t)len);
+        if (c->audio != NULL) {
+            char ax[160];
+            int al = snprintf(ax, sizeof(ax),
+                              "AUDIO tag=%s xruns=%llu dropped=%llu out_frames=%llu src=%u dev=%u period=%u buffer=%u\n",
+                              info->tag,
+                              (unsigned long long)c->audio->xruns,
+                              (unsigned long long)c->audio->dropped,
+                              (unsigned long long)c->audio->frames_out,
+                              c->audio->src_rate, c->audio->rate,
+                              c->audio->period, c->audio->buffer);
+            if (al > 0) {
+                (void)!write(fd, ax, (size_t)al);
+                fputs(ax, stderr);
+            }
+        }
+        (void)fsync(fd);
+        close(fd);
+    }
+    if (c->audio != NULL && c->try_mount && c->sd_root != NULL) {
+        char ax[160];
+        snprintf(ax, sizeof(ax),
+                 "audio tag=%s xruns=%llu dropped=%llu out_frames=%llu",
+                 info->tag,
+                 (unsigned long long)c->audio->xruns,
+                 (unsigned long long)c->audio->dropped,
+                 (unsigned long long)c->audio->frames_out);
+        (void)hs_bootlog_append(hs_bootlog_path(c->sd_root), ax);
+    }
+}
+
 /* Returns 0 after a normal exit back to the picker, <0 if the ROM failed,
    -ENOSYS if the system's core is not linked in this build, -EPROTO if
    the PS1 core rejected a file that is not a PS-X EXE (disc image). */
@@ -257,6 +332,7 @@ static int play_emu(struct hs_play_ctx *c, const struct hs_game *game)
     char toast[96], vol_txt[32];
     int64_t toast_until = 0, t0, deadline, next_save, combo_t = 0, vol_until = 0;
     int64_t frame_ns, fps_t0;
+    struct hs_fps fps; /* v5.3 live readout + session log */
     uint64_t done = 0, fps_frames = 0;
     unsigned prev_rate = 0;
     int have_sav = 0, err = 0, fps10 = 0, shoulders;
@@ -306,19 +382,25 @@ static int play_emu(struct hs_play_ctx *c, const struct hs_game *game)
 
     t0 = now_ns();
     fps_t0 = t0;
+    hs_fps_start(&fps, t0, frame_ns);
     deadline = t0 + frame_ns;
     next_save = t0 + SAVE_EVERY_NS;
     for (;;) {
-        int64_t now;
+        int64_t now, late_ns;
         uint64_t due, n;
+        int64_t t_emu;
         int quit = 0, turbo, hot;
         size_t k;
 
         wait_until(c->in, deadline);
         now = now_ns();
+        late_ns = now - deadline;
         deadline += frame_ns;
-        if (now > deadline) {
-            deadline = now + frame_ns;
+        /* Late frame: start the next one immediately. Pushing deadline to
+           now+period (the old policy) forced an extra wait after a stall
+           and drained the ALSA buffer, which is what crackled on device. */
+        if (deadline < now) {
+            deadline = now;
         }
 
         if (hs_input_pressed(c->in, HS_BTN_MENU) || hs_input_pressed(c->in, HS_BTN_POWER)) {
@@ -341,7 +423,7 @@ static int play_emu(struct hs_play_ctx *c, const struct hs_game *game)
         hot = !shoulders || hs_input_down(c->in, HS_BTN_SELECT);
         if (hot && hs_input_pressed(c->in, HS_BTN_L1)) {
             if (sys == EMU_SYS_GB) {
-                g_palette = (g_palette + 1u) & 3u;
+                g_palette = (g_palette + 1u) % 5u; /* olive..green, then auto */
                 emu_set_dmg_palette(e, g_palette);
                 set_toast(toast, sizeof(toast), &toast_until, emu_dmg_palette_name(g_palette), NULL);
             } else {
@@ -365,6 +447,11 @@ static int play_emu(struct hs_play_ctx *c, const struct hs_game *game)
                           g_nearest ? "NEAREST 640x480" : "SHARP UPSAMPLED 640x480", NULL);
             }
         }
+        /* v5.3: SELECT+L2 toggles the FPS readout (all systems). */
+        if (hs_input_down(c->in, HS_BTN_SELECT) && hs_input_pressed(c->in, HS_BTN_L2)) {
+            g_fpsbar = !g_fpsbar;
+            set_toast(toast, sizeof(toast), &toast_until, g_fpsbar ? "FPS ON" : "FPS OFF", NULL);
+        }
         if (hs_play_volume_keys(c->audio, c->in)) {
             snprintf(vol_txt, sizeof(vol_txt), "VOLUME %d%%", hs_audio_volume(c->audio));
             vol_until = now + TOAST_NS;
@@ -377,7 +464,16 @@ static int play_emu(struct hs_play_ctx *c, const struct hs_game *game)
         if (n > 4) {
             n = 4;
         }
-        done = due;
+        /* A stall of less than a whole frame does not increment `due`, but
+           it did consume extra ALSA time. Run one catch-up frame so the
+           speaker is refilled (threshold: 1/4 period, ignores scheduler slack). */
+        if (late_ns > frame_ns / 4 && n < 2) {
+            n = 2;
+        }
+        /* Advance by frames actually run. Setting done=due skipped emulated
+           (and audio) frames when a heavy GBA frame fell behind, which drained
+           the ALSA ring and buzzed. Catch up on later loops instead. */
+        done += n;
         /* R2 fast-forward on the 2D systems; on PS1 / N64 R2 is a pad button. */
         turbo = (!info->aa && hs_input_down(c->in, HS_BTN_R2)) ||
                 ((sys == EMU_SYS_GB || sys == EMU_SYS_GBC) && hs_input_down(c->in, HS_BTN_Y));
@@ -387,15 +483,27 @@ static int play_emu(struct hs_play_ctx *c, const struct hs_game *game)
         /* Cartridge RTC (MBC3) follows the monotonic clock while playing;
            cores never read time themselves. */
         emu_set_rtc(e, now / 1000000000ll);
-        if (n > 0 && emu_run_frames(e, (uint32_t)n, pad_from_input(c->in, sys), 1) != 0) {
-            fprintf(stderr, "play: run_frames failed\n");
-            break;
-        }
-        fps_frames += n;
-        /* Phase boundary: drain the lock-free PCM ring into the speaker. */
-        k = emu_pcm_take(e, g_epcm, EMU_PCM_RING);
-        if (c->audio != NULL && !turbo && k > 0) {
-            (void)hs_audio_write(c->audio, g_epcm, k);
+        /* Refill the speaker after every emulated frame. A 4-frame catch-up
+           used to run first and only then write, so a heavy GBA burst drained
+           the ALSA ring mid-loop and crackled. */
+        {
+            uint64_t fi;
+            int failed = 0;
+            for (fi = 0; fi < n; fi++) {
+                if (emu_run_frames(e, 1, pad_from_input(c->in, sys), 1) != 0) {
+                    fprintf(stderr, "play: run_frames failed\n");
+                    failed = 1;
+                    break;
+                }
+                k = emu_pcm_take(e, g_epcm, EMU_PCM_RING);
+                if (c->audio != NULL && !turbo && k > 0) {
+                    (void)hs_audio_write(c->audio, g_epcm, k);
+                }
+            }
+            fps_frames += fi;
+            if (failed) {
+                break;
+            }
         }
         /* Phase boundary: every core is idle, battery RAM is stable. */
         if (have_sav && now >= next_save) {
@@ -409,10 +517,14 @@ static int play_emu(struct hs_play_ctx *c, const struct hs_game *game)
             fps_frames = 0;
             fps_t0 = now;
         }
+        t_emu = now_ns();
 
         blit_full(c->fb, emu_framebuffer(e));
         if (g_hud && sys != EMU_SYS_GB) {
             draw_hud(c->fb, info, fps10, g_nearest, turbo, c->audio, g_aa);
+        }
+        if (g_fpsbar) {
+            draw_fps_strip(c->fb, &fps);
         }
         if (vol_until > now) {
             hs_gbscale_toast_bar(c->fb, vol_txt, hs_audio_volume(c->audio),
@@ -421,8 +533,10 @@ static int play_emu(struct hs_play_ctx *c, const struct hs_game *game)
             hs_gbscale_toast(c->fb, toast, toast_alpha(toast_until, now));
         }
         hs_fb_flip(c->fb);
+        hs_fps_frame(&fps, now, t_emu, now_ns(), (uint32_t)n);
     }
 
+    log_fps_session(c, info, game, &fps);
     if (have_sav) {
         int rc = hs_emu_save_sav(e, sav); /* atomic .sav.tmp -> fsync -> rename */
         if (rc != 0) {
@@ -535,6 +649,150 @@ static void picker_draw(struct hs_play_ctx *c, struct picker *p, int sel, const 
     hs_ui_draw_games_multi(c->fb, *c->theme, &v);
 }
 
+/* ---------------- v5.3: USB TRANSFER ---------------- */
+
+static void usb_view_fill(struct hs_usb_view *v, const struct hs_usb *u, const char *bat,
+                          char *status, size_t n)
+{
+    memset(v, 0, sizeof(*v));
+    v->battery_status = bat;
+    if (u->state == HS_USB_CONNECTED) {
+        int host = strcmp(u->udc_state, "configured") == 0;
+        v->title = host ? "USB CONNECTED" : "PLUG IN THE USB CABLE";
+        v->lines[0] = host ? "The SD card is a drive on the PC." : "USB-C to the PC: the SD card shows";
+        v->lines[1] = host ? "Copy games into ROMS/<SYSTEM>" : "up as a drive (HANDSHAKEOS).";
+        v->lines[2] = "Do not touch the boot files.";
+        v->lines[3] = NULL;
+        v->lines[4] = "Eject the drive in Windows,";
+        v->lines[5] = "then press B to play again.";
+        snprintf(status, n, "PC: %.20s  SD: %.24s", u->udc_state[0] ? u->udc_state : "waiting",
+                 u->blockdev);
+    } else {
+        v->title = "USB TRANSFER FAILED";
+        v->warn = 1;
+        v->lines[0] = u->msg;
+        v->lines[1] = "The SD card is mounted again.";
+        v->lines[2] = "Logged in HANDSHAKE-FAULTS.log";
+        v->lines[4] = "Press B to go back to GAMES.";
+        snprintf(status, n, "STEP %s  ERRNO %d", hs_usb_step_name(u->fail_step), u->fail_errno);
+    }
+    v->status = status;
+}
+
+static void usb_show_until_b(struct hs_play_ctx *c, struct picker *p, struct hs_usb *u,
+                             const struct hs_usb_env *env)
+{
+    struct hs_usb_view v;
+    char status[96];
+    int64_t deadline = now_ns(), bat_t = deadline;
+
+    for (;;) {
+        int64_t now;
+        deadline += 100000000ll; /* 10 Hz is plenty for a status screen */
+        wait_until(c->in, deadline);
+        now = now_ns();
+        if (now > deadline + 100000000ll) {
+            deadline = now;
+        }
+        if (now >= bat_t) {
+            picker_battery(p);
+            bat_t = now + 5000000000ll;
+        }
+        if (u->state == HS_USB_CONNECTED) {
+            (void)hs_usb_poll(u, env);
+            if (u->unplugged) {
+                return; /* cable pulled after the PC had the drive: same as B */
+            }
+        }
+        if (hs_input_pressed(c->in, HS_BTN_B) || hs_input_pressed(c->in, HS_BTN_MENU)) {
+            return;
+        }
+        (void)hs_play_volume_keys(c->audio, c->in);
+        usb_view_fill(&v, u, p->battery, status, sizeof(status));
+        hs_ui_draw_usb(c->fb, *c->theme, &v);
+        hs_fb_flip(c->fb);
+    }
+}
+
+/* START in GAMES: sync + unmount the FAT partition, export it over USB until B, remount. */
+static const char *usb_session(struct hs_play_ctx *c, struct picker *p)
+{
+    static struct hs_usb u;
+    struct hs_usb_env env;
+    char line[160];
+
+    if (!c->try_mount) {
+        return "USB TRANSFER: ON THE DEVICE ONLY";
+    }
+    {
+        struct hs_mod_report mr;
+        char line[256];
+        const char *mdir = HS_MOD_DIR;
+        if (hs_mod_load_usb(mdir, &mr) != 0) {
+            /* never power off; show the error and still try enable (may already be live) */
+        }
+        snprintf(line, sizeof(line), "usb modules=%s", mr.summary[0] ? mr.summary : "idle");
+        (void)hs_bootlog_append(hs_bootlog_path(c->sd_root), line);
+    }
+    hs_usb_env_device(&env, c->sd_root);
+    hs_usb_init(&u);
+    if (hs_usb_enable(&u, &env) != 0) {
+        snprintf(line, sizeof(line), "HandshakeOS USB enable failed: step=%s errno=%d\n",
+                 hs_usb_step_name(u.fail_step), u.fail_errno);
+        fputs(line, stderr);
+        if (c->note_fault != NULL) {
+            c->note_fault((unsigned)u.fail_step, u.fail_errno);
+        }
+        usb_show_until_b(c, p, &u, &env);
+        return "USB TRANSFER FAILED";
+    }
+    fprintf(stderr, "HandshakeOS USB on: %s via %s\n", u.blockdev, u.udc);
+    usb_show_until_b(c, p, &u, &env);
+    if (hs_usb_disable(&u, &env) != 0) {
+        snprintf(line, sizeof(line), "HandshakeOS USB disable: step=%s errno=%d\n",
+                 hs_usb_step_name(u.fail_step), u.fail_errno);
+        fputs(line, stderr);
+        if (c->note_fault != NULL) {
+            c->note_fault((unsigned)u.fail_step, u.fail_errno);
+        }
+        return u.fail_step == HS_USB_STEP_REMOUNT ? "SD REMOUNT FAILED: PRESS X" : "USB UNBIND FAILED";
+    }
+    fprintf(stderr, "HandshakeOS USB off: SD mounted again\n");
+    {
+        char hsu[256], line[256];
+        struct hs_update_report ur;
+        struct hs_cfg cfg;
+        if (hs_update_find(c->sd_root, hsu, sizeof(hsu)) == 0) {
+            hs_cfg_load(&cfg, hs_cfg_path(c->sd_root));
+            if (hs_update_apply(hsu, c->sd_root, &cfg, &ur) == 0) {
+                snprintf(line, sizeof(line), "update %s", ur.msg);
+            } else {
+                snprintf(line, sizeof(line), "update FAIL %s", ur.msg);
+            }
+            (void)hs_bootlog_append(hs_bootlog_path(c->sd_root), line);
+            return ur.ok ? "UPDATE APPLIED: REBOOT TO NEW SLOT" : "UPDATE FAILED: SEE BOOT LOG";
+        }
+    }
+    return "USB DONE: ROMS RESCANNED";
+}
+
+int hs_play_snapshot_usb(struct hs_fb *fb, hs_theme_id_t theme, int host, const char *png)
+{
+    struct hs_usb u;
+    struct hs_usb_view v;
+    char status[96];
+
+    hs_usb_init(&u);
+    u.state = HS_USB_CONNECTED;
+    snprintf(u.blockdev, sizeof(u.blockdev), "/dev/mmcblk0p1");
+    snprintf(u.udc, sizeof(u.udc), "musb-hdrc.2.auto");
+    snprintf(u.udc_state, sizeof(u.udc_state), host ? "configured" : "not attached");
+    usb_view_fill(&v, &u, "BAT 87%", status, sizeof(status));
+    hs_ui_draw_usb(fb, theme, &v);
+    hs_fb_flip(fb);
+    return hs_fb_snapshot_png(fb, png);
+}
+
 int hs_play_run(struct hs_play_ctx *c)
 {
     static struct picker p; /* keep it off the stack */
@@ -609,6 +867,17 @@ int hs_play_run(struct hs_play_ctx *c)
             snprintf(vmsg, sizeof(vmsg), "VOLUME %d%%", hs_audio_volume(c->audio));
             msg = vmsg;
             msg_until = now + TOAST_NS;
+        }
+        if (hs_input_pressed(c->in, HS_BTN_START) && !hs_input_down(c->in, HS_BTN_SELECT)) {
+            msg = usb_session(c, &p); /* v5.3 USB TRANSFER */
+            msg_until = now_ns() + 2500000000ll;
+            picker_load(c, &p);       /* new ROMS from the PC */
+            if (sel >= p.list.n) {
+                sel = p.list.n > 0 ? p.list.n - 1 : 0;
+            }
+            (void)hs_input_poll_ns(c->in, 0);
+            c->in->pressed = 0;
+            deadline = now_ns();
         }
         if (hs_input_pressed(c->in, HS_BTN_X)) {
             picker_load(c, &p); /* card inserted late: rescan */
@@ -854,22 +1123,28 @@ int hs_play_audio_test(struct hs_audio *audio, const char *rom, double seconds)
         if (n > 4) {
             n = 4;
         }
-        done = due;
+        done += n;
         /* demo ROM: right, then A (beep) every ~second */
         ph = frames % 60u;
         hs_gb_set_joypad(gb, ph < 20u ? 0x00u : (ph < 40u ? 0x10u : 0x11u));
-        if (n > 0 && hs_gb_run_frames(gb, n) != 0) {
-            break;
+        {
+            uint64_t fi;
+            for (fi = 0; fi < n; fi++) {
+                if (hs_gb_run_frames(gb, 1) != 0) {
+                    n = fi;
+                    break;
+                }
+                got = hs_gb_pcm_take(gb, g_pcm, sizeof(g_pcm) / sizeof(g_pcm[0]));
+                pcm_samples += got;
+                for (k = 0; k < got; k++) {
+                    nonzero += g_pcm[k] != 0;
+                }
+                if (audio != NULL && got >= 2) {
+                    (void)hs_audio_write(audio, g_pcm, got / 2u);
+                }
+            }
         }
         frames += n;
-        got = hs_gb_pcm_take(gb, g_pcm, sizeof(g_pcm) / sizeof(g_pcm[0]));
-        pcm_samples += got;
-        for (k = 0; k < got; k++) {
-            nonzero += g_pcm[k] != 0;
-        }
-        if (audio != NULL && got >= 2) {
-            (void)hs_audio_write(audio, g_pcm, got / 2u);
-        }
     }
     printf("AUDIOTEST status=\"%s\" gb_frames=%llu apu_frames=%llu apu_nonzero=%llu "
            "out_frames=%llu xruns=%llu dropped=%llu vol=%d ctls=%d\n",

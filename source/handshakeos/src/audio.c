@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/ioctl.h>
+#include <time.h>
 #include <unistd.h>
 #include <sound/asound.h>
 
@@ -318,10 +319,14 @@ int hs_audio_open_dev(struct hs_audio *a, const char *ctl_path, const char *pcm_
         return rc;
     }
     for (r = 0; r < sizeof(rates) / sizeof(rates[0]); r++) {
-        /* 4 x 512 first (~43 ms at 48 kHz), then let the driver pick. */
-        if ((rc = try_hw(a->pcm_fd, rates[r], 512, 512, 4, 4, &hw)) == 0 ||
-            (rc = try_hw(a->pcm_fd, rates[r], 256, 1024, 3, 8, &hw)) == 0 ||
-            (rc = try_hw(a->pcm_fd, rates[r], 64, 8192, 2, 64, &hw)) == 0) {
+        /* v5.4: 3+ periods, about 40-60 ms. Tiny periods (the old 64-frame
+           fallback) underran every heavy GBA frame and buzzed on the speaker. */
+        if ((rc = try_hw(a->pcm_fd, rates[r], 512, 512, 5, 5, &hw)) == 0 ||
+            (rc = try_hw(a->pcm_fd, rates[r], 512, 512, 6, 6, &hw)) == 0 ||
+            (rc = try_hw(a->pcm_fd, rates[r], 1024, 1024, 3, 3, &hw)) == 0 ||
+            (rc = try_hw(a->pcm_fd, rates[r], 768, 768, 4, 4, &hw)) == 0 ||
+            (rc = try_hw(a->pcm_fd, rates[r], 512, 512, 4, 4, &hw)) == 0 ||
+            (rc = try_hw(a->pcm_fd, rates[r], 256, 1024, 4, 8, &hw)) == 0) {
             a->rate = rates[r];
             break;
         }
@@ -342,8 +347,13 @@ int hs_audio_open_dev(struct hs_audio *a, const char *ctl_path, const char *pcm_
     memset(&sw, 0, sizeof(sw));
     sw.tstamp_mode = SNDRV_PCM_TSTAMP_NONE;
     sw.period_step = 1;
-    sw.avail_min = a->period;
-    sw.start_threshold = a->period * 2u <= a->buffer ? a->period * 2u : a->buffer;
+    sw.avail_min = a->period ? a->period : 1u;
+    /* Start once 3 periods are queued (or the whole buffer if it is smaller). */
+    a->start_thr = a->period * 3u;
+    if (a->start_thr == 0 || a->start_thr > a->buffer) {
+        a->start_thr = a->buffer;
+    }
+    sw.start_threshold = a->start_thr;
     sw.stop_threshold = a->buffer;
     sw.silence_threshold = 0;
     sw.silence_size = 0;
@@ -362,6 +372,7 @@ int hs_audio_open_dev(struct hs_audio *a, const char *ctl_path, const char *pcm_
     }
     /* 16.16 step: one division, here, never per sample. */
     a->step = (uint32_t)(((uint64_t)a->src_rate << 16) / a->rate);
+    a->primed = 0;
     a->live = 1;
     set_status(a);
     return 0;
@@ -483,12 +494,162 @@ size_t hs_audio_resample(struct hs_audio *a, const int16_t *in, size_t n,
     return produced;
 }
 
+static void sleep_ms(unsigned ms)
+{
+    struct timespec ts;
+    ts.tv_sec = (time_t)(ms / 1000u);
+    ts.tv_nsec = (long)(ms % 1000u) * 1000000l;
+    (void)clock_nanosleep(CLOCK_MONOTONIC, 0, &ts, NULL);
+}
+
+static int model_consume(struct hs_audio *a, unsigned frames)
+{
+    if (frames == 0) {
+        return 0;
+    }
+    /* Until start_threshold is queued the device has not started, so time
+       passing is not an underrun (same as a PREPARE'd ALSA handle). */
+    if (!a->primed) {
+        return 0;
+    }
+    if (frames <= a->model_fill) {
+        a->model_fill -= frames;
+        return 0;
+    }
+    /* Underrun: the ring ran dry mid-elapse. */
+    a->xruns++;
+    a->model_fill = 0;
+    a->primed = 0;
+    return -1;
+}
+
+static void model_elapse_raw(struct hs_audio *a, uint64_t ns)
+{
+    unsigned frames;
+    a->model_frac += ns * (uint64_t)a->rate;
+    frames = (unsigned)(a->model_frac / 1000000000ull);
+    a->model_frac -= (uint64_t)frames * 1000000000ull;
+    (void)model_consume(a, frames);
+}
+
+void hs_audio_model_elapse(struct hs_audio *a, uint64_t ns)
+{
+    if (a == NULL || !a->model || a->rate == 0 || ns == 0) {
+        return;
+    }
+    /* A blocking write (buffer full) already advanced the device clock.
+       Don't consume that wall time a second time. */
+    if (a->model_debt_ns >= ns) {
+        a->model_debt_ns -= ns;
+        return;
+    }
+    if (a->model_debt_ns > 0) {
+        ns -= a->model_debt_ns;
+        a->model_debt_ns = 0;
+    }
+    model_elapse_raw(a, ns);
+}
+
+/* Write `frames` of silence. Used to prime start_threshold after PREPARE. */
+static int pcm_push(struct hs_audio *a, int16_t *buf, size_t frames);
+
+static int write_silence(struct hs_audio *a, unsigned frames)
+{
+    unsigned left = frames;
+    while (left > 0) {
+        unsigned n = left;
+        int rc;
+        if (n > HS_AUDIO_OUT_MAX / 2u) {
+            n = HS_AUDIO_OUT_MAX / 2u;
+        }
+        memset(a->out, 0, (size_t)n * 4u);
+        rc = pcm_push(a, a->out, n);
+        if (rc < 0) {
+            return rc;
+        }
+        if ((unsigned)rc < n) {
+            break;
+        }
+        left -= n;
+    }
+    return 0;
+}
+
+static int prime_device(struct hs_audio *a)
+{
+    unsigned n;
+    if (a->primed) {
+        return 0;
+    }
+    /* Mark primed first so a nested pcm_push cannot re-enter on EPIPE. */
+    a->primed = 1;
+    n = a->start_thr;
+    if (n == 0) {
+        n = a->period * 3u;
+    }
+    if (n > a->buffer && a->buffer != 0) {
+        n = a->buffer;
+    }
+    if (a->model) {
+        a->model_fill = n;
+        if (a->model_fill > a->model_max) {
+            a->model_fill = a->model_max;
+        }
+        return 0;
+    }
+    if (a->pcm_fd < 0) {
+        return 0;
+    }
+    (void)write_silence(a, n);
+    return 0;
+}
+
+static int pcm_push_model(struct hs_audio *a, size_t frames)
+{
+    size_t done = 0;
+    while (done < frames) {
+        unsigned space = a->model_max - a->model_fill;
+        unsigned take;
+        if (space == 0) {
+            /* Back-pressure: wait by consuming as the hardware would. */
+            unsigned need = (unsigned)(frames - done);
+            uint64_t ns;
+            if (a->rate == 0) {
+                break;
+            }
+            ns = ((uint64_t)need * 1000000000ull) / a->rate;
+            if (ns < 1000000ull) {
+                ns = 1000000ull;
+            }
+            /* Always move the ring (raw), then remember the wall time so a
+               later hs_audio_model_elapse does not consume it again. Using
+               hs_audio_model_elapse here could no-op on existing debt and
+               spin forever with a full buffer. */
+            model_elapse_raw(a, ns);
+            a->model_debt_ns += ns;
+            continue;
+        }
+        take = space;
+        if ((size_t)take > frames - done) {
+            take = (unsigned)(frames - done);
+        }
+        a->model_fill += take;
+        done += take;
+    }
+    a->frames_out += done;
+    a->dropped += frames - done;
+    return (int)done;
+}
+
 static int pcm_push(struct hs_audio *a, int16_t *buf, size_t frames)
 {
     size_t done = 0;
-    int tries = 0;
+    unsigned waited_ms = 0;
 
-    while (done < frames && tries < 3) {
+    if (a->model) {
+        return pcm_push_model(a, frames);
+    }
+    while (done < frames) {
         struct snd_xferi x;
         memset(&x, 0, sizeof(x));
         x.buf = buf + done * 2u;
@@ -500,23 +661,33 @@ static int pcm_push(struct hs_audio *a, int16_t *buf, size_t frames)
             done += (size_t)x.result;
             continue;
         }
-        tries++;
         if (errno == EPIPE) {
-            /* Underrun: re-prepare and refill; start_threshold restarts it. */
+            /* Underrun: re-prepare, prefill, then continue the burst. */
             a->xruns++;
+            a->primed = 0;
             if (ioctl(a->pcm_fd, SNDRV_PCM_IOCTL_PREPARE) != 0) {
                 return -errno;
             }
+            (void)prime_device(a);
             continue;
         }
         if (errno == ESTRPIPE) {
             if (ioctl(a->pcm_fd, SNDRV_PCM_IOCTL_RESUME) != 0) {
                 (void)ioctl(a->pcm_fd, SNDRV_PCM_IOCTL_PREPARE);
+                a->primed = 0;
+                (void)prime_device(a);
             }
             continue;
         }
         if (errno == EAGAIN || errno == EINTR) {
-            break; /* ring full: never block the frame */
+            /* Ring full: wait a period slice for the device to drain.
+               Dropping here was the GBA "buzz" (periodic underruns). */
+            if (waited_ms >= 40u) {
+                break;
+            }
+            sleep_ms(2);
+            waited_ms += 2u;
+            continue;
         }
         return -errno;
     }
@@ -525,6 +696,39 @@ static int pcm_push(struct hs_audio *a, int16_t *buf, size_t frames)
     return (int)done;
 }
 
+int hs_audio_open_model(struct hs_audio *a, unsigned src_rate, unsigned dev_rate,
+                        unsigned period, unsigned periods)
+{
+    unsigned per = period ? period : 512u;
+    unsigned nper = periods >= 3u ? periods : 5u;
+    if (a == NULL) {
+        return -EINVAL;
+    }
+    memset(a, 0, sizeof(*a));
+    a->pcm_fd = -1;
+    a->ctl_fd = -1;
+    a->vol_pct = 80;
+    a->src_rate = src_rate ? src_rate : 32768u;
+    a->rate = dev_rate ? dev_rate : 48000u;
+    a->channels = 2;
+    a->period = per;
+    a->buffer = per * nper;
+    a->start_thr = per * 3u;
+    if (a->start_thr > a->buffer) {
+        a->start_thr = a->buffer;
+    }
+    a->model = 1;
+    a->model_max = a->buffer;
+    a->model_fill = 0;
+    a->step = (uint32_t)(((uint64_t)a->src_rate << 16) / a->rate);
+    a->live = 1;
+    a->primed = 0;
+    snprintf(a->card, sizeof(a->card), "model");
+    set_status(a);
+    return 0;
+}
+
+
 int hs_audio_write(struct hs_audio *a, const int16_t *stereo, size_t frames)
 {
     size_t n;
@@ -532,6 +736,7 @@ int hs_audio_write(struct hs_audio *a, const int16_t *stereo, size_t frames)
     if (a == NULL || !a->live || stereo == NULL || frames == 0) {
         return 0;
     }
+    (void)prime_device(a);
     n = hs_audio_resample(a, stereo, frames, a->out, HS_AUDIO_OUT_MAX / 2u);
     return n > 0 ? pcm_push(a, a->out, n) : 0;
 }
@@ -541,6 +746,7 @@ int hs_audio_silence(struct hs_audio *a, size_t frames)
     if (a == NULL || !a->live) {
         return 0;
     }
+    (void)prime_device(a);
     if (frames > HS_AUDIO_OUT_MAX / 2u) {
         frames = HS_AUDIO_OUT_MAX / 2u;
     }

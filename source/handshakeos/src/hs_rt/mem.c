@@ -105,6 +105,30 @@ void free(void *p) {
     t->bins[h->cls] = h;
 }
 
+void *realloc(void *p, size_t n)
+{
+    hdr_t *h;
+    size_t old;
+    void *q;
+    if (!p) return malloc(n);
+    if (n == 0) { free(p); return 0; }
+    h = (hdr_t *)((unsigned char *)p - HDR);
+    if (h->tag == TAG_LARGE) {
+        old = h->info > HDR ? h->info - HDR : 0;
+    } else if (h->tag == TAG_SMALL) {
+        old = ((size_t)1 << h->cls) - HDR;
+    } else {
+        /* aligned_alloc pointers are not used by the v5.5 updater/splash path. */
+        hs_trap("hs_rt: realloc() of invalid pointer\n");
+    }
+    if (n <= old) return p;
+    q = malloc(n);
+    if (!q) return 0;
+    memcpy(q, p, old);
+    free(p);
+    return q;
+}
+
 void *calloc(size_t a, size_t b) {
     size_t n;
     void *p;

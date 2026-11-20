@@ -35,7 +35,8 @@ typedef enum {
     HS_ACTION_POWEROFF,
     HS_ACTION_REBOOT,
     HS_ACTION_QUIT,
-    HS_ACTION_GAMES
+    HS_ACTION_GAMES,
+    HS_ACTION_BOOTCFG
 } hs_action_t;
 
 /* Display divider for the Gemstone dial and live telemetry. The 3+1
@@ -140,5 +141,16 @@ struct hs_games_multi_view {
 
 void hs_ui_draw_games_multi(struct hs_fb *fb, hs_theme_id_t theme,
                             const struct hs_games_multi_view *v);
+
+/* v5.3: USB TRANSFER screen (SD card exported to a PC). */
+struct hs_usb_view {
+    const char *title;          /* "USB CONNECTED" ... (2x bold, centred) */
+    int         warn;           /* 1: title in the warning colour */
+    const char *lines[6];       /* body lines, NULL = blank */
+    const char *status;         /* bottom status line (PC / SD state) */
+    const char *battery_status; /* "BAT 87%" */
+};
+
+void hs_ui_draw_usb(struct hs_fb *fb, hs_theme_id_t theme, const struct hs_usb_view *v);
 
 #endif /* HS_UI_H */

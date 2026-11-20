@@ -13,6 +13,13 @@
 #include "hs_play.h"
 #include "hs_audio.h"
 #include "hs_pid1.h"
+#include "hs_usb.h"
+#include "hs_bootlog.h"
+#include "hs_cfg.h"
+#include "hs_mod.h"
+#include "hs_splash.h"
+#include "hs_bootmenu.h"
+#include "hs_update.h"
 #define HS_FAULT_LOG HS_SD_MOUNTPOINT "/HANDSHAKE-FAULTS.log"
 
 #include <errno.h>
@@ -26,6 +33,72 @@
 #include <unistd.h>
 
 static struct hs_audio g_audio; /* v3-audio: raw ALSA, shell thread only */
+
+/* v5.3: a failed USB TRANSFER step is a non-fatal fault: ledger + HANDSHAKE-FAULTS.log, back to GAMES. */
+static void usb_fault(unsigned step, int err)
+{
+    hs_fault_record(HS_FAULT_USB, (uint32_t)step, err, HS_FAULT_LOG);
+}
+
+/* v5.3 QEMU proof (handshakeos.usbselftest, TEST-ONLY kernel with dummy_hcd): run the real USB
+   TRANSFER path against the kernel gadget stack, read the exported FAT back through the dummy host
+   (usb-storage /dev/sda), then unbind and remount. Prints one USB_SELFTEST line. */
+static void usb_selftest(void (*out)(const char *))
+{
+    struct hs_usb u;
+    struct hs_usb_env env;
+    struct hs_mod_report mr;
+    char mline[256];
+    /* Test-only dummy_hcd lives in /modules when a QEMU proof ramdisk added it.
+       Missing file is logged; never a power-off. */
+    (void)hs_mod_load_one(HS_MOD_DIR, "dummy_hcd.ko", &mr);
+    snprintf(mline, sizeof(mline), "USB_SELFTEST dummy_hcd %s\n", mr.summary);
+    if (out) out(mline);
+    (void)hs_mod_load_usb(HS_MOD_DIR, &mr);
+    snprintf(mline, sizeof(mline), "USB_SELFTEST modules %s\n", mr.summary);
+    if (out) out(mline);
+    (void)hs_bootlog_append(hs_bootlog_path(HS_SD_MOUNTPOINT),
+                            mr.summary[0] ? mr.summary : "usb modules=idle");
+    char line[320], hostdisk[16] = "none";
+    int en, dis, i, host = 0, readback = 0, remounted;
+
+    hs_usb_env_device(&env, HS_SD_MOUNTPOINT);
+    hs_usb_init(&u);
+    en = hs_usb_enable(&u, &env);
+    for (i = 0; en == 0 && i < 100 && !host; i++) {
+        host = hs_usb_poll(&u, &env);
+        if (!host) { env.ops.sleep_ms(NULL, 100); }
+    }
+    for (i = 0; host && i < 100; i++) {
+        if (access("/sys/block/sda", F_OK) == 0 && access("/dev/sda", F_OK) == 0) {
+            snprintf(hostdisk, sizeof(hostdisk), "sda");
+            break;
+        }
+        env.ops.sleep_ms(NULL, 100);
+    }
+    if (hostdisk[0] == 's') {
+        mkdir("/mnt/usbhost", 0755);
+        for (i = 0; i < 20 && !readback; i++) {
+            if (mount("/dev/sda", "/mnt/usbhost", "vfat", MS_RDONLY, NULL) == 0 ||
+                mount("/dev/sda1", "/mnt/usbhost", "vfat", MS_RDONLY, NULL) == 0) {
+                readback = access("/mnt/usbhost/ROMS/README.txt", R_OK) == 0 ? 1 : 2;
+                (void)umount2("/mnt/usbhost", 0);
+            } else {
+                env.ops.sleep_ms(NULL, 100);
+            }
+        }
+    }
+    snprintf(line, sizeof(line), "USB_SELFTEST enable=%d step=%s errno=%d udc=%s blockdev=%s state=%s host_disk=%s fat_readback=%s\n",
+             en, hs_usb_step_name(u.fail_step), u.fail_errno, u.udc, u.blockdev, u.udc_state, hostdisk,
+             readback == 1 ? "ROMS/README.txt" : readback == 2 ? "MOUNTED_NO_README" : "none");
+    out(line);
+    dis = hs_usb_disable(&u, &env);
+    remounted = hs_sd_mount(HS_SD_MOUNTPOINT) && access(HS_SD_MOUNTPOINT "/ROMS/README.txt", R_OK) == 0;
+    snprintf(line, sizeof(line), "USB_SELFTEST disable=%d state=%s sd_remounted=%d %s\n", dis,
+             u.state == HS_USB_IDLE ? "IDLE" : "ERROR", remounted,
+             (en == 0 && host && readback == 1 && dis == 0 && remounted) ? "PASS" : "FAIL");
+    out(line);
+}
 
 static void usage(const char *argv0)
 {
@@ -49,6 +122,9 @@ static void usage(const char *argv0)
             "  --games-root=DIR        v3: ROM card root (default /mnt/sd)\n"
             "  --snapshot-games=PNG    v3: render the GAMES picker and exit\n"
             "  --snapshot-play=PNG     v3: render --rom full-screen 640x480 and exit\n"
+            "  --snapshot-usb=PNG      v5.3: render the USB TRANSFER screen and exit\n"
+            "  --snapshot-bootmenu=PNG v5.5: render the boot config menu and exit\n"
+            "  --snapshot-splash=PNG   v5.5: render the boot splash and exit\n"
             "  --audio                 v3-audio: open /dev/snd card 0 (always on as PID 1)\n"
             "  --audio-test=S          v3-audio: play the demo ROM S seconds to the speaker\n"
             "  --play-frames=N         v3: frames to run before --snapshot-play (120)\n"
@@ -359,11 +435,15 @@ static int init_main(int argc, char **argv)
     const char *games_root = NULL;
     const char *snap_games = NULL;
     const char *snap_play = NULL;
+    const char *snap_usb = NULL;
+    const char *snap_bootmenu = NULL;
+    const char *snap_splash = NULL;
     int play_nearest = 0;
     unsigned play_frames = 120;
     int want_audio = 0;
     double audio_test = 0.0;
 
+    memset(&in, 0, sizeof(in));
     for (i = 1; i < argc; i++) {
         if (strncmp(argv[i], "--backend=", 10) == 0) {
             backend = argv[i] + 10;
@@ -410,6 +490,12 @@ static int init_main(int argc, char **argv)
             snap_games = argv[i] + 17;
         } else if (strncmp(argv[i], "--snapshot-play=", 16) == 0) {
             snap_play = argv[i] + 16;
+        } else if (strncmp(argv[i], "--snapshot-usb=", 15) == 0) {
+            snap_usb = argv[i] + 15;
+        } else if (strncmp(argv[i], "--snapshot-bootmenu=", 20) == 0) {
+            snap_bootmenu = argv[i] + 20;
+        } else if (strncmp(argv[i], "--snapshot-splash=", 18) == 0) {
+            snap_splash = argv[i] + 18;
         } else if (strcmp(argv[i], "--audio") == 0) {
             want_audio = 1;
         } else if (strncmp(argv[i], "--audio-test=", 13) == 0) {
@@ -469,16 +555,130 @@ static int init_main(int argc, char **argv)
 
     /* Host snapshots always go through the headless backend so we get a
        crisp 640x480 frame, even on a machine with a different display. */
-    if (snapshot || snap_both || snap_games || snap_play) {
+    if (snapshot || snap_both || snap_games || snap_play || snap_usb || snap_bootmenu || snap_splash) {
         backend = "headless";
     }
 
-    if (hs_fb_open(&fb, backend) != 0) {
-        fprintf(stderr, "fb open (%s) failed, trying headless\n", backend);
-        if (hs_fb_open(&fb, "headless") != 0) {
-            fprintf(stderr, "headless fb open failed\n");
-            return hs_fault_ret(HS_FAULT_FB, __LINE__, 1);
+    /* v5.5: PID 1 mounts the FAT first so HANDSHAKE-BOOT.log / HANDSHAKE.CFG are
+       reachable, opens a shadow framebuffer, waits up to 10 s for the panel
+       (300 ms in --once / handshakeos.once so QEMU proofs stay short), writes
+       the boot log immediately, then animates until the menu. Host snapshots
+       stay on the headless backend with no wait. */
+    {
+        static struct hs_cfg g_cfg;
+        static struct hs_splash g_splash;
+        const char *sdroot = games_root ? games_root : HS_SD_MOUNTPOINT;
+        int sd_up = 0, wait_ms = 0, open_menu = 0;
+        char mode[16], kver[64], mods[32], bline[256];
+        const char *cfgpath, *logpath;
+
+        hs_cfg_defaults(&g_cfg);
+        hs_splash_init(&g_splash);
+        if (as_init) {
+            sd_up = hs_sd_mount(sdroot);
+            cfgpath = hs_cfg_path(sdroot);
+            logpath = hs_bootlog_path(sdroot);
+            (void)hs_cfg_load(&g_cfg, cfgpath);
+            if (g_cfg.fallback_used) {
+                (void)hs_bootlog_append(logpath, "cfg fallback (missing or corrupt)");
+            }
+            theme = g_cfg.theme;
+            if (hs_splash_load(&g_splash, HS_SPLASH_PACK) != 0) {
+                char el[192];
+                snprintf(el, sizeof(el), "splash pack: %s", g_splash.err);
+                (void)hs_bootlog_append(logpath, el);
+            }
+        } else {
+            cfgpath = hs_cfg_path(".");
+            logpath = hs_bootlog_path(".");
+            (void)hs_cfg_load(&g_cfg, cfgpath);
+            (void)hs_splash_load(&g_splash, "splashes/pack.bin");
+            if (!g_splash.loaded)
+                (void)hs_splash_load(&g_splash, HS_SPLASH_PACK);
         }
+
+        if (as_init && strcmp(backend, "headless") != 0) {
+            if (hs_fb_open(&fb, "headless") != 0) {
+                fprintf(stderr, "headless fb open failed\n");
+                return hs_fault_ret(HS_FAULT_FB, __LINE__, 1);
+            }
+            (void)hs_boot_wait_display(&fb, once, 10000, &wait_ms, mode, sizeof(mode));
+        } else if (hs_fb_open(&fb, backend) != 0) {
+            fprintf(stderr, "fb open (%s) failed, trying headless\n", backend);
+            if (hs_fb_open(&fb, "headless") != 0) {
+                fprintf(stderr, "headless fb open failed\n");
+                return hs_fault_ret(HS_FAULT_FB, __LINE__, 1);
+            }
+            snprintf(mode, sizeof(mode), "%s", hs_fb_mode_name(&fb));
+            wait_ms = 0;
+        } else {
+            snprintf(mode, sizeof(mode), "%s", hs_fb_mode_name(&fb));
+            wait_ms = 0;
+        }
+        {
+            int kfd;
+            long kr;
+            snprintf(kver, sizeof(kver), "unknown");
+            kfd = open("/proc/sys/kernel/osrelease", O_RDONLY | O_CLOEXEC);
+            if (kfd >= 0) {
+                kr = read(kfd, kver, sizeof(kver) - 1);
+                close(kfd);
+                if (kr > 0) {
+                    kver[kr] = '\0';
+                    while (kr > 0 && (kver[kr - 1] == '\n' || kver[kr - 1] == '\r' || kver[kr - 1] == ' '))
+                        kver[--kr] = '\0';
+                } else {
+                    snprintf(kver, sizeof(kver), "unknown");
+                }
+            }
+        }
+        snprintf(mods, sizeof(mods), "idle");
+        if (as_init) {
+            (void)hs_bootlog_boot_line(bline, sizeof(bline), mode, wait_ms, kver, mods);
+            (void)hs_bootlog_append(hs_bootlog_path(sdroot), bline);
+        }
+        if (as_init && !once) {
+            hs_input_open(&in);
+            hs_boot_animate(&fb, &in, &g_splash, g_cfg.splash_id, g_cfg.animation,
+                            g_cfg.theme, g_cfg.animation ? 2400 : 200, &open_menu);
+            if (open_menu) {
+                (void)hs_bootmenu_run(&fb, &in, &g_cfg, &g_splash,
+                                      hs_cfg_path(sdroot), hs_bootlog_path(sdroot));
+                theme = g_cfg.theme;
+            }
+        }
+
+        /* stash for later boot-menu / snapshots via file-scope-ish statics */
+        /* g_cfg / g_splash live to the end of this block — copy out below. */
+        if (snap_bootmenu != NULL) {
+            char last[200];
+            last[0] = '\0';
+            (void)hs_bootlog_last(logpath, last, sizeof(last));
+            hs_bootmenu_draw(&fb, &g_cfg, &g_splash, 0, last);
+            hs_fb_flip(&fb);
+            {
+                int rc = hs_fb_snapshot_png(&fb, snap_bootmenu);
+                hs_fb_close(&fb);
+                hs_splash_free(&g_splash);
+                return rc == 0 ? 0 : 1;
+            }
+        }
+        if (snap_splash != NULL) {
+            int idx = g_splash.loaded ? hs_splash_find(&g_splash, g_cfg.splash_id) : 0;
+            if (idx < 0) idx = 0;
+            hs_splash_blit(&fb, &g_splash, idx, 0, 256, g_cfg.theme);
+            hs_fb_flip(&fb);
+            {
+                int rc = hs_fb_snapshot_png(&fb, snap_splash);
+                hs_fb_close(&fb);
+                hs_splash_free(&g_splash);
+                return rc == 0 ? 0 : 1;
+            }
+        }
+        /* keep cfg/splash in statics by assigning through a trick: the statics
+           above persist for the rest of init_main. */
+        (void)sd_up;
+        theme = g_cfg.theme;
     }
 
     if (force_bgr) {
@@ -494,6 +694,11 @@ static int init_main(int argc, char **argv)
         }
     }
 
+    if (snap_usb != NULL) { /* v5.3: USB TRANSFER screen preview */
+        int rc = hs_play_snapshot_usb(&fb, theme, 1, snap_usb);
+        hs_fb_close(&fb);
+        return rc == 0 ? 0 : 1;
+    }
     if (snap_games != NULL || snap_play != NULL) {
         int rc = 0;
         if (snap_play != NULL) {
@@ -623,6 +828,9 @@ static int init_main(int argc, char **argv)
             snprintf(line, sizeof(line), "MULTI systems_ok=%d demos_ok=%d\n", nsys, ok);
             say(line);
         }
+        if (as_init && cmdline_has("handshakeos.usbselftest")) {
+            usb_selftest(say); /* v5.3 TEST-ONLY kernel (dummy_hcd) */
+        }
         say("================================\n");
         if (as_init && once) {
             /* QEMU proof: print, then reboot so -no-reboot exits cleanly. */
@@ -637,7 +845,9 @@ static int init_main(int argc, char **argv)
     ui.dial = dial;
     hs_battery_clear(&bat);
     hs_battery_read(&bat);
-    hs_input_open(&in);
+    if (in.n_fds == 0) {
+        hs_input_open(&in);
+    }
 
     if (snap_both) {
         char path[512];
@@ -785,8 +995,15 @@ static int init_main(int argc, char **argv)
                 }
                 (void)before;
             }
-            if (hs_input_pressed(&in, HS_BTN_B) || hs_input_pressed(&in, HS_BTN_MENU)) {
+            if (hs_input_pressed(&in, HS_BTN_B)) {
                 act = hs_ui_cancel(&ui);
+            }
+            if (hs_input_pressed(&in, HS_BTN_MENU)) {
+                if (ui.confirm != HS_CONFIRM_NONE) {
+                    act = hs_ui_cancel(&ui);
+                } else {
+                    act = HS_ACTION_BOOTCFG;
+                }
             }
             if (hs_input_pressed(&in, HS_BTN_POWER)) {
                 /* First tap asks, second tap (or A) powers off. */
@@ -828,6 +1045,7 @@ static int init_main(int argc, char **argv)
                 pc.builtin = access("/roms/handshake-demo.gb", R_OK) == 0
                                  ? "/roms/handshake-demo.gb" : "roms/handshake-demo.gb";
                 pc.audio = &g_audio;
+                pc.note_fault = as_init ? usb_fault : NULL;
                 (void)hs_play_run(&pc);
                 /* Back on the shell: fresh pacing, and the hero-panel demo
                    resumes at native speed instead of bursting to catch up. */
@@ -838,6 +1056,22 @@ static int init_main(int argc, char **argv)
                 gb_due_done = 0;
                 memset(&lt, 0, sizeof(lt));
                 ui.live.have_timing = 0;
+                act = HS_ACTION_NONE;
+            }
+            if (act == HS_ACTION_BOOTCFG) {
+                static struct hs_cfg mcfg;
+                static struct hs_splash msplash;
+                const char *sdroot = games_root ? games_root : HS_SD_MOUNTPOINT;
+                hs_cfg_load(&mcfg, hs_cfg_path(sdroot));
+                if (!msplash.loaded) {
+                    if (hs_splash_load(&msplash, HS_SPLASH_PACK) != 0)
+                        (void)hs_splash_load(&msplash, "splashes/pack.bin");
+                }
+                (void)hs_bootmenu_run(&fb, &in, &mcfg, &msplash,
+                                      hs_cfg_path(sdroot), hs_bootlog_path(sdroot));
+                ui.theme = mcfg.theme;
+                theme = mcfg.theme;
+                in.pressed = 0;
                 act = HS_ACTION_NONE;
             }
             if (act == HS_ACTION_POWEROFF || act == HS_ACTION_REBOOT) {

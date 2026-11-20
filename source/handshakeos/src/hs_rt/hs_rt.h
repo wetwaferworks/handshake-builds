@@ -53,7 +53,7 @@ static inline long hs_sc(long n, long a, long b, long c, long d, long e, long f)
 
 /* aarch64 asm-generic syscall numbers */
 enum {
-    NR_getcwd = 17, NR_ioctl = 29, NR_mkdirat = 34, NR_unlinkat = 35, NR_mount = 40,
+    NR_getcwd = 17, NR_ioctl = 29, NR_mkdirat = 34, NR_unlinkat = 35, NR_symlinkat = 36, NR_umount2 = 39, NR_mount = 40, NR_readlinkat = 78,
     NR_faccessat = 48, NR_openat = 56, NR_close = 57, NR_getdents64 = 61, NR_lseek = 62,
     NR_read = 63, NR_write = 64, NR_ppoll = 73, NR_newfstatat = 79, NR_fstat = 80,
     NR_sync = 81, NR_fsync = 82, NR_exit = 93, NR_exit_group = 94, NR_nanosleep = 101,

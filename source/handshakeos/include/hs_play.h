@@ -19,12 +19,15 @@ struct hs_play_ctx {
     int              try_mount;  /* 1 on the device (PID 1) */
     const char      *builtin;    /* /roms/handshake-demo.gb */
     struct hs_audio *audio;      /* v3-audio: live speaker, or NULL / synth-only */
+    /* v5.3: USB TRANSFER failure -> PID 1 fault ledger + HANDSHAKE-FAULTS.log (NULL = console only) */
+    void           (*note_fault)(unsigned step, int err);
 };
 
 /* GAMES picker + full-screen play. Blocks until B / MENU in the picker. */
 int hs_play_run(struct hs_play_ctx *c);
 
 /* Host previews (headless fb). */
+int hs_play_snapshot_usb(struct hs_fb *fb, hs_theme_id_t theme, int host, const char *png); /* v5.3 */
 int hs_play_snapshot_picker(struct hs_play_ctx *c, const char *png);
 int hs_play_snapshot_rom(struct hs_fb *fb, const char *rom, unsigned frames,
                          int nearest, int palette, const char *toast, const char *png);

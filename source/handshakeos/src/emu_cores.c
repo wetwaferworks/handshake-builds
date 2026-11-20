@@ -353,7 +353,13 @@ void emu_core_set_palette(struct emu_core *c, unsigned pal)
 {
     if (c->ops == &hs_gbc_core_ops) {
         gbc_t *g = (gbc_t *)c->mem;
-        g->dmg_palette = pal & 3u; /* sampled into the next CPU-phase snapshot */
+        if (pal >= 4u) {
+            g->dmg_pal_auto = 1;
+        } else {
+            g->dmg_pal_auto = 0;
+            g->dmg_palette = pal & 3u;
+        }
+        gbc_refresh_dmg_palettes(g); /* sampled into the next CPU-phase snapshot */
     }
 }
 

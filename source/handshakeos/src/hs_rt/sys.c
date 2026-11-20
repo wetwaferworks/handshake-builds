@@ -220,6 +220,9 @@ int open(const char *p, int flags, ...) {
 long read(int fd, void *b, size_t n) { return hs_ret(SC3(NR_read, fd, b, n)); }
 long write(int fd, const void *b, size_t n) { return hs_ret(SC3(NR_write, fd, b, n)); }
 int close(int fd) { return (int)hs_ret(SC1(NR_close, fd)); }
+long lseek(int fd, long off, int whence) { return hs_ret(SC3(NR_lseek, fd, off, whence)); }
+int fstat(int fd, void *st) { return (int)hs_ret(SC2(NR_fstat, fd, st)); }
+long __read_chk(int fd, void *b, size_t n, size_t dlen) { (void)dlen; return read(fd, b, n); }
 int ioctl(int fd, unsigned long req, ...) {
     va_list ap; void *arg;
     va_start(ap, req); arg = va_arg(ap, void *); va_end(ap);
@@ -236,6 +239,13 @@ int getpid(void) { return (int)SC0(NR_getpid); }
 int mount(const char *s, const char *t, const char *type, unsigned long fl, const void *d) {
     return (int)hs_ret(SC5(NR_mount, s, t, type, fl, d));
 }
+/* v5.3 USB transfer: release / re-attach the FAT partition, link the configfs function. */
+int umount2(const char *t, int fl) { return (int)hs_ret(SC2(NR_umount2, t, fl)); }
+int umount(const char *t) { return (int)hs_ret(SC2(NR_umount2, t, 0)); }
+int symlink(const char *a, const char *b) { return (int)hs_ret(SC3(NR_symlinkat, a, HS_AT_FDCWD, b)); }
+/* v5.3 test harness (test-usb-gadget, linked like the shipped binaries) */
+int rmdir(const char *p) { return (int)hs_ret(SC3(NR_unlinkat, HS_AT_FDCWD, p, 0x200 /* AT_REMOVEDIR */)); }
+long readlink(const char *p, char *b, size_t n) { return hs_ret(SC4(NR_readlinkat, HS_AT_FDCWD, p, b, n)); }
 int reboot(int how) { return (int)hs_ret(SC4(NR_reboot, 0xfee1dead, 672274793, how, 0)); }
 void *mmap(void *a, size_t n, int prot, int fl, int fd, long off) {
     long r = SC6(NR_mmap, a, n, prot, fl, fd, off);

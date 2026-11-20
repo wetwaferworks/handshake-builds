@@ -1,0 +1,9 @@
+HandshakeOS v5.5 splash credits
+================================
+Graphic pack (ids 01-08): CloudAtlas, HandshakeOS o.O splash pack v1.
+Public branding is "HandshakeOS" only.
+
+ASCII entry "ascii-oo" ("HandshakeOS o.O"): built-in 38x9 HandshakeOS / o.O
+animation. The squad ASCII pack in manifest.txt is still marked PLACEHOLDER
+(no approved Squadroom frames were present in the tree), so no invented
+squad filenames or artist credits were added.

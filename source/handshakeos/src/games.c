@@ -42,7 +42,8 @@ static int is_mounted(const char *mountpoint)
 int hs_sd_mount(const char *mountpoint)
 {
     static const char *const k_devs[] = {
-        "/dev/mmcblk0p1", "/dev/mmcblk1p1"
+        "/dev/mmcblk0p1", "/dev/mmcblk1p1",
+        "/dev/vda1" /* v5.3: QEMU virt test disk only; absent on the device */
     };
     size_t i;
 

@@ -127,7 +127,7 @@ emu_aa_t emu_aa(const struct emu *e);
 /* Bytes of core state currently allocated by emu_create (all live emus).
    Lazy per-system allocation: 0 when no core is loaded. */
 size_t emu_core_bytes_live(void);
-void emu_set_dmg_palette(struct emu *e, unsigned pal); /* GB only, 0..3 */
+void emu_set_dmg_palette(struct emu *e, unsigned pal); /* GB: 0..3 generic, 4 = CGB boot auto */
 void emu_set_rtc(struct emu *e, int64_t epoch_sec);
 const char *emu_dmg_palette_name(unsigned pal);
 

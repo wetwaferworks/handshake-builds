@@ -151,8 +151,11 @@ emu_sys_t emu_sys_from_path(const char *path, const char *folder_hint)
 
 const char *emu_dmg_palette_name(unsigned pal)
 {
-    static const char *const k[4] = { "CLASSIC OLIVE", "POCKET B&W", "DEEP PURPLE", "MATRIX GREEN" };
-    return k[pal & 3u];
+    static const char *const k[5] = {
+        "CLASSIC OLIVE", "POCKET B&W", "DEEP PURPLE", "MATRIX GREEN",
+        "CGB BOOT PALETTE"
+    };
+    return k[pal < 5u ? pal : 4u];
 }
 
 struct emu {
@@ -445,7 +448,7 @@ size_t emu_core_bytes_live(void)
 void emu_set_dmg_palette(struct emu *e, unsigned pal)
 {
     if (e != NULL) {
-        e->palette = pal & 3u;
+        e->palette = pal; /* 0..3 generic, 4 = CGB boot-ROM auto */
         emu_core_set_palette(e->core, e->palette);
     }
 }

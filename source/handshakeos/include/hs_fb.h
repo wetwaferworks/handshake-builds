@@ -49,6 +49,10 @@ enum {
 
 /* backend: "auto", "drm", "fbdev", or "headless". */
 int  hs_fb_open(struct hs_fb *fb, const char *backend);
+/* One drm-then-fbdev attempt. On success, adopts the hardware scanout and
+   copies the existing shadow so a splash already drawn is preserved. 0 / <0. */
+int  hs_fb_try_hw(struct hs_fb *fb);
+const char *hs_fb_mode_name(const struct hs_fb *fb);
 void hs_fb_close(struct hs_fb *fb);
 void hs_fb_flip(struct hs_fb *fb);
 /* Escape hatch for a panel that really is BGR: swap R and B at scanout. */

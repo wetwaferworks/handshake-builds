@@ -171,7 +171,7 @@ int hs_fb_open(struct hs_fb *fb, const char *backend)
     if (strcmp(kind, "auto") == 0) {
 #ifdef __linux__
         /* Real hardware may need a moment for the panel to bind. */
-        for (tries = 0; tries < 25; tries++) {
+        for (tries = 0; tries < 100; tries++) {  /* 10 s, 100 ms steps */
             rc = hs_fb_open(fb, "drm");
             if (rc == 0) {
                 return 0;
@@ -182,7 +182,7 @@ int hs_fb_open(struct hs_fb *fb, const char *backend)
                 return 0;
             }
             hs_fb_close(fb);
-            if (tries < 24) {
+            if (tries < 99) {
                 usleep(100000);
             }
         }
@@ -438,6 +438,58 @@ int hs_fb_open(struct hs_fb *fb, const char *backend)
 #endif
 #endif
     return -ENOTSUP;
+}
+
+
+int hs_fb_try_hw(struct hs_fb *fb)
+{
+    struct hs_fb hw;
+
+    if (fb == NULL) {
+        return -EINVAL;
+    }
+    if (fb->kind == HS_FB_DRM || fb->kind == HS_FB_FBDEV) {
+        return 0;
+    }
+#ifdef __linux__
+    memset(&hw, 0, sizeof(hw));
+    hw.fd = -1;
+    if (hs_fb_open(&hw, "drm") == 0) {
+        if (fb->pix && hw.pix) {
+            size_t n = (size_t)fb->w * (size_t)fb->h * 4u;
+            size_t m = (size_t)hw.w * (size_t)hw.h * 4u;
+            if (m < n) n = m;
+            memcpy(hw.pix, fb->pix, n);
+        }
+        hs_fb_close(fb);
+        *fb = hw;
+        return 0;
+    }
+    hs_fb_close(&hw);
+    memset(&hw, 0, sizeof(hw));
+    hw.fd = -1;
+    if (hs_fb_open(&hw, "fbdev") == 0) {
+        if (fb->pix && hw.pix) {
+            size_t n = (size_t)fb->w * (size_t)fb->h * 4u;
+            size_t m = (size_t)hw.w * (size_t)hw.h * 4u;
+            if (m < n) n = m;
+            memcpy(hw.pix, fb->pix, n);
+        }
+        hs_fb_close(fb);
+        *fb = hw;
+        return 0;
+    }
+    hs_fb_close(&hw);
+#endif
+    return -ENODEV;
+}
+
+const char *hs_fb_mode_name(const struct hs_fb *fb)
+{
+    if (fb == NULL) return "headless";
+    if (fb->kind == HS_FB_DRM) return "drm";
+    if (fb->kind == HS_FB_FBDEV) return "fbdev";
+    return "headless";
 }
 
 void hs_fb_close(struct hs_fb *fb)

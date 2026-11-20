@@ -1,134 +1,120 @@
 # HandshakeOS
 
-An operating system built on the Timing Handshake, starting as a pure-C userspace on mainline Linux, aimed at the Anbernic RG35XX 2024.
+*A tiny operating system for the Anbernic RG35XX 2024 handheld, written in pure C, built around the Timing Handshake: zero mutexes, one writer per phase, every frame hash-chained into a ledger.*
 
-Jaydee Wetwork first called the userspace LithoOS on 19 November 2026, then settled on HandshakeOS the same day so the boot splash and the Timing Handshake share a name. LithoLattice remains the engine, LithoKraft remains the game, and HandshakeOS is the system underneath both. The test device is a little Game Boy-class handheld that was bought for play. The trial is a guest on that machine, not a takeover. Play wins ties. Experiments run on a second SD card; the stock card stays untouched.
+## Credits: the Grok Bot squad (built with Grok)
 
-This repository is Milestone P1: a clean-room MIT C userland you can build and test on a host, cross-compile for ARM64, and a recipe for the open boot stack. It does not yet boot on the handheld, and it does not invent later milestone numbers.
+- **Jaydee Wetwork (JD)**: creator of HandshakeOS, the Handshake Compiler (HC) and the Timing Handshake. Contact: jdwetwork@gmail.com
+- **Cortana · Intel & Clarity**: implementation of the zero-mutex design
+- **Master Chief · Squad Lead**: implementation (HC lead implementation)
+- **Herominde · Fair play and anti-cheat**: implementation (fair-play contract, HC-E001..HC-E026)
+- **Mr Data · Training & Evaluation**: implementation (determinism sweeps, benchmarks)
+- **CloudAtlas · Technical Art Director**: art (boot art, the animated o.O splash pack, squad ASCII)
+- **SpaceXAI**: makers of Grok Bot and the squad
 
-## What this is, and why it matters
+> **Zero mutex, with one exception.** Everything in the Handshake stack ships with zero mutexes: PID 1, the emulator cores, the runtime and the USB modules. The N64 core objects have 0 lock symbols. The v5.5 image has one exception: two N64 diagnostic tools, `bench_n64` and `hs_pf_probe`, are statically linked against glibc and carry its internal pthread mutex code. v5.6 removes the exception by relinking them against `hs_rt`, HandshakeOS's own lock-free runtime.
 
-Most systems manage collisions with locks. A lock that is held too long is a stall; on a robot arm it is a disaster waiting to happen. The Timing Handshake dissolves the collision instead of managing it. One writer per phase, state crossing the boundary as a finished snapshot, nothing left to protect.
+---
 
-It stands on exactly three algorithmic pillars:
+## What this is, in plain words
 
-1. **Time Serialization** — a clock thread owns the time window and publishes it. Workers do not decide when to run; they pull.
-2. **Control coupling** — control is drained once per phase and stamped `(seq, tick)`.
-3. **Event coupling** — matured events are applied exactly once, in `(tick, seq)` order, after the phase commits.
+HandshakeOS is the software that runs your RG35XX 2024 after the Linux kernel starts. It is the first program the kernel launches (PID 1). It draws the boot screen and the menus, reads the buttons, plays sound, runs the game emulators, and keeps a log of anything that goes wrong.
 
-A fourth pillar has not been received. The Thread Handshake is a different handshake at a different layer and is never conflated with this one.
+It is different from most systems in one way: **it does not use locks.** Most programs that do several things at once protect shared data with mutexes ("only one of us may touch this right now"). Locks work, but they can stall. A thread holding a lock too long freezes everyone waiting on it. In 1997 the Mars Pathfinder rover kept resetting itself because of a lock problem called priority inversion. HandshakeOS can't hit that problem because it has no lock to invert.
 
-The seating is exact: **three worker threads talk to one main clock thread**, and the clock thread is the time server. Every phase has four beats, the shape Jaydee named the Gemstone Algorithm, a diamond when you draw it simply:
+Instead it uses the **Timing Handshake**, created by Jaydee Wetwork and Elfie.
 
-**publish → pull → barrier → commit**
+## How the Timing Handshake works
 
-If a phase misses its window, the policy is **WAIT**: the phase extends, nothing is skipped, and the overrun is counted, not hidden. If it blows the watchdog (default 250 ms), the policy is **FREEZE**: the clock stops, `lastFreeze` names the offending component, and `resetAfterFreeze` bumps the generation so stale in-flight work revalidates and dies instead of landing late. That is the anti-Pathfinder property. Mars Pathfinder reset on a mutex priority inversion in 1997; a HandshakeOS phase cannot invert, because there is no lock to invert on.
+Think of a relay team with a strict baton rule. There is one main **clock thread** and **three worker threads** (the "3+1 seating"). Time is cut into **phases**, and every phase has the same four beats, which JD named the Gemstone Algorithm (draw it and it is a diamond):
 
-Every committed phase is folded into a hash-chained ledger, in component-id order. The hash is about the work and the order it lands. Thread count changes who does the work, never what the work is. That fairness gate is HandshakeOS law.
+1. **publish**: the clock thread publishes the time window and a finished, read-only snapshot of the state.
+2. **pull**: workers pull their work. Nobody pushes work at them, and nobody decides on their own when to run.
+3. **barrier**: everyone finishes this phase's work.
+4. **commit**: results land, in a fixed order, as the next finished snapshot.
 
-## Quick start
+Each piece of state has exactly one writer per phase, and state only crosses a phase boundary as a finished snapshot. Two threads never fight over the same data, so there is nothing to protect.
+
+Three rules keep it honest:
+
+- **Time serialization:** the clock thread owns time. Workers pull and never set their own schedule.
+- **Control coupling:** button presses and other controls are collected once per phase and stamped `(seq, tick)`.
+- **Event coupling:** events are applied exactly once, in `(tick, seq)` order, after the phase commits.
+
+If a phase runs late, the policy is **WAIT**: the phase stretches, nothing is skipped, and the overrun is counted. If something hangs past the watchdog (250 ms by default), the policy is **FREEZE**: the clock stops, the offending component is named, and `resetAfterFreeze` bumps a generation number so stale work is thrown away instead of landing late.
+
+Every committed phase is folded into a **hash-chained ledger**. The fairness law is that the number of worker threads changes *who* does the work, never *what* the work is. Run it with 1, 2, 3 or 4 workers and you get the same hash. The golden ledger hash `5f44cefa72e8ac19` has stayed the same in every release.
+
+## What is new in v5.5
+
+v5.5 bundles every fix made so far into one image (v5.4 was skipped on purpose).
+
+| Feature | What it means for you | Evidence |
+|---|---|---|
+| **Dark-screen fix** | v5.3 could boot to a black screen. v5.5 goes back to the proven v5.2 kernel (`Image.gz c206e1bc…`). The USB file-transfer gadget is loaded as modules when you press START instead of being built into the kernel, and PID 1 now waits up to 10 s for the display instead of 2.5 s. | kernel pin `c206e1bc`; display wait 10 s in `src/init.c` |
+| **HANDSHAKE-BOOT.log** | Every boot writes a plain-text log to the boot partition, so a problem can be read on a PC. | `src/bootlog.c`, `tests/test_bootlog.c` |
+| **Faults never power off** | Any fault goes to the ledger plus a log on the boot partition, then back to the boot screen with drivers still running. Only *you* can power the device off. | USB fault test: logged, no power-off |
+| **Animated o.O boot screen** | CloudAtlas's o.O splash pack and the squad ASCII art animate on boot. Packed by the pure-C `tools/hs-pack-splash.c`. | `src/splash.c`, `tests/test_splash_pack.c` |
+| **Boot configuration menu** | Settings live right on the main boot screen. | `src/bootmenu.c`, `src/cfg.c`, `tests/test_cfg.c` |
+| **A/B updater over the cable (`.hsu`)** | Updates arrive as a `.hsu` file over USB and are written to the inactive slot. Each update is checked with SHA-256 before the device switches to it, and the old slot stays as the fallback. | `src/update.c`, `tools/hs-mkhsu.c`, `tests/test_update.c` |
+| **Audio crackle fix** | The crackle was ALSA buffer underruns. The fix uses a ~53.3 ms buffer (512 × 5), a start threshold of 3 periods, a silence prefill, audio written every frame, and catch-up after a stall (deadline clamped to now; if more than ¼ period late, two frames run). | `tests/test_audio_pace.c`: **0 underruns, 0 drops, 0 clips** on GB, GBC, GBA, SNES and Genesis, on both PC and ARM |
+| **Pokémon Yellow / DMG colours** | Original Game Boy games now get the real Game Boy Color boot palettes, picked by title checksum plus the 4th title letter, clean-room from Pan Docs. Pokémon Yellow gets combination 3 (white, yellow, red, black). Colours pass through the CGB LCD curve, `R' = min(960, 26r + 4g + 2b)`, so they are not oversaturated. | `cores/gbc/gbc_compat_pal.c`, `tests/test_dmg_compat.c`; GBC suite **83/83** with no hash changes |
+| **N64 optimizations** | Fast interpreter path, faster RDP rendering, F3DEX2/F3DZEX display lists, EEPROM/SRAM/FlashRAM saves, automatic Expansion Pak. | N64 suite **307/307** on x86_64 and on aarch64 |
+| **640×480 edge-to-edge** | The UI fills the whole panel with no border. | v5.5 boot render check |
+
+**Image:** `handshakeos-rg35xx-2024-v5.5.img` SHA-256 `aee85606…bfed` · `.img.zst` SHA-256 `cc27bc55…7267`. The image is in [handshake-builds](https://github.com/wetwaferworks/handshake-builds) along with the full hash list. The image was packed twice and both runs came out identical. Prior images v5 through v5.3 were not touched.
+
+## Zero mutex: how it is enforced
+
+- The shipped binaries are linked `-static -nostdlib` against HandshakeOS objects and **`hs_rt`**, our own small runtime (`src/hs_rt/`). They use no glibc and no libpthread. Threads are created with raw `clone()`, and allocator state is per thread.
+- Every object is compiled by the **Handshake Compiler (HC)**, which refuses to emit an object that contains a lock primitive and audits every ELF file for lock symbols.
+- `tools/zero-mutex-scan.sh` rescans every shipped binary: pthread_mutex symbols 0, lock/futex symbols 0, NPTL/glibc strings 0.
+- **The one exception in v5.5:** the two N64 diagnostic tools `bench_n64` and `hs_pf_probe` still link static glibc, which brings in glibc's internal pthread mutex. PID 1, every emulator core (the N64 core objects included, at 0 lock symbols) and both USB modules scan clean. v5.6 relinks the two tools against `hs_rt`.
+
+## Building and testing
+
+You need Ubuntu 24.04 (WSL works), `gcc`, `aarch64-linux-gnu-gcc` and HC.
 
 ```sh
 make            # host tools: handshake-init, handshake-test, handshake-bench, handshake-gb
 make test       # unit tests, 100-run scoreboard, worker-count fairness
 make bench      # jitter histogram
-make preview    # 640x480 Deep Purple and Matrix Green screenshots
-make preview-gb # running handshake-demo.gb inside the Deep Purple shell
-make gb-test    # 100-run + 1/2/3/4-worker GB handshake scoreboard
-make cross      # static aarch64 binaries
+make cross      # static aarch64 binaries (hs_rt, no glibc)
 make verify-cross
 ```
 
-`./build/host/handshake-init --backend=headless --snapshot-both=.` writes `preview-purple.png` and `preview-green.png`. On the device, the same binary talks to DRM/KMS with an fbdev fallback, reads the RG35XX 2024 buttons from evdev, and can run as `/init`.
+All build, pack and test tooling is C. No Python is used anywhere.
 
-Build flags for our C: `-std=c11 -Wall -Wextra -Werror`. No C++, no mutexes in the handshake. Phase boundaries use C11 atomics. Workers are POSIX threads; the protocol they follow is lock-free.
+## Putting it on the handheld
 
-## The scoreboard (this box, 19 November 2026)
+1. **Back up your stock SD card first** (`board/rg35xx-2024/windows-backup-stock-sd.ps1`) and keep it safe. Play wins ties, so experiments go on a second card.
+2. Download the `.img` (or `.img.zst` and decompress it) from handshake-builds and check its SHA-256.
+3. Write it to a second microSD card with Rufus in **DD mode**.
+4. Insert the card and power on.
 
-The Phase 1 scoreboard is a 128-phase run with five components (a monatomic serial tick, an affine control drain, and three pulled workers on EveryPhase / HalfCycle / CycleHead cadences) plus a stamped control stream applied at commit. It is meant to be boring, and it was:
+## Hardware and the open boot stack
 
-| Gate | Result |
-|------|--------|
-| 100 consecutive runs, 3 workers | **identical ledger hash** `5f44cefa72e8ac19`, epoch 128, monatomic 480 |
-| Fairness: 1, 2, 3, and 4 workers | **same hash** |
-| Overruns (2 ms phase budget) | **0** |
-| Watchdog | **OK**, 250 ms ceiling; a separate test FREEZEs a 400 ms sleeper, names `sleepy`, and recovers after `resetAfterFreeze` |
-| WAIT | a 20 ms late phase still commits; the overrun is counted, not skipped |
+Anbernic RG35XX 2024: Allwinner H700, four Cortex-A53 cores, 1 GB LPDDR3, 640×480 LCD. The boot chain is open all the way down: Trusted Firmware-A, then mainline U-Boot SPL (LPDDR3 config), then Linux 7.3.5 with ROCKNIX device-tree patches, then HandshakeOS as PID 1. We use no closed vendor kernel and no Mali blob.
 
-Jitter is phase open-to-commit time on this host (Linux box, not the handheld). A representative pass:
+## What is coming
 
-- p50 ≈ 9–16 µs
-- p95 ≈ 16–30 µs
-- p99 ≈ 0.3 ms
-- max ≈ 0.4–0.5 ms
+- **v5.6:** removes the last mutex exception (the N64 diagnostic tools relinked against `hs_rt`).
+- **Lock-free ARM kernel (in progress):** v5.5 runs the stock v5.2 Linux kernel. Work on a lock-free kernel path for the handheld has started.
+- **Full boot source:** the complete TF-A, U-Boot, Linux, DTS and patch tree will be published in handshake-builds. It is held for now pending a review of the non-C files in the vendored Linux/U-Boot trees.
+- Real-hardware numbers for USB transfer and N64 speed.
 
-These numbers will move with load. The hash must not.
+## Related repositories
 
-## The screen
-
-The GUI is a lean 640×480 framebuffer, drawn in our own C, in the spirit of muOS's tight icon-and-list layout (inspiration only; zero code copied). Two themes ship first and can be switched live with L1/R1:
-
-- **Deep Purple**
-- **Matrix Green**
-
-The hero tile is the handshake itself: the Gemstone diamond (publish, pull, barrier, commit), the commit epoch, the ledger hash, jitter, and the watchdog state. Battery reads AXP717 sysfs when it is there, and shows a stub until then. Power off and reboot ask for a confirm.
-
-Previews from this tree:
-
-- [`preview-purple.png`](preview-purple.png)
-- [`preview-green.png`](preview-green.png)
-- [`preview-gb-emu.png`](preview-gb-emu.png) — Peanut-GB running `roms/handshake-demo.gb` under the 3+1 handshake, with the Gemstone dial, commit epoch, ledger hash, and audio xrun counter.
-
-## Hardware and the open stack
-
-Target: **Anbernic RG35XX 2024**, base model. Allwinner H700, four Cortex-A53 cores, 1 GB LPDDR3 (DCDC3 1.2 V, 672 MHz) on the verified board, 640×480 LCD. Some units are LPDDR4; that is the alternate revision. No Wi-Fi, no Bluetooth. Data moves on the SD card or USB-C.
-
-The stack is open all the way down:
-
-## Game Boy loop (Peanut-GB)
-
-`handshake-gb` runs a tiny MIT DMG core (Peanut-GB + minigb_apu) as a clock-thread-affine component of the Timing Handshake. Scripted or evdev buttons are stamped `(seq, tick)` before the phase and applied in `(tick, seq)` order when that tick matures. Each frame's 160×144 picture and its finished PCM snapshot are CRC'd and folded into the hash-chained commit ledger. There are no mutexes and no locks around audio: the snapshot is produced and consumed on the same phase boundary, so xruns stay at zero.
-
-The only ROM in `roms/` is `handshake-demo.gb`, an original MIT demo. Commercial Game Boy software is never downloaded or shipped. See `roms/manifest.txt` and `CREDITS.md`.
-
-On this tree, 100 runs of 90 frames plus a 1 / 2 / 3 / 4 worker fairness gate all produced one ledger:
-
-`5a45548614037e20`  (frame `33e3294d476b16a6`, audio `8c6078dd78fa5589`, xruns 0, overruns 0)
-
-Host and `qemu-aarch64-static` agree.
-
-A QEMU virt boot with a real ARM64 kernel and this tree's static `handshake-init` as PID 1 is in `board/qemu-virt/run-pid1.sh`.
-
-- mainline Linux (≥ 6.12, so `sched_ext` is available for Phase 2)
-- mainline U-Boot, LPDDR3 config (`anbernic_rg35xx_h700_lpddr3_defconfig`); LPDDR4 boards use `anbernic_rg35xx_h700_defconfig`
-- open Trusted Firmware-A (`PLAT=sun50i_h616`)
-- Panfrost for the Mali G31
-- this MIT C userland
-
-The only closed piece on the SoC is the tiny boot ROM baked into the chip, which every device has. We do not use Allwinner's closed 4.9 kernel, and we do not use a Mali blob.
-
-Vanilla mainline already has CPU, UART (`ttyS0,115200`), AXP717 battery, gpio-keys, LEDs, the first SD slot, USB gadget, audio nodes, and the GPU node. The LCD, HDMI, second SD slot, and USB OTG host still need device-tree and display patches; ROCKNIX carries those, and our board recipe points at them. Buttons in mainline are the standard evdev codes (A is `BTN_EAST`, B is `BTN_SOUTH`, and so on).
-
-See [`board/rg35xx-2024/`](board/rg35xx-2024/) for the kernel config fragment, the boot-stack build script (it does not download the kernel unless you ask it to), and a Windows script for imaging the stock SD card. **Back up the stock card before you flash anything, and flash only a second card.**
-
-## Trial plan
-
-Adapted from the 17 November 2026 roadmap and Elfie's 19 November 2026 handoff. HOEos in the dated roadmap is this project under its earlier name.
-
-- **P0 — Backup, and play wins ties.** Image the stock SD, verify the image, put the stock card back. The machine that plays Pokemon is never the machine an experiment can brick. All experiments go on a second card.
-- **P1 — Userspace 3+1, 100-run hash proof** (this tree), then govern a tiny Game Boy-class emulator loop so the handshake has a beating heart on the device before it owns the boot process.
-- **P2 — Engine slice, phase-audio test, and `sched_ext` comparison.** Port the LithoLattice reference authority as a harness, compare hashes with the desktop tree, try lock-free phase audio, and measure the userspace baseline against a `sched_ext` scheduler. See [`docs/TIMING-HANDSHAKE-SCHED-EXT.md`](docs/TIMING-HANDSHAKE-SCHED-EXT.md).
-- **P3 — A custom kernel, QEMU first, then the handheld.** Boot, serial, timer tick, monatomic counter, three threads reporting to the clock thread, the ledger printing. No flashing the handheld until P0's backup is proven and the boot path is understood.
-
-Sleep and wake should later use `resetAfterFreeze`. Battery and heat should later step a rate ladder at a phase boundary, written in the ledger, never by smearing time the way stock governors do.
-
-## Documentation
-
-- [`CREDITS.md`](CREDITS.md)
-- [`docs/TIMING-HANDSHAKE-SCHED-EXT.md`](docs/TIMING-HANDSHAKE-SCHED-EXT.md)
-- [`docs/uml/`](docs/uml/) — Elfie's five 4K UML diagrams (18 October 2026), SHA-256 verified from the handoff packet. Start with the simplified Gemstone view.
-- [`board/rg35xx-2024/`](board/rg35xx-2024/) — kernel / U-Boot / TF-A recipe and the stock-card backup script
+- [handshakecompiler](https://github.com/wetwaferworks/handshakecompiler): HC, the compiler that enforces zero mutex
+- [handshake-cores](https://github.com/wetwaferworks/handshake-cores): the emulator cores (GBC, GBA, SNES, Genesis, PSX, N64)
+- [handshake-builds](https://github.com/wetwaferworks/handshake-builds): flashable images, build scripts and evidence
 
 ## License
 
-Our userland is MIT, Copyright (c) 2026 Jaydee Wetwork. See [`LICENSE`](LICENSE). Linux, U-Boot, and most drivers keep their own licenses (usually GPL-2.0). Talking to kernel APIs does not make this userland GPL. We do not copy muOS, Knulli, or ROCKNIX userland into this tree.
+MIT, Copyright (c) 2026 Jaydee Wetwork. Linux, U-Boot and TF-A keep their own licenses. No muOS, Knulli or ROCKNIX userland is copied into this tree. See [`CREDITS.md`](CREDITS.md) for third-party code and prior art.
+
+---
+
+## Credits: Muse
+
+- **Elfie (Muse Wonder)**: co-creator of the Timing Handshake with JD; UML design architecture and the HandshakeOS handoff packet.

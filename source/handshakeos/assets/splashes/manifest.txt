@@ -1,0 +1,32 @@
+# HandshakeOS RG35XX 2024 Splash Pack v1
+# Hardware: Anbernic RG35XX 2024, Allwinner H700, 3.5" 4:3 IPS, NewVision NV3052C,
+# ~71x53 mm active glass, ~229 PPI, 60 Hz, 24-bit RGB888 DPI, native landscape 0°.
+# Each graphic splash is an exact 640x480 opaque 8-bit RGB sRGB PNG (no alpha, no
+# palette, no EXIF). Packed at build time into XRGB8888 with RGB565 fallback.
+#
+# Columns: id | title | artist | type | theme | file
+#
+id | title | artist | type | theme | file
+01 | Silicon Wafer Pulse | CloudAtlas | graphic | purple | 01-silicon-wafer-pulse-purple.png
+02 | Field of Handshakes | CloudAtlas | graphic | purple | 02-field-of-handshakes-purple.png
+03 | Handheld Phosphor | CloudAtlas | graphic | purple | 03-handheld-phosphor-purple.png
+04 | Timing Loop Gears | CloudAtlas | graphic | purple | 04-timing-loop-gears-purple.png
+05 | Minimal Swiss Signal | CloudAtlas | graphic | purple | 05-minimal-swiss-signal-purple.png
+06 | Cyber Owl Sprite | CloudAtlas | graphic | purple | 06-cyber-owl-sprite-purple.png
+07 | Oscilloscope Dual-Wave | CloudAtlas | graphic | green | 07-oscilloscope-dual-wave-green.png
+08 | Liquid Glass Orb | CloudAtlas | graphic | purple | 08-liquid-glass-orb-purple.png
+#
+# ---------------------------------------------------------------------------
+# ASCII boot splashes (squad settings-menu pack) — PLACEHOLDER
+# ---------------------------------------------------------------------------
+# Cortana: when the approved squad ASCII boot sequences are packed, append
+# five entries here in the same pipe-delimited form:
+#
+#   id | title | artist | type | theme | file
+#
+# Use type `ascii`. Keep id / theme / file values aligned with the final
+# packed ASCII assets. Do not invent ASCII filenames in this graphic pack;
+# wait for the approved frames from the Squadroom (Master Chief, Mr Data,
+# CloudAtlas, and any selected mix / rotation). The settings menu should
+# credit each artist next to the selectable splash.
+#

@@ -1,10 +1,25 @@
-# Credits
+# Credits: HandshakeOS
 
-**Cortana — SpaceXAI, Grok Bot** (primary implementer)
+## Credits: the Grok Bot squad (built with Grok)
 
-**Jaydee Wetwork** — creator, HandshakeOS vision, Timing Handshake co-creator
+- **Jaydee Wetwork (JD)**: creator of HandshakeOS, the Handshake Compiler (HC) and the Timing Handshake. Contact: jdwetwork@gmail.com
+- **Cortana · Intel & Clarity**: implementation of the zero-mutex design
+- **Master Chief · Squad Lead**: implementation (HC lead implementation)
+- **Herominde · Fair play and anti-cheat**: implementation (fair-play contract, HC-E001..HC-E026)
+- **Mr Data · Training & Evaluation**: implementation (determinism sweeps, benchmarks)
+- **CloudAtlas · Technical Art Director**: art (boot art, the animated o.O splash pack, squad ASCII)
+- **SpaceXAI**: makers of Grok Bot and the squad
 
-**Elfie (Muse Wonder)** — Timing Handshake co-creator, with Jaydee Wetwork. The idea was conceived lying in a field at night. UML design architecture: registrar of the 19 November 2026 HandshakeOS handoff packet, and author of the five 4K UML diagrams drawn 18 October 2026 from the reference implementation. Handheld insights that shape this trial: a visible Gemstone phase dial, emulator-first Phase 1, sleep and wake treated as `resetAfterFreeze`, a deterministic battery and thermal rate ladder, lock-free phase audio, and play wins ties.
+> **Zero mutex, with one exception.** Everything in the Handshake stack ships with zero mutexes: PID 1, the emulator cores, the runtime and the USB modules. The N64 core objects have 0 lock symbols. The v5.5 image has one exception: two N64 diagnostic tools, `bench_n64` and `hs_pf_probe`, are statically linked against glibc and carry its internal pthread mutex code. v5.6 removes the exception by relinking them against `hs_rt`, HandshakeOS's own lock-free runtime.
+
+## What each person did
+
+- **Jaydee Wetwork**: creator, the HandshakeOS vision, and co-creator of the Timing Handshake. Final say on scope and every release.
+- **Cortana · Intel & Clarity (Grok Bot)**: implementation of the zero-mutex design. That covers the pure-C11 HandshakeOS reference (`hs_handshake.h` / `handshake.c`), the `hs_rt` runtime that lets shipped binaries run with no glibc and no locks, the v5.x builds (boot log, faults that never power off, A/B `.hsu` updater, audio pacing fix, DMG compatibility palettes, the boot menu), and security and architecture review.
+- **CloudAtlas · Technical Art Director**: boot art direction, the animated o.O splash pack and the squad ASCII art on the v5.5 boot screen.
+- **Master Chief · Squad Lead**: lead implementation of the Handshake Compiler.
+- **Herominde · Fair play and anti-cheat**: the fair-play and phase-isolation contract HC enforces.
+- **Mr Data · Training & Evaluation**: determinism sweeps and jitter benchmarks.
 
 ## Prior art
 
@@ -35,3 +50,14 @@ The LithoLattice Timing Handshake reference (public tree, commit `50b5868`, 18 N
 - **handshake-demo.gb** — original MIT demo ROM for HandshakeOS, built by `tools/make_handshake_demo_gb.c`. Title, border, bouncing gem, D-pad nudge, and an A-button beep. No third-party graphics or music.
 
 - **Libbet and the Magic Floor** v0.08 — Damian Yerrick, zlib License, with Magic Floor concept by Martin Korth. Official ROM from https://github.com/pinobatch/libbet/releases/tag/v0.08 (SHA-256 `3607412031c8287cf878299ce96e581e85b852dde703806343b95576fa3ff1a9`).
+
+## Game Boy Color compatibility palettes
+
+The DMG-on-CGB palette table (`cores/gbc/gbc_compat_pal.c`) is a clean-room implementation from the public **Pan Docs** description of the CGB boot ROM's compatibility palettes (title checksum plus disambiguation letter at `$0137`) and the CGB LCD colour curve. No boot ROM bytes are included.
+
+---
+
+## Credits: Muse
+
+- **Elfie (Muse Wonder)**: co-creator of the Timing Handshake with JD; UML design architecture and the HandshakeOS handoff packet.
+- The idea came to JD and Elfie lying in a field at night. Elfie drew the five 4K UML diagrams of 18 October 2026 and registered the 19 November 2026 handoff packet. Elfie's handheld ideas shape the project: a visible Gemstone phase dial, emulator-first Phase 1, sleep and wake as `resetAfterFreeze`, a deterministic battery and thermal rate ladder, lock-free phase audio, and "play wins ties."

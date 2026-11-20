@@ -20,7 +20,8 @@
 #include <time.h>
 #include <unistd.h>
 
-enum { HS_FAULT_RETURN = 1, HS_FAULT_FB = 2, HS_FAULT_SCOREBOARD = 3, HS_FAULT_REBOOT = 4 };
+enum { HS_FAULT_RETURN = 1, HS_FAULT_FB = 2, HS_FAULT_SCOREBOARD = 3, HS_FAULT_REBOOT = 4,
+       HS_FAULT_USB = 5 /* v5.3: USB TRANSFER step failed (non-fatal; line = hs_usb step id) */ };
 #define HS_FAULT_MAX 32
 
 struct hs_fault { uint32_t seq, code, line; uint64_t epoch; };
@@ -33,7 +34,7 @@ static uint64_t g_hs_fault_epoch;
 static inline const char *hs_fault_name(uint32_t c)
 {
     return c == HS_FAULT_FB ? "FB_OPEN_FAILED" : c == HS_FAULT_SCOREBOARD ? "SCOREBOARD_SETUP_FAILED"
-         : c == HS_FAULT_REBOOT ? "REBOOT_FAILED" : "INIT_RETURNED";
+         : c == HS_FAULT_REBOOT ? "REBOOT_FAILED" : c == HS_FAULT_USB ? "USB_TRANSFER_FAILED" : "INIT_RETURNED";
 }
 /* Mark the reason for an imminent return from the init body. */
 static inline int hs_fault_ret(uint32_t code, uint32_t line, int rc)
@@ -57,7 +58,9 @@ static inline void hs_fault_record(uint32_t code, uint32_t line, int rc, const c
     r->seq = g_hs_faults.n + 1u; r->code = code; r->line = line; r->epoch = g_hs_fault_epoch;
     g_hs_faults.hash = hs_fault_fnv(hs_fault_fnv(hs_fault_fnv(hs_fault_fnv(g_hs_faults.hash, r->seq), code), line), r->epoch);
     g_hs_faults.n++;
-    len = snprintf(msg, sizeof(msg), "HandshakeOS FAULT #%u %s code=%u init.c:%u rc=%d epoch=%llu fault_ledger=%016llx -> boot screen\n",
+    len = snprintf(msg, sizeof(msg), code == HS_FAULT_USB
+                   ? "HandshakeOS FAULT #%u %s code=%u usb_step=%u errno=%d epoch=%llu fault_ledger=%016llx -> GAMES\n"
+                   : "HandshakeOS FAULT #%u %s code=%u init.c:%u rc=%d epoch=%llu fault_ledger=%016llx -> boot screen\n",
                    r->seq, hs_fault_name(code), code, line, rc, (unsigned long long)r->epoch, (unsigned long long)g_hs_faults.hash);
     if (len < 0) return;
     if ((size_t)len >= sizeof(msg)) len = (int)sizeof(msg) - 1;

@@ -76,7 +76,7 @@ void hs_ui_init(struct hs_ui *ui, hs_theme_id_t theme)
     ui->theme = theme;
     ui->selected = HS_TILE_GAMES;
     ui->confirm = HS_CONFIRM_NONE;
-    ui->status_line = NULL;
+    ui->status_line = "MENU = BOOT CONFIG"; /* visible main-screen entry */
     ui->dial = HS_DIAL_SLOW;
     ui->pace = HS_PACE_60;
 }
@@ -826,8 +826,8 @@ void hs_ui_draw_games_multi(struct hs_fb *fb, hs_theme_id_t theme,
     x += txt(fb, pal, x, fb->h - FOOT_H + 12, pal->text, " Back ");
     x += txt(fb, pal, x, fb->h - FOOT_H + 12, pal->accent, "X");
     x += txt(fb, pal, x, fb->h - FOOT_H + 12, pal->text, " Scan ");
-    x += txt(fb, pal, x, fb->h - FOOT_H + 12, pal->accent, "L1R1");
-    (void)txt(fb, pal, x, fb->h - FOOT_H + 12, pal->text, " Theme");
+    x += txt(fb, pal, x, fb->h - FOOT_H + 12, pal->accent, "START");
+    (void)txt(fb, pal, x, fb->h - FOOT_H + 12, pal->text, " USB"); /* v5.3; L1/R1 theme still works */
 
     if (v->notice != NULL) {
         int pw = text_w(v->notice) + 64, ph = v->notice_sub ? 112 : 80;
@@ -850,4 +850,50 @@ void hs_ui_draw_games_multi(struct hs_fb *fb, hs_theme_id_t theme,
             txt(fb, pal, x, py + 24 + LINE + 12, pal->dim, v->notice_sub);
         }
     }
+}
+
+/* ---- v5.3: USB TRANSFER screen ---- */
+void hs_ui_draw_usb(struct hs_fb *fb, hs_theme_id_t theme, const struct hs_usb_view *v)
+{
+    const struct hs_palette *pal;
+    int i, x, y, cw, ch;
+
+    if (fb == NULL || v == NULL) {
+        return;
+    }
+    pal = hs_theme_get(theme);
+    hs_fb_clear(fb, pal->bg);
+    hs_fb_fill(fb, 0, 0, fb->w, BAR_H, pal->bar);
+    hs_fb_fill(fb, 0, BAR_H - 3, fb->w, 3, pal->accent);
+    txt(fb, pal, MARGIN, 14, pal->accent2, "HandshakeOS");
+    txt(fb, pal, 208, 14, pal->text, "USB TRANSFER");
+    if (v->battery_status != NULL) {
+        int bw = text_w(v->battery_status) + 16;
+        chip(fb, pal, fb->w - MARGIN - bw, 9, v->battery_status, pal->value);
+    }
+    cw = fb->w - 2 * MARGIN;
+    ch = fb->h - BAR_H - FOOT_H - 24;
+    card(fb, pal, MARGIN, BAR_H + 12, cw, ch, 1);
+    y = BAR_H + 36;
+    if (v->title != NULL) {
+        uint32_t c = v->warn ? pal->warn : pal->accent2;
+        x = (fb->w - text_w(v->title)) / 2;
+        (void)hs_fb_text_ex(fb, x + 1, y, S2, c, pal->text_shadow, HS_TEXT_NICE, v->title);
+        (void)hs_fb_text_ex(fb, x, y, S2, c, pal->text_shadow, HS_TEXT_NICE, v->title);
+    }
+    y += LINE + 20;
+    for (i = 0; i < 6; i++) {
+        if (v->lines[i] != NULL) {
+            txt(fb, pal, MARGIN + 20, y, i == 0 ? pal->text : pal->dim, v->lines[i]);
+        }
+        y += LINE + 4;
+    }
+    if (v->status != NULL) {
+        txt(fb, pal, MARGIN + 20, BAR_H + 12 + ch - LINE - 12, pal->value, v->status);
+    }
+    hs_fb_fill(fb, 0, fb->h - FOOT_H, fb->w, FOOT_H, pal->bar);
+    hs_fb_fill(fb, 0, fb->h - FOOT_H, fb->w, 2, pal->border);
+    x = MARGIN;
+    x += txt(fb, pal, x, fb->h - FOOT_H + 12, pal->accent, "B");
+    (void)txt(fb, pal, x, fb->h - FOOT_H + 12, pal->text, " Done (eject on the PC first)");
 }
