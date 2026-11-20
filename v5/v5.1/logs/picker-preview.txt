@@ -1,0 +1,4 @@
+===== picker preview =====
+HandshakeOS v4-full scanout: headless XRGB8888 640x480
+HandshakeOS v4-full scanout: headless XRGB8888 640x480
+PICKER rc=0 (host+qemu byte-identical when 0)

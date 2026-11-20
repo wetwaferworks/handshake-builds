@@ -1,0 +1,9 @@
+Image Name:   HandshakeOS initramfs
+Created:      Thu Nov 19 22:33:38 2026
+Image Type:   AArch64 Linux RAMDisk Image (gzip compressed)
+Data Size:    1158557 Bytes = 1131.40 KiB = 1.10 MiB
+Load Address: 00000000
+Entry Point:  00000000
+fsck.fat 4.2 (2021-01-31)
+/workspace/scratch/handshakeos/builds/v4-multi/.p1.fat: 16 files, 32711/250012 clusters
+PACK OK

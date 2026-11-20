@@ -1,0 +1,22 @@
+===== HOST handshake-test 20x =====
+PASS  host-01  rc=0  t=1.114s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-02  rc=0  t=1.128s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-03  rc=0  t=1.112s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-04  rc=0  t=1.337s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-05  rc=0  t=1.278s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-06  rc=0  t=1.225s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-07  rc=0  t=1.218s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-08  rc=0  t=1.214s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-09  rc=0  t=1.151s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-10  rc=0  t=1.133s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-11  rc=0  t=1.146s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-12  rc=0  t=1.133s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-13  rc=0  t=1.130s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-14  rc=0  t=1.123s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-15  rc=0  t=1.360s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-16  rc=0  t=1.278s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-17  rc=0  t=1.207s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-18  rc=0  t=1.131s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-19  rc=0  t=1.128s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-20  rc=0  t=1.119s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+HOST_HANDSHAKE 20/20

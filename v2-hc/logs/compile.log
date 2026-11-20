@@ -1,0 +1,63 @@
+===== HOST compile =====
+  [host] --allow-runtime src/handshake.c -> /workspace/scratch/handshakeos/builds/v2-hc/host/handshake.o
+--allow-runtime  src/handshake.c
+  [host] --allow-runtime src/fb.c -> /workspace/scratch/handshakeos/builds/v2-hc/host/fb.o
+--allow-runtime  src/fb.c
+  [host] --profile=component src/ui.c -> /workspace/scratch/handshakeos/builds/v2-hc/host/ui.o
+--profile=component  src/ui.c
+  [host] --allow-runtime src/input.c -> /workspace/scratch/handshakeos/builds/v2-hc/host/input.o
+--allow-runtime  src/input.c
+  [host] --profile=component src/theme.c -> /workspace/scratch/handshakeos/builds/v2-hc/host/theme.o
+--profile=component  src/theme.c
+  [host] --profile=component src/font.c -> /workspace/scratch/handshakeos/builds/v2-hc/host/font.o
+--profile=component  src/font.c
+  [host] --profile=component src/pngenc.c -> /workspace/scratch/handshakeos/builds/v2-hc/host/pngenc.o
+--profile=component  src/pngenc.c
+  [host] --allow-runtime src/battery.c -> /workspace/scratch/handshakeos/builds/v2-hc/host/battery.o
+--allow-runtime  src/battery.c
+  [host] --profile=component src/scoreboard.c -> /workspace/scratch/handshakeos/builds/v2-hc/host/scoreboard.o
+--profile=component  src/scoreboard.c
+  [host] --profile=component src/gb_emu.c -> /workspace/scratch/handshakeos/builds/v2-hc/host/gb_emu.o
+--profile=component  src/gb_emu.c
+  [host] --allow-runtime src/init.c -> /workspace/scratch/handshakeos/builds/v2-hc/host/init.o
+--allow-runtime  src/init.c
+  [host] --allow-runtime src/gb_host.c -> /workspace/scratch/handshakeos/builds/v2-hc/host/gb_host.o
+--allow-runtime  src/gb_host.c
+  [host] --profile=component third_party/minigb_apu/minigb_apu.c -> /workspace/scratch/handshakeos/builds/v2-hc/host/minigb_apu.o
+--profile=component  third_party/minigb_apu/minigb_apu.c
+  [host] --allow-runtime tests/test_handshake.c -> /workspace/scratch/handshakeos/builds/v2-hc/host/test_handshake.o
+--allow-runtime  tests/test_handshake.c
+  [host] --profile=component tests/bench_jitter.c -> /workspace/scratch/handshakeos/builds/v2-hc/host/bench_jitter.o
+--profile=component  tests/bench_jitter.c
+  [host] --profile=component tests/test_gb_handshake.c -> /workspace/scratch/handshakeos/builds/v2-hc/host/test_gb_handshake.o
+--profile=component  tests/test_gb_handshake.c
+===== AARCH64 compile =====
+  [aarch64] --allow-runtime src/handshake.c -> /workspace/scratch/handshakeos/builds/v2-hc/aarch64/handshake.o
+  [aarch64] --allow-runtime src/fb.c -> /workspace/scratch/handshakeos/builds/v2-hc/aarch64/fb.o
+  [aarch64] --profile=component src/ui.c -> /workspace/scratch/handshakeos/builds/v2-hc/aarch64/ui.o
+  [aarch64] --allow-runtime src/input.c -> /workspace/scratch/handshakeos/builds/v2-hc/aarch64/input.o
+  [aarch64] --profile=component src/theme.c -> /workspace/scratch/handshakeos/builds/v2-hc/aarch64/theme.o
+  [aarch64] --profile=component src/font.c -> /workspace/scratch/handshakeos/builds/v2-hc/aarch64/font.o
+  [aarch64] --profile=component src/pngenc.c -> /workspace/scratch/handshakeos/builds/v2-hc/aarch64/pngenc.o
+  [aarch64] --allow-runtime src/battery.c -> /workspace/scratch/handshakeos/builds/v2-hc/aarch64/battery.o
+  [aarch64] --profile=component src/scoreboard.c -> /workspace/scratch/handshakeos/builds/v2-hc/aarch64/scoreboard.o
+  [aarch64] --profile=component src/gb_emu.c -> /workspace/scratch/handshakeos/builds/v2-hc/aarch64/gb_emu.o
+  [aarch64] --allow-runtime src/init.c -> /workspace/scratch/handshakeos/builds/v2-hc/aarch64/init.o
+  [aarch64] --allow-runtime src/gb_host.c -> /workspace/scratch/handshakeos/builds/v2-hc/aarch64/gb_host.o
+  [aarch64] --profile=component third_party/minigb_apu/minigb_apu.c -> /workspace/scratch/handshakeos/builds/v2-hc/aarch64/minigb_apu.o
+  [aarch64] --allow-runtime tests/test_handshake.c -> /workspace/scratch/handshakeos/builds/v2-hc/aarch64/test_handshake.o
+  [aarch64] --profile=component tests/bench_jitter.c -> /workspace/scratch/handshakeos/builds/v2-hc/aarch64/bench_jitter.o
+  [aarch64] --profile=component tests/test_gb_handshake.c -> /workspace/scratch/handshakeos/builds/v2-hc/aarch64/test_gb_handshake.o
+===== LINK host =====
+===== LINK aarch64 static =====
+BUILD LINK OK
+/workspace/scratch/handshakeos/builds/v2-hc/host/handshake-bench:      ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=dc574a6fea3ef5c5308a0ff5e8e06ed766f0bf25, for GNU/Linux 3.2.0, not stripped
+/workspace/scratch/handshakeos/builds/v2-hc/host/handshake-gb:         ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=ccbbdb5652bc7369039ed7576abf66fd42768625, for GNU/Linux 3.2.0, not stripped
+/workspace/scratch/handshakeos/builds/v2-hc/host/handshake-gb-test:    ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=8892e9c74c70170b81255ad8f2725fb189a5eb0d, for GNU/Linux 3.2.0, not stripped
+/workspace/scratch/handshakeos/builds/v2-hc/host/handshake-init:       ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=69670e369fe13782c0f5877e422b3d1f256bb733, for GNU/Linux 3.2.0, not stripped
+/workspace/scratch/handshakeos/builds/v2-hc/host/handshake-test:       ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=859fd56f673b71c013abbca38a6f545cb36889ac, for GNU/Linux 3.2.0, not stripped
+/workspace/scratch/handshakeos/builds/v2-hc/aarch64/handshake-bench:   ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=425ce3318f04be4f5ab1ea64daad0585d421d7e9, for GNU/Linux 3.7.0, not stripped
+/workspace/scratch/handshakeos/builds/v2-hc/aarch64/handshake-gb:      ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=603c44fdba28712a4e3bced96edf0ff13f410db6, for GNU/Linux 3.7.0, not stripped
+/workspace/scratch/handshakeos/builds/v2-hc/aarch64/handshake-gb-test: ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=f72c9b8aeab17a1aebbd0c57d8687799c6bb0f9e, for GNU/Linux 3.7.0, not stripped
+/workspace/scratch/handshakeos/builds/v2-hc/aarch64/handshake-init:    ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=ef413d0da17eb419ad5e8c5bb8ed68cd062a235c, for GNU/Linux 3.7.0, not stripped
+/workspace/scratch/handshakeos/builds/v2-hc/aarch64/handshake-test:    ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=b91ce1868de162489237cc9aa18d9388035e2298, for GNU/Linux 3.7.0, not stripped

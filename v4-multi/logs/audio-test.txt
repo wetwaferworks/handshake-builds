@@ -1,0 +1,8 @@
+===== audio unit (host + qemu) =====
+resample in=328800 out=482193 ratio=1.46652 want=1.46650 max_step=1
+channel mirror errors=0
+ALL AUDIO TESTS PASSED
+resample in=328800 out=482193 ratio=1.46652 want=1.46650 max_step=1
+channel mirror errors=0
+ALL AUDIO TESTS PASSED
+AUDIO host_rc=0 qemu_rc=0 ok=1

@@ -1,0 +1,10 @@
+===== HOST handshake-gb-test =====
+handshake-gb-test  rom=roms/handshake-demo.gb  frames=90  runs=100
+golden ledger=5a45548614037e20 frame=33e3294d476b16a6 audio=8c6078dd78fa5589 epoch=90 xruns=0 overruns=0
+100/100 identical ledger+frame+audio
+fairness:  1=ok  2=ok  3=ok  4=ok
+scaler 640x480 upsampled=eae8ccb7657d3c25 nearest=e123eeea26ad0aa5 lut_bad=0 zero_edge_px=0
+wrote /workspace/scratch/handshakeos/builds/v3-play/gb-640x480-host-scaler.png
+SCALER 640x480 EDGE-TO-EDGE PASS
+ALL GB TESTS PASSED
+HOST_GB 1

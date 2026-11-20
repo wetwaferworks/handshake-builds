@@ -1,0 +1,11 @@
+TheWorkstation copy (2026-11-19 23:41 ET). All 6 destinations were absent beforehand; nothing was overwritten.
+D: FEL staging folder: CopyFromBox refuses D: (outside local-exec root), so files went to C:\ first, then PowerShell Copy-Item (skip-if-exists). The temp folder for the .scr was removed.
+GrokBot-Transfer\handshakeos-rg35xx-2024-v4-full.img.zst  17000717  ff25bf73b74bf7b8f77c220cc851e070881e72a96af18fb7070acbe4f27692ed  MATCH
+GrokBot-Transfer\handshakeos-initramfs-v4-full.uimg        1349959  3b6764028908e8571e92e0ae783295b340a16d35432cd1450e1e336f81da6a4c  MATCH
+GrokBot-Transfer\07-ramboot-v4-full.cmd                       634  0973e695425ddb13d1b14341384936dc1903f14d11526bb246e58d454234f4fb  MATCH
+D-fel\handshakeos-initramfs-v4-full.uimg                   1349959  3b6764028908e8571e92e0ae783295b340a16d35432cd1450e1e336f81da6a4c  MATCH
+D-fel\boot-v4-full-fel.scr                                     299  1d3d48779a709b82911ef0c2e63e880a58c83075c3a57622c4aa39eee114e9f0  MATCH
+D-fel\07-ramboot-v4-full.cmd                                   634  0973e695425ddb13d1b14341384936dc1903f14d11526bb246e58d454234f4fb  MATCH
+Proven FEL inputs on D: unchanged: u-boot 17ce4fb5..., dtb 814740b1..., Image-v3-audio.gz c206e1bc...
+pchie_nanoquant.exe (build-nq) 303104 B 2026-11-19T11:37:07 9aac7d40...1c40  UNCHANGED
+pchie_nanoquant.exe (build-rf-cuda) 401920 B 2026-11-19T12:56:00 9855ddf5...021f  UNCHANGED

@@ -1,0 +1,71 @@
+===== HOST handshake-test 20x =====
+PASS  host-01  rc=0  t=0.714s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-02  rc=0  t=0.693s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-03  rc=0  t=0.710s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-04  rc=0  t=0.706s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-05  rc=0  t=0.715s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-06  rc=0  t=0.704s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-07  rc=0  t=0.718s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-08  rc=0  t=0.712s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-09  rc=0  t=0.678s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-10  rc=0  t=0.700s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-11  rc=0  t=0.670s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-12  rc=0  t=0.654s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-13  rc=0  t=0.648s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-14  rc=0  t=0.664s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-15  rc=0  t=0.673s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-16  rc=0  t=0.676s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-17  rc=0  t=0.686s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-18  rc=0  t=0.683s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-19  rc=0  t=0.701s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-20  rc=0  t=0.703s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+HOST_HANDSHAKE 20/20
+===== ARM64 qemu handshake-test 15x =====
+PASS  qemu-01  rc=0  t=1.203s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-02  rc=0  t=1.195s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-03  rc=0  t=1.221s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-04  rc=0  t=1.150s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-05  rc=0  t=1.138s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-06  rc=0  t=1.204s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-07  rc=0  t=1.202s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-08  rc=0  t=1.130s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-09  rc=0  t=1.202s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-10  rc=0  t=1.207s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-11  rc=0  t=1.141s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-12  rc=0  t=1.143s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-13  rc=0  t=1.185s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-14  rc=0  t=1.155s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-15  rc=0  t=1.224s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+QEMU_HANDSHAKE 15/15
+===== ARM64 qemu handshake-gb-test =====
+handshake-gb-test  rom=roms/handshake-demo.gb  frames=90  runs=100
+golden ledger=5a45548614037e20 frame=33e3294d476b16a6 audio=8c6078dd78fa5589 epoch=90 xruns=0 overruns=0
+100/100 identical ledger+frame+audio
+fairness:  1=ok  2=ok  3=ok  4=ok
+scaler 640x480 upsampled=eae8ccb7657d3c25 nearest=e123eeea26ad0aa5 lut_bad=0 zero_edge_px=0
+wrote /workspace/scratch/handshakeos/builds/v3-play/gb-640x480-qemu-scaler.png
+SCALER 640x480 EDGE-TO-EDGE PASS
+ALL GB TESTS PASSED
+QEMU_GB PASS  rc=0  t=6.688s
+===== HOST handshake-gb-test =====
+HOST_GB 1
+===== games smoke (host + qemu) =====
+  rom[0] Alpha                        /tmp/hs-games-test-CXTSLb/ROMS/GB/Alpha.GB
+  rom[1] middle                       /tmp/hs-games-test-CXTSLb/ROMS/middle.gb
+  rom[2] zebra quest                  /tmp/hs-games-test-CXTSLb/ROMS/GB/zebra quest.gb
+  rom[3] Handshake Demo (built-in)    roms/handshake-demo.gb
+sav round trip /tmp/hs-games-test-CXTSLb/ROMS/GB/Alpha.sav (8192 B) MATCH
+live joypad: idle=cfcb7bcd241d81a5 start=5a9ecbd2f6fab346 RESPONDS
+ALL GAMES TESTS PASSED
+  rom[0] Alpha                        /tmp/hs-games-test-SCfd5F/ROMS/GB/Alpha.GB
+  rom[1] middle                       /tmp/hs-games-test-SCfd5F/ROMS/middle.gb
+  rom[2] zebra quest                  /tmp/hs-games-test-SCfd5F/ROMS/GB/zebra quest.gb
+  rom[3] Handshake Demo (built-in)    roms/handshake-demo.gb
+sav round trip /tmp/hs-games-test-SCfd5F/ROMS/GB/Alpha.sav (8192 B) MATCH
+live joypad: idle=cfcb7bcd241d81a5 start=5a9ecbd2f6fab346 RESPONDS
+ALL GAMES TESTS PASSED
+GAMES host_rc=0 qemu_rc=0 ok=1
+===== SUMMARY =====
+HOST 20/20  QEMU 15/15  QEMU_GB 1  HOST_GB 1  GAMES 1
+GATE_PASS
+EXIT 0

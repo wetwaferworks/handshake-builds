@@ -1,0 +1,60 @@
+===== HOST handshake-test 20x =====
+PASS  host-01  rc=0  t=0.616s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-02  rc=0  t=0.603s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-03  rc=0  t=0.598s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-04  rc=0  t=0.599s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-05  rc=0  t=0.577s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-06  rc=0  t=0.593s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-07  rc=0  t=0.579s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-08  rc=0  t=0.589s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-09  rc=0  t=0.591s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-10  rc=0  t=0.599s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-11  rc=0  t=0.592s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-12  rc=0  t=0.586s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-13  rc=0  t=0.590s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-14  rc=0  t=0.599s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-15  rc=0  t=0.586s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-16  rc=0  t=0.581s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-17  rc=0  t=0.581s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-18  rc=0  t=0.598s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-19  rc=0  t=0.590s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  host-20  rc=0  t=0.584s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+HOST_HANDSHAKE 20/20
+===== ARM64 qemu handshake-test 15x =====
+PASS  qemu-01  rc=0  t=1.005s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-02  rc=0  t=1.005s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-03  rc=0  t=1.026s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-04  rc=0  t=0.997s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-05  rc=0  t=1.004s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-06  rc=0  t=0.981s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-07  rc=0  t=1.005s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-08  rc=0  t=0.988s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-09  rc=0  t=0.980s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-10  rc=0  t=0.986s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-11  rc=0  t=1.013s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-12  rc=0  t=0.998s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-13  rc=0  t=1.004s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-14  rc=0  t=0.999s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-15  rc=0  t=1.015s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+QEMU_HANDSHAKE 15/15
+===== HOST handshake-gb-test =====
+HOST_GB 1 rc=0
+===== ARM64 qemu handshake-gb-test =====
+QEMU_GB 1 rc=0
+===== games smoke (host + qemu) =====
+GAMES host_rc=0 qemu_rc=0 ok=1
+===== audio unit (host + qemu) =====
+AUDIO host_rc=0 qemu_rc=0 ok=1
+===== test_multi_emu (host + ARM64 qemu) =====
+MULTI host_rc=0 qemu_rc=0 cross_arch_lines_identical=1 (35 lines) png_identical=18/18 ok=1
+===== handshake-init --multi-selftest (host + qemu) =====
+SELFTEST host_rc=0 qemu_rc=0 identical=1 ok=1
+===== picker preview =====
+PICKER rc=0 (host+qemu byte-identical when 0)
+===== regression + core-suite equivalence =====
+V4MULTI_2D_LINES identical=1 (12 lines)  V4MULTI_SELFTEST_2D identical=1 (6 lines)
+EQUIVALENCE ok=1
+===== SUMMARY =====
+HOST 20/20  QEMU 15/15  HOST_GB 1  QEMU_GB 1  GAMES 1  AUDIO 1  MULTI 1  SELFTEST 1  PICKER 0  EQUIV 1
+GATE_PASS
+EXIT 0

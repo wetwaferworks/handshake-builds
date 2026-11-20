@@ -1,0 +1,7 @@
+v1-firstboot files=8 sha256=same stat(size+mtime)=same
+v2-bigtext files=15 sha256=same stat(size+mtime)=same
+v2-stable-sd files=12 sha256=same stat(size+mtime)=same
+v2-hc files=63 sha256=same stat(size+mtime)=same
+v3-play files=116 sha256=same stat(size+mtime)=same
+v3-audio files=144 sha256=same stat(size+mtime)=same
+v4-multi files=247 sha256=same stat(size+mtime)=same

@@ -1,0 +1,15 @@
+REGISTRY 7 slots, 5 linked (GB GBC GBA SNES GEN), PSX/N64 -> "Core coming in v4-full"
+MULTI sys=GB         frames=90 ledger=0fce61fa117d21b9 video=2f73e68538d37445 audio=2af60abacd8d61a5 ring=5eab10dc1dd7d033 pcm=72276 nonzero=144552 ring_frames=72276 resampled=72276 dropped=0 edge_black=0 black_rows=0 black_cols=0 colours=2 freezes=0
+MULTI-NEAREST sys=GB         video=23d521a9ec767525 edge_black=0
+MULTI sys=GBC        frames=90 ledger=6a282dddcf1722ae video=afe9abf5f771d18d audio=6a72b8aa6a940b95 ring=65b3ad049e17d365 pcm=72534 nonzero=145056 ring_frames=72534 resampled=72534 dropped=0 edge_black=0 black_rows=0 black_cols=0 colours=37 freezes=0
+MULTI-NEAREST sys=GBC        video=93b7d52ef3cfde05 edge_black=0
+MULTI sys=GBA        frames=90 ledger=c1bf4440af9166e0 video=7052cc1187e5d2e5 audio=87721e09801d4c95 ring=5a8825dff354852d pcm=72329 nonzero=144644 ring_frames=72329 resampled=72329 dropped=0 edge_black=0 black_rows=0 black_cols=0 colours=18 freezes=0
+MULTI-NEAREST sys=GBA        video=95563aa151740f77 edge_black=0
+MULTI sys=SNES       frames=90 ledger=f0cfd29a41f789cf video=5f11da7bfac428f6 audio=2c872068cf70ad2f ring=1b26773296aa11ac pcm=71882 nonzero=142747 ring_frames=71882 resampled=71882 dropped=0 edge_black=0 black_rows=0 black_cols=0 colours=400 freezes=0
+MULTI-NEAREST sys=SNES       video=1a1d6852c85a061c edge_black=0
+MULTI sys=SNES-MODE7 frames=90 ledger=f46a75906889dbed video=5ad931c793859504 audio=08623b931f1a0165 ring=e71a73d3b6338735 pcm=71882 nonzero=0 ring_frames=71882 resampled=71882 dropped=0 edge_black=0 black_rows=0 black_cols=0 colours=495 freezes=0
+MULTI-NEAREST sys=SNES-MODE7 video=dda6fa670bbe44c0 edge_black=0
+MULTI sys=GENESIS    frames=90 ledger=0fa521351bfd4371 video=8830e52ce6d59225 audio=b3369fc1cd277f91 ring=16bb537bdfc24bd5 pcm=72092 nonzero=143438 ring_frames=72092 resampled=72092 dropped=0 edge_black=0 black_rows=0 black_cols=0 colours=132 freezes=0
+MULTI-NEAREST sys=GENESIS    video=e381abfb52739185 edge_black=0
+SAV snes sram=8192 B atomic round trip OK
+MULTI-CHAIN 3fe8fc4e0e025efb systems=6

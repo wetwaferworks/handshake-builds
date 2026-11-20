@@ -1,0 +1,14 @@
+# handshake-builds (push prep, REVIEW.md): ship scripts, manifests, evidence, final images via LFS
+*/tmp/
+**/staging/
+*/host/
+*/aarch64/*.o
+*/aarch64/hs_rt/
+*/v5.1/host/
+*/v5.1/aarch64/*.o
+*/v5.1/tmp/
+*/v5.1/staging/
+linux-*/
+*/linux-*/
+*.raw
+.p1.fat

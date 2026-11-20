@@ -1,0 +1,24 @@
+hs_rt: free() of invalid pointer
+hs_rt: qsort size overflow
+hs_rt: qsort out of memory
+*** buffer overflow detected ***: terminated
+*** buffer overflow detected ***: terminated
+*** buffer overflow detected ***: terminated
+*** buffer overflow detected ***: terminated
+*** buffer overflow detected ***: terminated
+*** buffer overflow detected ***: terminated
+*** buffer overflow detected ***: terminated
+hs_rt: unsupported printf conversion
+*** stack smashing detected ***: terminated
+hs_rt: free() of invalid pointer
+hs_rt: qsort size overflow
+hs_rt: qsort out of memory
+*** buffer overflow detected ***: terminated
+*** buffer overflow detected ***: terminated
+*** buffer overflow detected ***: terminated
+*** buffer overflow detected ***: terminated
+*** buffer overflow detected ***: terminated
+*** buffer overflow detected ***: terminated
+*** buffer overflow detected ***: terminated
+hs_rt: unsupported printf conversion
+*** stack smashing detected ***: terminated

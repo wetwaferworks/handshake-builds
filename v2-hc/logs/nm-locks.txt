@@ -1,0 +1,36 @@
+======= nm lock-symbol scan =======
+--- host objects ---
+CLEAN  battery.o
+CLEAN  bench_jitter.o
+CLEAN  fb.o
+CLEAN  font.o
+CLEAN  gb_emu.o
+CLEAN  gb_host.o
+CLEAN  handshake.o
+CLEAN  init.o
+CLEAN  input.o
+CLEAN  minigb_apu.o
+CLEAN  pngenc.o
+CLEAN  scoreboard.o
+CLEAN  test_gb_handshake.o
+CLEAN  test_handshake.o
+CLEAN  theme.o
+CLEAN  ui.o
+--- aarch64 objects ---
+CLEAN  battery.o
+CLEAN  bench_jitter.o
+CLEAN  fb.o
+CLEAN  font.o
+CLEAN  gb_emu.o
+CLEAN  gb_host.o
+CLEAN  handshake.o
+CLEAN  init.o
+CLEAN  input.o
+CLEAN  minigb_apu.o
+CLEAN  pngenc.o
+CLEAN  scoreboard.o
+CLEAN  test_gb_handshake.o
+CLEAN  test_handshake.o
+CLEAN  theme.o
+CLEAN  ui.o
+NM_LOCK_HITS=0

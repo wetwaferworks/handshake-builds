@@ -1,0 +1,99 @@
+===== host compile =====
+PASS host --allow-runtime src/handshake.c
+PASS host --allow-runtime src/fb.c
+PASS host --profile=component src/ui.c
+PASS host --allow-runtime src/input.c
+PASS host --profile=component src/theme.c
+PASS host --profile=component src/font.c
+PASS host --profile=component src/pngenc.c
+PASS host --allow-runtime src/battery.c
+PASS host --profile=component src/scoreboard.c
+PASS host --profile=component src/gb_emu.c
+PASS host --profile=component src/gb_scale.c
+PASS host --allow-runtime src/games.c
+PASS host --allow-runtime src/play.c
+PASS host --allow-runtime src/init.c
+PASS host --allow-runtime src/gb_host.c
+PASS host --profile=component third_party/minigb_apu/minigb_apu.c
+PASS host --allow-runtime tests/test_handshake.c
+PASS host --profile=component tests/bench_jitter.c
+PASS host --profile=component tests/test_gb_handshake.c
+PASS host --allow-runtime tests/test_games.c
+===== aarch64 compile =====
+PASS aarch64 --allow-runtime src/handshake.c
+PASS aarch64 --allow-runtime src/fb.c
+PASS aarch64 --profile=component src/ui.c
+PASS aarch64 --allow-runtime src/input.c
+PASS aarch64 --profile=component src/theme.c
+PASS aarch64 --profile=component src/font.c
+PASS aarch64 --profile=component src/pngenc.c
+PASS aarch64 --allow-runtime src/battery.c
+PASS aarch64 --profile=component src/scoreboard.c
+PASS aarch64 --profile=component src/gb_emu.c
+PASS aarch64 --profile=component src/gb_scale.c
+PASS aarch64 --allow-runtime src/games.c
+PASS aarch64 --allow-runtime src/play.c
+PASS aarch64 --allow-runtime src/init.c
+PASS aarch64 --allow-runtime src/gb_host.c
+PASS aarch64 --profile=component third_party/minigb_apu/minigb_apu.c
+PASS aarch64 --allow-runtime tests/test_handshake.c
+PASS aarch64 --profile=component tests/bench_jitter.c
+PASS aarch64 --profile=component tests/test_gb_handshake.c
+PASS aarch64 --allow-runtime tests/test_games.c
+===== LINK =====
+BUILD LINK OK
+/workspace/scratch/handshakeos/builds/v3-play/host/handshake-bench:         ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=dc574a6fea3ef5c5308a0ff5e8e06ed766f0bf25, for GNU/Linux 3.2.0, not stripped
+/workspace/scratch/handshakeos/builds/v3-play/host/handshake-games-test:    ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=ee8b8567b0d9fe2e5c3a54e458018dccdfc290b9, for GNU/Linux 3.2.0, not stripped
+/workspace/scratch/handshakeos/builds/v3-play/host/handshake-gb:            ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=6e4e2de2e25afc121f9392436c210579348e812e, for GNU/Linux 3.2.0, not stripped
+/workspace/scratch/handshakeos/builds/v3-play/host/handshake-gb-test:       ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=222b871ca21b98b20b6e56f41da03f170af872d7, for GNU/Linux 3.2.0, not stripped
+/workspace/scratch/handshakeos/builds/v3-play/host/handshake-init:          ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=6fa2e34826f74581cb49b1007ee1989b63af80e4, for GNU/Linux 3.2.0, not stripped
+/workspace/scratch/handshakeos/builds/v3-play/host/handshake-test:          ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=859fd56f673b71c013abbca38a6f545cb36889ac, for GNU/Linux 3.2.0, not stripped
+/workspace/scratch/handshakeos/builds/v3-play/aarch64/handshake-bench:      ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=425ce3318f04be4f5ab1ea64daad0585d421d7e9, for GNU/Linux 3.7.0, not stripped
+/workspace/scratch/handshakeos/builds/v3-play/aarch64/handshake-games-test: ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=5a424cefcf05ec92c3dfd03585ff875bd7b6519e, for GNU/Linux 3.7.0, not stripped
+/workspace/scratch/handshakeos/builds/v3-play/aarch64/handshake-gb:         ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=8bcb62ee4d346b14a6d0de6ea155762c933e04c5, for GNU/Linux 3.7.0, not stripped
+/workspace/scratch/handshakeos/builds/v3-play/aarch64/handshake-gb-test:    ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=c67335c8b615b70a1052aa5a3954764151b11a11, for GNU/Linux 3.7.0, not stripped
+/workspace/scratch/handshakeos/builds/v3-play/aarch64/handshake-init:       ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=ea61644960dbf32d082f49b1a2b0bfddb1250f08, for GNU/Linux 3.7.0, not stripped
+/workspace/scratch/handshakeos/builds/v3-play/aarch64/handshake-test:       ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=b91ce1868de162489237cc9aa18d9388035e2298, for GNU/Linux 3.7.0, not stripped
+===== ELF audit (hc --audit-elf, per profile) =====
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/handshake.o (0 banned symbols, profile=runtime)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/fb.o (0 banned symbols, profile=runtime)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/ui.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/input.o (0 banned symbols, profile=runtime)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/theme.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/font.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/pngenc.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/battery.o (0 banned symbols, profile=runtime)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/scoreboard.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/gb_emu.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/gb_scale.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/games.o (0 banned symbols, profile=runtime)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/play.o (0 banned symbols, profile=runtime)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/init.o (0 banned symbols, profile=runtime)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/gb_host.o (0 banned symbols, profile=runtime)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/minigb_apu.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/test_handshake.o (0 banned symbols, profile=runtime)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/bench_jitter.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/test_gb_handshake.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/host/test_games.o (0 banned symbols, profile=runtime)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/handshake.o (0 banned symbols, profile=runtime)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/fb.o (0 banned symbols, profile=runtime)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/ui.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/input.o (0 banned symbols, profile=runtime)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/theme.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/font.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/pngenc.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/battery.o (0 banned symbols, profile=runtime)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/scoreboard.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/gb_emu.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/gb_scale.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/games.o (0 banned symbols, profile=runtime)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/play.o (0 banned symbols, profile=runtime)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/init.o (0 banned symbols, profile=runtime)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/gb_host.o (0 banned symbols, profile=runtime)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/minigb_apu.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/test_handshake.o (0 banned symbols, profile=runtime)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/bench_jitter.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/test_gb_handshake.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v3-play/aarch64/test_games.o (0 banned symbols, profile=runtime)
+NM_SUMMARY objects=40 dirty=0
+STRINGS_SUMMARY hits=0

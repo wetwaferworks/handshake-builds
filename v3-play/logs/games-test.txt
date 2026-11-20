@@ -1,0 +1,16 @@
+===== games smoke (host + qemu) =====
+  rom[0] Alpha                        /tmp/hs-games-test-CXTSLb/ROMS/GB/Alpha.GB
+  rom[1] middle                       /tmp/hs-games-test-CXTSLb/ROMS/middle.gb
+  rom[2] zebra quest                  /tmp/hs-games-test-CXTSLb/ROMS/GB/zebra quest.gb
+  rom[3] Handshake Demo (built-in)    roms/handshake-demo.gb
+sav round trip /tmp/hs-games-test-CXTSLb/ROMS/GB/Alpha.sav (8192 B) MATCH
+live joypad: idle=cfcb7bcd241d81a5 start=5a9ecbd2f6fab346 RESPONDS
+ALL GAMES TESTS PASSED
+  rom[0] Alpha                        /tmp/hs-games-test-SCfd5F/ROMS/GB/Alpha.GB
+  rom[1] middle                       /tmp/hs-games-test-SCfd5F/ROMS/middle.gb
+  rom[2] zebra quest                  /tmp/hs-games-test-SCfd5F/ROMS/GB/zebra quest.gb
+  rom[3] Handshake Demo (built-in)    roms/handshake-demo.gb
+sav round trip /tmp/hs-games-test-SCfd5F/ROMS/GB/Alpha.sav (8192 B) MATCH
+live joypad: idle=cfcb7bcd241d81a5 start=5a9ecbd2f6fab346 RESPONDS
+ALL GAMES TESTS PASSED
+GAMES host_rc=0 qemu_rc=0 ok=1

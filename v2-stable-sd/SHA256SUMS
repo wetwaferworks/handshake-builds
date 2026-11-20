@@ -1,0 +1,15 @@
+# HandshakeOS RG35XX 2024 v2-stable SD image — SHA-256
+# Built 2026-11-19, America/New_York, on the box only (not flashed).
+
+68dcc3093ef4c4e3ff4b85383bc1ab5c363ad2f591ef1f95573ba3bffb68d4b3  handshakeos-rg35xx-2024-v2-stable.img
+756374bcf7c1f76bcb0c18ddf38ad0f701f367988274724893ec80824fead3c7  handshakeos-rg35xx-2024-v2-stable.img.zst
+
+# Staged payloads (byte-identical to the files inside the image FAT32 and to the proven v2 FEL artifacts)
+17ce4fb5ce831b9f5c656b508e18e65ce1e184451ae412e1fedaf82a0f2d8d8d  staging/u-boot-sunxi-with-spl.bin
+df4093235c8ef6d826960d869923ae7a75d6bcb598e5d53f7a24d08e0ec46f2b  staging/Image.gz
+814740b1b25b160f1109febe66e0ec26bf261fc169368126612bcc40113d4547  staging/sun50i-h700-anbernic-rg35xx-2024.dtb
+df58ec87131e2aecbf9caecd2604a6c4eeff8dafc647c54e401eea4b01cdd065  staging/handshakeos-initramfs-v2.uimg
+faf4047a37bde1a83e3e737e1ab3d7187cf322c0ac7b0d0cfeba49b98f72c5dd  staging/boot.scr
+721e718ae1ddc3030d1f9e36ee663e04df0ba0b068eac4fd42ed2b03c4012b0b  staging/boot.cmd
+cd55947157124765c72eecd23109d54b41c4be4186f5a0719b500026bee4a702  staging/README.txt
+cd55947157124765c72eecd23109d54b41c4be4186f5a0719b500026bee4a702  staging/ROMS/README.txt

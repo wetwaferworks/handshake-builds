@@ -1,0 +1,56 @@
+=== host handshake-test (Thu Nov 19 18:37:30 EST 2026) ===
+SCOREBOARD 100/100  workers=3  hash=5f44cefa72e8ac19  epoch=128  monatomic=480
+  jitter (phase open-to-commit)  p50=16352 ns  p95=25805 ns  p99=220130 ns  max=358717 ns  overruns=0
+FAIRNESS  workers=1  hash=5f44cefa72e8ac19  MATCH
+FAIRNESS  workers=2  hash=5f44cefa72e8ac19  MATCH
+FAIRNESS  workers=3  hash=5f44cefa72e8ac19  MATCH
+FAIRNESS  workers=4  hash=5f44cefa72e8ac19  MATCH
+ALL TESTS PASSED
+=== host handshake-gb-test ===
+handshake-gb-test  rom=roms/handshake-demo.gb  frames=90  runs=100
+golden ledger=5a45548614037e20 frame=33e3294d476b16a6 audio=8c6078dd78fa5589 epoch=90 xruns=0 overruns=0
+100/100 identical ledger+frame+audio
+fairness:  1=ok  2=ok  3=ok  4=ok
+ALL GB TESTS PASSED
+=== qemu-aarch64-static handshake-test ===
+SCOREBOARD 100/100  workers=3  hash=5f44cefa72e8ac19  epoch=128  monatomic=480
+  jitter (phase open-to-commit)  p50=12347 ns  p95=19297 ns  p99=284961 ns  max=379816 ns  overruns=0
+FAIRNESS  workers=1  hash=5f44cefa72e8ac19  MATCH
+FAIRNESS  workers=2  hash=5f44cefa72e8ac19  MATCH
+FAIRNESS  workers=3  hash=5f44cefa72e8ac19  MATCH
+FAIRNESS  workers=4  hash=5f44cefa72e8ac19  MATCH
+ALL TESTS PASSED
+=== qemu-aarch64-static handshake-gb-test ===
+handshake-gb-test  rom=roms/handshake-demo.gb  frames=90  runs=100
+golden ledger=5a45548614037e20 frame=33e3294d476b16a6 audio=8c6078dd78fa5589 epoch=90 xruns=0 overruns=0
+100/100 identical ledger+frame+audio
+fairness:  1=ok  2=ok  3=ok  4=ok
+ALL GB TESTS PASSED
+=== handshake-init --serial-scoreboard, workers 1..4 (host + qemu) ===
+host w=1: HandshakeOS v2 scanout: headless XRGB8888 640x480 ledger 5f44cefa72e8ac19  epoch 128  workers 1  p50 8562 ns  overruns 0  ======== HandshakeOS PID 2106829 ======== Timing Handshake 3+1 ledger 5f44cefa72e8ac19 epoch  128 workers 1 overruns 0 GB rom roms/handshake-demo.gb GB ledger 5a45548614037e20 GB frame  33e3294d476b16a6 GB audio  8c6078dd78fa5589 GB xruns  0 GB overruns 0 ================================ 
+qemu w=1: HandshakeOS v2 scanout: headless XRGB8888 640x480 ledger 5f44cefa72e8ac19  epoch 128  workers 1  p50 10565 ns  overruns 1  ======== HandshakeOS PID 2106834 ======== Timing Handshake 3+1 ledger 5f44cefa72e8ac19 epoch  128 workers 1 overruns 1 GB rom roms/handshake-demo.gb GB ledger 5a45548614037e20 GB frame  33e3294d476b16a6 GB audio  8c6078dd78fa5589 GB xruns  0 GB overruns 0 ================================ 
+host w=2: HandshakeOS v2 scanout: headless XRGB8888 640x480 ledger 5f44cefa72e8ac19  epoch 128  workers 2  p50 9160 ns  overruns 0  ======== HandshakeOS PID 2106840 ======== Timing Handshake 3+1 ledger 5f44cefa72e8ac19 epoch  128 workers 2 overruns 0 GB rom roms/handshake-demo.gb GB ledger 5a45548614037e20 GB frame  33e3294d476b16a6 GB audio  8c6078dd78fa5589 GB xruns  0 GB overruns 0 ================================ 
+qemu w=2: HandshakeOS v2 scanout: headless XRGB8888 640x480 ledger 5f44cefa72e8ac19  epoch 128  workers 2  p50 11268 ns  overruns 0  ======== HandshakeOS PID 2106847 ======== Timing Handshake 3+1 ledger 5f44cefa72e8ac19 epoch  128 workers 2 overruns 0 GB rom roms/handshake-demo.gb GB ledger 5a45548614037e20 GB frame  33e3294d476b16a6 GB audio  8c6078dd78fa5589 GB xruns  0 GB overruns 0 ================================ 
+host w=3: HandshakeOS v2 scanout: headless XRGB8888 640x480 ledger 5f44cefa72e8ac19  epoch 128  workers 3  p50 9245 ns  overruns 0  ======== HandshakeOS PID 2106855 ======== Timing Handshake 3+1 ledger 5f44cefa72e8ac19 epoch  128 workers 3 overruns 0 GB rom roms/handshake-demo.gb GB ledger 5a45548614037e20 GB frame  33e3294d476b16a6 GB audio  8c6078dd78fa5589 GB xruns  0 GB overruns 0 ================================ 
+qemu w=3: HandshakeOS v2 scanout: headless XRGB8888 640x480 ledger 5f44cefa72e8ac19  epoch 128  workers 3  p50 12022 ns  overruns 0  ======== HandshakeOS PID 2106864 ======== Timing Handshake 3+1 ledger 5f44cefa72e8ac19 epoch  128 workers 3 overruns 0 GB rom roms/handshake-demo.gb GB ledger 5a45548614037e20 GB frame  33e3294d476b16a6 GB audio  8c6078dd78fa5589 GB xruns  0 GB overruns 0 ================================ 
+host w=4: HandshakeOS v2 scanout: headless XRGB8888 640x480 ledger 5f44cefa72e8ac19  epoch 128  workers 4  p50 10260 ns  overruns 0  ======== HandshakeOS PID 2106874 ======== Timing Handshake 3+1 ledger 5f44cefa72e8ac19 epoch  128 workers 4 overruns 0 GB rom roms/handshake-demo.gb GB ledger 5a45548614037e20 GB frame  33e3294d476b16a6 GB audio  8c6078dd78fa5589 GB xruns  0 GB overruns 0 ================================ 
+qemu w=4: HandshakeOS v2 scanout: headless XRGB8888 640x480 ledger 5f44cefa72e8ac19  epoch 128  workers 4  p50 11726 ns  overruns 0  ======== HandshakeOS PID 2106885 ======== Timing Handshake 3+1 ledger 5f44cefa72e8ac19 epoch  128 workers 4 overruns 0 GB rom roms/handshake-demo.gb GB ledger 5a45548614037e20 GB frame  33e3294d476b16a6 GB audio  8c6078dd78fa5589 GB xruns  0 GB overruns 0 ================================ 
+=== FINAL clean-build recheck Thu Nov 19 18:39:41 EST 2026 ===
+FAIRNESS  workers=1  hash=5f44cefa72e8ac19  MATCH
+FAIRNESS  workers=2  hash=5f44cefa72e8ac19  MATCH
+FAIRNESS  workers=3  hash=5f44cefa72e8ac19  MATCH
+FAIRNESS  workers=4  hash=5f44cefa72e8ac19  MATCH
+ALL TESTS PASSED
+golden ledger=5a45548614037e20 frame=33e3294d476b16a6 audio=8c6078dd78fa5589 epoch=90 xruns=0 overruns=0
+100/100 identical ledger+frame+audio
+fairness:  1=ok  2=ok  3=ok  4=ok
+ALL GB TESTS PASSED
+FAIRNESS  workers=1  hash=5f44cefa72e8ac19  MATCH
+FAIRNESS  workers=2  hash=5f44cefa72e8ac19  MATCH
+FAIRNESS  workers=3  hash=5f44cefa72e8ac19  MATCH
+FAIRNESS  workers=4  hash=5f44cefa72e8ac19  MATCH
+ALL TESTS PASSED
+golden ledger=5a45548614037e20 frame=33e3294d476b16a6 audio=8c6078dd78fa5589 epoch=90 xruns=0 overruns=0
+100/100 identical ledger+frame+audio
+fairness:  1=ok  2=ok  3=ok  4=ok
+ALL GB TESTS PASSED

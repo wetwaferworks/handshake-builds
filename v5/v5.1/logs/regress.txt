@@ -1,0 +1,15 @@
+PID1_GUARD PASS faults=3 log_lines=3 boot_reentries=3 poweroff_calls=0 drivers_open=1 fault_ledger=527fa503de2cbf33
+PID1_GUARD PASS faults=3 log_lines=3 boot_reentries=3 poweroff_calls=0 drivers_open=1 fault_ledger=527fa503de2cbf33
+  ok   aligned_alloc(2^62, 64) -> NULL
+  ok   aligned_alloc(4096, SIZE_MAX-64) -> NULL
+  ok   aligned_alloc(256, 1000) aligned
+  ok   qsort sorts
+  ok   fopen w
+  ok   fwrite overflow -> 0
+  ok   fwrite 9 bytes
+  ok   fopen r
+  ok   fread overflow -> 0, dst untouched
+  ok   fread round trip
+  ok   calloc overflow -> NULL
+  ok   pthread_create/join
+HS_RT_REVIEW PASS fails=0

@@ -1,0 +1,5 @@
+======= LithoOS / ho.Os string check =======
+-- /workspace/scratch/handshakeos/builds/v2-hc/host/handshake-init --
+-- /workspace/scratch/handshakeos/builds/v2-hc/aarch64/handshake-init --
+-- /workspace/scratch/handshakeos/builds/v2-hc/host/handshake-gb --
+-- /workspace/scratch/handshakeos/builds/v2-hc/aarch64/handshake-gb --

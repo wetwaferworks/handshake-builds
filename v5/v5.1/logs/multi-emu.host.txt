@@ -1,0 +1,37 @@
+REGISTRY 7 slots, 7 linked (GB GBC GBA SNES GEN PS1 N64), AA on PS1 N64: 1X FXAA 2X 4X 8X
+MULTI sys=GB         frames=90 ledger=0fce61fa117d21b9 video=2f73e68538d37445 audio=2af60abacd8d61a5 ring=5eab10dc1dd7d033 pcm=72276 nonzero=144552 ring_frames=72276 resampled=72276 dropped=0 edge_black=0 black_rows=0 black_cols=0 colours=2 freezes=0
+MULTI-NEAREST sys=GB         video=23d521a9ec767525 edge_black=0
+MULTI sys=GBC        frames=90 ledger=6a282dddcf1722ae video=afe9abf5f771d18d audio=6a72b8aa6a940b95 ring=65b3ad049e17d365 pcm=72534 nonzero=145056 ring_frames=72534 resampled=72534 dropped=0 edge_black=0 black_rows=0 black_cols=0 colours=37 freezes=0
+MULTI-NEAREST sys=GBC        video=93b7d52ef3cfde05 edge_black=0
+MULTI sys=GBA        frames=90 ledger=c1bf4440af9166e0 video=7052cc1187e5d2e5 audio=87721e09801d4c95 ring=5a8825dff354852d pcm=72329 nonzero=144644 ring_frames=72329 resampled=72329 dropped=0 edge_black=0 black_rows=0 black_cols=0 colours=18 freezes=0
+MULTI-NEAREST sys=GBA        video=95563aa151740f77 edge_black=0
+MULTI sys=SNES       frames=90 ledger=f0cfd29a41f789cf video=5f11da7bfac428f6 audio=2c872068cf70ad2f ring=1b26773296aa11ac pcm=71882 nonzero=142747 ring_frames=71882 resampled=71882 dropped=0 edge_black=0 black_rows=0 black_cols=0 colours=400 freezes=0
+MULTI-NEAREST sys=SNES       video=1a1d6852c85a061c edge_black=0
+MULTI sys=SNES-MODE7 frames=90 ledger=f46a75906889dbed video=5ad931c793859504 audio=08623b931f1a0165 ring=e71a73d3b6338735 pcm=71882 nonzero=0 ring_frames=71882 resampled=71882 dropped=0 edge_black=0 black_rows=0 black_cols=0 colours=495 freezes=0
+MULTI-NEAREST sys=SNES-MODE7 video=dda6fa670bbe44c0 edge_black=0
+MULTI sys=GENESIS    frames=90 ledger=0fa521351bfd4371 video=8830e52ce6d59225 audio=b3369fc1cd277f91 ring=16bb537bdfc24bd5 pcm=72092 nonzero=143438 ring_frames=72092 resampled=72092 dropped=0 edge_black=0 black_rows=0 black_cols=0 colours=132 freezes=0
+MULTI-NEAREST sys=GENESIS    video=e381abfb52739185 edge_black=0
+MULTI sys=PS1        frames=90 ledger=b43f15aa4b2280a7 video=6e9500e471963b35 audio=3e02bb66050a364d ring=9a42138762acbe25 pcm=72000 nonzero=143884 ring_frames=72000 resampled=72000 dropped=0 edge_black=0 black_rows=0 black_cols=0 colours=259 freezes=0
+MULTI-AA sys=PS1        frame=61 mode=1X      video=9d011ebce906859d ledger=1c5e3467e8d33237 edge_black=0 black_rows=0 black_cols=0 colours=248
+MULTI-AA sys=PS1        frame=61 mode=FXAA    video=18471f83e5753694 ledger=43760f3ec3c7a6d9 edge_black=0 black_rows=0 black_cols=0 colours=295
+MULTI-AA sys=PS1        frame=61 mode=2X SSAA video=7f7bec54b3f9cb69 ledger=ec3486af67e1b316 edge_black=0 black_rows=0 black_cols=0 colours=291
+MULTI-AA sys=PS1        frame=61 mode=4X SSAA video=d415647436a96ac2 ledger=f7b5db9ee6c4fb06 edge_black=0 black_rows=0 black_cols=0 colours=303
+MULTI-AA sys=PS1        frame=61 mode=8X SSAA video=0220e895b8acc291 ledger=c85185f0a7713770 edge_black=0 black_rows=0 black_cols=0 colours=306
+MULTI-AA-DET sys=PS1        mode=2X SSAA workers=1 video=7f7bec54b3f9cb69 MATCH
+MULTI-AA-LIVE sys=PS1        cycle=FXAA->1X video=9d011ebce906859d MATCH
+MULTI-AA-LIVE sys=PS1        cycle=1X->8X SSAA video=0220e895b8acc291 MATCH
+MULTI sys=N64        frames=90 ledger=48587d8ecb4c933a video=f436588db95bd109 audio=faefb9cd70c32ab2 ring=10a33b3d641825ab pcm=71987 nonzero=143841 ring_frames=71987 resampled=71987 dropped=0 edge_black=0 black_rows=0 black_cols=0 colours=512 freezes=0
+MULTI-AA sys=N64        frame=90 mode=1X      video=48cc0825b4d2c846 ledger=162607e6ce6897b9 edge_black=0 black_rows=0 black_cols=0 colours=512
+MULTI-AA sys=N64        frame=90 mode=FXAA    video=0df142f8f60deaa3 ledger=fd0145394759f3a6 edge_black=0 black_rows=0 black_cols=0 colours=512
+MULTI-AA sys=N64        frame=90 mode=2X SSAA video=5afa4531b1ce55f7 ledger=e8cfe70b79c73f8b edge_black=0 black_rows=0 black_cols=0 colours=512
+MULTI-AA sys=N64        frame=90 mode=4X SSAA video=4ccc5486c67bd4ff ledger=680ca32a5267c84c edge_black=0 black_rows=0 black_cols=0 colours=512
+MULTI-AA sys=N64        frame=90 mode=8X SSAA video=f1b261dc55a015c3 ledger=4c51ef6614696571 edge_black=0 black_rows=0 black_cols=0 colours=512
+MULTI-AA-DET sys=N64        mode=2X SSAA workers=1 video=5afa4531b1ce55f7 MATCH
+MULTI-AA-LIVE sys=N64        cycle=FXAA->1X video=48cc0825b4d2c846 MATCH
+MULTI-AA-LIVE sys=N64        cycle=1X->8X SSAA video=f1b261dc55a015c3 MATCH
+MEM-SWITCH cycles=3 systems=7 core_bytes GB=2734592 GBC=2734592 SNES=1289536 GEN=1712064 PS1=12201216 N64=11940480 live_after=0 OK
+HEAPINFO heap_before=5152 heap_after=5152 delta=0
+MEM-HEAP switch_delta=0
+SAV snes sram=8192 B atomic round trip OK
+MULTI-CHAIN 37e6e7d9d9042c60 systems=8
+ALL MULTI-EMU TESTS PASSED

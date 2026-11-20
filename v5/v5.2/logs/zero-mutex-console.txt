@@ -1,0 +1,3 @@
+SCAN handshake-init nm_pthread_mutex=0 nm_lock_syms=0 strings_nptl_mutex=0 strings_glibc=0 PT_TLS=0 PT_INTERP=0
+SCAN handshake-gb nm_pthread_mutex=0 nm_lock_syms=0 strings_nptl_mutex=0 strings_glibc=0 PT_TLS=0 PT_INTERP=0
+SCAN_RC=0

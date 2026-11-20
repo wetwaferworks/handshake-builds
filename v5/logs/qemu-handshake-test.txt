@@ -1,0 +1,17 @@
+===== ARM64 qemu handshake-test 15x =====
+PASS  qemu-01  rc=0  t=1.428s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-02  rc=0  t=1.440s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-03  rc=0  t=1.436s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-04  rc=0  t=1.419s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-05  rc=0  t=1.420s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-06  rc=0  t=1.411s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-07  rc=0  t=1.415s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-08  rc=0  t=1.412s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-09  rc=0  t=1.409s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-10  rc=0  t=1.423s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-11  rc=0  t=1.408s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-12  rc=0  t=1.429s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-13  rc=0  t=1.419s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-14  rc=0  t=1.423s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+PASS  qemu-15  rc=0  t=1.426s  hash=5f44cefa72e8ac19  fairness=4/4 MATCH  frozen_fail=0
+QEMU_HANDSHAKE 15/15

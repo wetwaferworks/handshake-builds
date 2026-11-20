@@ -1,0 +1,74 @@
+HandshakeOS v4-full for the Anbernic RG35XX 2024 — flash instructions
+=====================================================================
+Image: v4-full, packed 2026-11-19 11:13 PM America/New_York.
+
+This image is for a SPARE microSD card (TF1). Do not overwrite the
+stock card. Back that card up first (see board/rg35xx-2024/windows-backup-stock-sd.ps1
+in the HandshakeOS repo).
+
+Play wins ties: the machine that already plays games stays on the
+stock card until you are happy with this one.
+
+Files
+-----
+  handshakeos-rg35xx-2024-v4-full.img.zst   compressed image, 17,000,717 bytes — copy this first
+  handshakeos-rg35xx-2024-v4-full.img       raw disk image, 134,217,728 bytes (128 MiB), after you decompress
+
+SHA-256 (lowercase hex)
+-----------------------
+  raw  handshakeos-rg35xx-2024-v4-full.img
+    f5ad9ca5eb376553ab5f3d006644c592580f0fa7d45088bc46f24a95578bb83b
+  zstd handshakeos-rg35xx-2024-v4-full.img.zst
+    ff25bf73b74bf7b8f77c220cc851e070881e72a96af18fb7070acbe4f27692ed
+
+Decompress (PowerShell, in this folder)
+---------------------------------------
+  # Verify the compressed copy first
+  Get-FileHash .\handshakeos-rg35xx-2024-v4-full.img.zst -Algorithm SHA256
+  # Then decompress with one of:
+  zstd -d -f .\handshakeos-rg35xx-2024-v4-full.img.zst
+  # or PeaZip / 7-Zip (zstd). After that:
+  Get-FileHash .\handshakeos-rg35xx-2024-v4-full.img -Algorithm SHA256
+The raw hash must match f5ad9ca5eb376553ab5f3d006644c592580f0fa7d45088bc46f24a95578bb83b
+and the raw file must be exactly 134,217,728 bytes.
+
+Flash
+-----
+1. Open Rufus, Raspberry Pi Imager, or balenaEtcher.
+2. Select handshakeos-rg35xx-2024-v4-full.img (the raw file, not the .zst).
+3. Select the SPARE microSD card. Triple-check the drive letter.
+4. Write the image. Eject the card safely.
+5. Plug the card into the RG35XX 2024 (TF1 slot).
+6. Power on. U-Boot loads /boot.scr from the card and boots Linux 7.3.5
+   with the v4-full initramfs; the HandshakeOS GAMES picker comes up on
+   the 640x480 panel.
+
+Image layout (MBR, 128 MiB)
+---------------------------
+  MBR label-id 0x48534f53
+  sector 0           MBR
+  8 KiB              LPDDR3 u-boot-sunxi-with-spl (eGON.BT0 at 0x2004)
+  p1 sector 8192     FAT32, label HANDSHAKEOS, 253,952 sectors (124 MiB),
+                     type 0x0c, bootable
+                       boot.scr, boot.cmd, Image.gz,
+                       sun50i-h700-anbernic-rg35xx-2024.dtb,
+                       handshakeos-initramfs-v4-full.uimg, README.txt,
+                       ROMS/ (GB GBC GBA SNES GENESIS PSX N64) + ROMS/README.txt
+
+There is exactly one partition. There is no ext4 root partition; the
+whole userland runs from the initramfs.
+
+Kernel / boot chain
+-------------------
+  Linux 7.3.5 aarch64 (v3-audio kernel), Image.gz SHA-256 c206e1bc408715553cc96473da09ee8462b962f6c755911563b4e3354a8b56a5
+  U-Boot SPL, LPDDR3, SHA-256 17ce4fb5ce831b9f5c656b508e18e65ce1e184451ae412e1fedaf82a0f2d8d8d
+  DTB (NV3052C), SHA-256 814740b1b25b160f1109febe66e0ec26bf261fc169368126612bcc40113d4547
+  initramfs uimg, SHA-256 3b6764028908e8571e92e0ae783295b340a16d35432cd1450e1e336f81da6a4c
+  cmdline: console=ttyS0,115200 console=tty0 earlycon=uart8250,mmio32,0x05000000 fbcon=map:0
+
+After flashing, Windows will see one FAT32 drive labelled HANDSHAKEOS.
+Put your own legally owned games in the ROMS folders (see ROMS/README.txt).
+Do not rename the files in the root of that drive.
+
+The handheld cannot be flashed over USB. USB FEL only boots it from RAM;
+this image has to be written to the card in a card reader.

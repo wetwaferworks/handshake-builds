@@ -1,0 +1,56 @@
+======= HC built-in ELF64 audit on every .o =======
+--- host ---
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/host/battery.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/host/bench_jitter.o (0 banned symbols, profile=component)
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/host/fb.o imports/defines banned symbol 'usleep'
+hc: ELF64 audit FAILED on /workspace/scratch/handshakeos/builds/v2-hc/host/fb.o (rc=1)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/host/font.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/host/gb_emu.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/host/gb_host.o (0 banned symbols, profile=component)
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/host/handshake.o imports/defines banned symbol 'syscall'
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/host/handshake.o imports/defines banned symbol 'pthread_join'
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/host/handshake.o imports/defines banned symbol 'clock_gettime'
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/host/handshake.o imports/defines banned symbol 'pthread_create'
+hc: ELF64 audit FAILED on /workspace/scratch/handshakeos/builds/v2-hc/host/handshake.o (rc=4)
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/host/init.o imports/defines banned symbol 'getpid'
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/host/init.o imports/defines banned symbol 'clock_gettime'
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/host/init.o imports/defines banned symbol 'clock_nanosleep'
+hc: ELF64 audit FAILED on /workspace/scratch/handshakeos/builds/v2-hc/host/init.o (rc=3)
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/host/input.o imports/defines banned symbol 'ppoll'
+hc: ELF64 audit FAILED on /workspace/scratch/handshakeos/builds/v2-hc/host/input.o (rc=1)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/host/minigb_apu.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/host/pngenc.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/host/scoreboard.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/host/test_gb_handshake.o (0 banned symbols, profile=component)
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/host/test_handshake.o imports/defines banned symbol 'usleep'
+hc: ELF64 audit FAILED on /workspace/scratch/handshakeos/builds/v2-hc/host/test_handshake.o (rc=1)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/host/theme.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/host/ui.o (0 banned symbols, profile=component)
+--- aarch64 ---
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/battery.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/bench_jitter.o (0 banned symbols, profile=component)
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/fb.o imports/defines banned symbol 'usleep'
+hc: ELF64 audit FAILED on /workspace/scratch/handshakeos/builds/v2-hc/aarch64/fb.o (rc=1)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/font.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/gb_emu.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/gb_host.o (0 banned symbols, profile=component)
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/handshake.o imports/defines banned symbol 'syscall'
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/handshake.o imports/defines banned symbol 'pthread_join'
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/handshake.o imports/defines banned symbol 'clock_gettime'
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/handshake.o imports/defines banned symbol 'pthread_create'
+hc: ELF64 audit FAILED on /workspace/scratch/handshakeos/builds/v2-hc/aarch64/handshake.o (rc=4)
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/init.o imports/defines banned symbol 'getpid'
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/init.o imports/defines banned symbol 'clock_gettime'
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/init.o imports/defines banned symbol 'clock_nanosleep'
+hc: ELF64 audit FAILED on /workspace/scratch/handshakeos/builds/v2-hc/aarch64/init.o (rc=3)
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/input.o imports/defines banned symbol 'ppoll'
+hc: ELF64 audit FAILED on /workspace/scratch/handshakeos/builds/v2-hc/aarch64/input.o (rc=1)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/minigb_apu.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/pngenc.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/scoreboard.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/test_gb_handshake.o (0 banned symbols, profile=component)
+hc: ELF64 audit FAIL: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/test_handshake.o imports/defines banned symbol 'usleep'
+hc: ELF64 audit FAILED on /workspace/scratch/handshakeos/builds/v2-hc/aarch64/test_handshake.o (rc=1)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/theme.o (0 banned symbols, profile=component)
+hc: ELF64 audit PASS: /workspace/scratch/handshakeos/builds/v2-hc/aarch64/ui.o (0 banned symbols, profile=component)
+AUDIT_FAIL=1

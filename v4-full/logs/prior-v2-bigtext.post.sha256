@@ -1,0 +1,15 @@
+b5705ec58f6bc742a56f73cbcd940586a94e4c1f53b8aa842bf2e8067b409c81  ./BUILD-NOTES.md
+61b1625e4e762784f9ee8fe82e79d9102949f2663d62c6dc0a0270a0e0e4ebc6  ./SHA256SUMS.txt
+3621046ef760de4a7f3240bb19415fcca1d077bf050d55d46f690abdfac39de0  ./determinism-v2.log
+df58ec87131e2aecbf9caecd2604a6c4eeff8dafc647c54e401eea4b01cdd065  ./fel-dropin/handshakeos-initramfs.uimg
+2ff153397e2e3a8bbd5b78e8861e7d31664a6025dbafcf056ed245e06ac0270b  ./handshake-gb
+c9c888da23174fb1089f1ff9ee40d56332a8b4d1017cb96b0331aaf03936610d  ./handshake-init
+df58ec87131e2aecbf9caecd2604a6c4eeff8dafc647c54e401eea4b01cdd065  ./handshakeos-initramfs-v2.uimg
+2980be6249e3f92482a96a3942ddd2fe042d46279285a5c3bba22871a55b3ad2  ./kernel.config.fragment-v2-suggested
+0ca8d20e66da61b42d8e294b99eb2c33508ac0796af03cd50b76589cd50ed2cd  ./preview-24hz-film-v2.png
+4a445efa203bc15e700e175faff3a3f194cbdeab89d7548a7733a29ae2d86e9a  ./preview-confirm-poweroff-v2.png
+2ec42829acc32084f60df7a88be9144b9fbc6049b04e0dbee787c09c41705b60  ./preview-gb-green-v2.png
+62a3150cf25193734ad1c3392dbebfed1853bf7e2822b5eb091d4d6c62b53596  ./preview-gb-purple-v2.png
+df251f9263098c80e6e71f7c16095434f2871db7e7162e814db136677dde73e9  ./preview-green-v2.png
+296e46ed8ed7ddad1d350cc47b904d7c2131ebc816ee5ec9a3e9c053d8232bf5  ./preview-purple-v2.png
+65a32c27804f975e97f38e3980389cf356995968d5920e1f36aadf31d5eca9c7  ./qemu-pid1-serial-v2.log

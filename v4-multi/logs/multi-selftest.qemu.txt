@@ -1,0 +1,7 @@
+MULTI GB   handshake-demo.gb  frames=90 ledger=1b85582349652db7 video=4ef42180bf174365 audio=bd2d57b835f81bc5 pcm_nonzero=144552 freezes=0
+MULTI GBC  hs_cgb_test.gbc    frames=90 ledger=d163a40bcc700691 video=afe9abf5f771d18d audio=6a72b8aa6a940b95 pcm_nonzero=145056 freezes=0
+MULTI GBA  hs_gba_demo.gba    frames=90 ledger=d9e8d419cee421a7 video=7052cc1187e5d2e5 audio=87721e09801d4c95 pcm_nonzero=144644 freezes=0
+MULTI SNES hs_mode1_demo.sfc  frames=90 ledger=d9bc1c0fccc36df8 video=5f11da7bfac428f6 audio=2c872068cf70ad2f pcm_nonzero=142747 freezes=0
+MULTI SNES hs_mode7_floor.sfc frames=90 ledger=10832093a622e20a video=5ad931c793859504 audio=08623b931f1a0165 pcm_nonzero=0 freezes=0
+MULTI GEN  hs_genesis_demo.md frames=90 ledger=6da6409f38e25a5e video=8830e52ce6d59225 audio=b3369fc1cd277f91 pcm_nonzero=143438 freezes=0
+MULTI systems_ok=6
