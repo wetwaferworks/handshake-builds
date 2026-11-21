@@ -1,0 +1,71 @@
+HandshakeOS v5.8 for Anbernic RG35XX 2024 (H700)
+================================================
+
+Same flash procedure as v5.7 (balenaEtcher / Rufus / dd the .img or the
+.zst after decompressing). v5.7 remains the known-good fallback image;
+do not overwrite it. The v5.8 image is
+  builds\v5\handshakeos-rg35xx-2024-v5.8.img
+
+Kernel
+------
+Linux 7.3.5 + ROCKNIX (the same device source/config that produced the
+v5.2 / v3-audio Image.gz c206e1bc…) with Handshake patches 0001–0004
+applied, plus a small v5.8 read-only /proc export (handshake_holds,
+handshake_spinsites) so live USB debug can see per-class hold times and
+spin sites while a game runs.
+
+Phase-4 options are built in and turned on by the default bootargs
+(including handshake_sched.defer=1, which is off unless requested):
+
+  handshake_sched=1
+  handshake_sched.timekeeper=1
+  handshake_sched.local_timers=1
+  handshake_sched.defer=1
+  handshake_sched.futex=2
+  handshake_sched.futex_exit=1
+  handshake_sched.futex_nophash=1
+  handshake_sched.futex_rescue_us=1500
+  handshake_sched.tty_output=1
+
+Falling back at boot (no rebuild)
+---------------------------------
+The boot partition also has boot-fallback.scr. To run stock Linux
+scheduling on the same v5.8 kernel:
+
+  1. Open the HANDSHAKEOS FAT volume on a PC.
+  2. Rename boot.scr to boot-hs.scr (keep a copy).
+  3. Copy boot-fallback.scr to boot.scr.
+  4. Eject and boot the handheld.
+
+boot-fallback.scr uses:
+
+  handshake_sched=off handshake_sched.timekeeper=0 handshake_sched.local_timers=0
+  handshake_sched.defer=0 handshake_sched.futex=0 handshake_sched.futex_exit=0
+  handshake_sched.futex_nophash=0 handshake_sched.tty_output=0
+  handshake_sched.futex_rescue_us=0
+
+You can also edit boot.cmd and turn a single switch off (then rebuild
+boot.scr with mkimage, or just use the fallback script). Putting
+`handshake_sched=off` alone returns the stock scheduler; the other
+`=0` knobs disable the remaining Handshake paths. Counters in
+/proc/handshake_* stay readable either way.
+
+USB debug
+---------
+The composite gadget exposes CDC-ACM (serial) and the HSROMS
+mass-storage LUN together. ACM is up from the boot menu onward so you
+can pull data while a game runs. The LUN is only backed by the HSROMS
+partition when you enter USB MODE (same as v5.7); it is empty otherwise
+so the device can keep /mnt/hsroms mounted.
+
+Windows: a COM port appears. Then, from cmd.exe, PowerShell, or WSL:
+
+  hsdebug --port COMx --log file.csv --interval 1s
+
+Or omit --port and --log; hsdebug auto-detects the port and writes
+under handshake\_ops\device-logs\. After you finish playing:
+
+  hsdebug --summarize file.csv
+
+See HSDEBUG.md for the line protocol. The debug service is read-only
+and must never power the unit off.

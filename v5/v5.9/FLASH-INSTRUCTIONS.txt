@@ -1,0 +1,166 @@
+HandshakeOS v5.9 for the Anbernic RG35XX 2024 — flash instructions
+==================================================================
+Image: v5.9. v5.8 and v5.7 remain untouched fallbacks; do not overwrite them.
+
+This image is for a SPARE microSD card (TF1). Do not overwrite the
+stock card. Flashing this image rewrites the MBR and the whole card
+layout — back up any ROMs first.
+
+Files
+-----
+  handshakeos-rg35xx-2024-v5.9.img.zst   published compressed image — download this
+  handshakeos-rg35xx-2024-v5.9.img       raw disk image after decompress, 2,218,426,368 bytes
+                                         (sparse-friendly; ~2.07 GiB logical; not shipped)
+                                         Decompress with: zstd -d handshakeos-rg35xx-2024-v5.9.img.zst
+
+The packed p1 is a valid FAT32 volume (32 KiB clusters) whose FAT tables
+are pre-sized for a 256 GiB card. That is why the raw image is larger
+than the old 128 MiB v5.8 image. It is not a 256 GiB image. Rufus,
+Raspberry Pi Imager, or balenaEtcher will write about 2.07 GiB to the
+card. The card must be larger than 2.07 GiB (4 GiB minimum; 8 GiB or
+more is typical). A 2 GiB card cannot hold this image:
+65525 FAT32 clusters at 32 KiB plus the pre-sized FATs need 2.07 GiB.
+
+SHA-256 values are in SHA256SUMS-v5.9 next to the image (and printed by
+the pack script). Verify both the .zst and the raw .img after
+decompressing.
+
+Decompress (PowerShell or WSL, in this folder)
+----------------------------------------------
+  Get-FileHash .\handshakeos-rg35xx-2024-v5.9.img.zst -Algorithm SHA256
+  zstd -d -f .\handshakeos-rg35xx-2024-v5.9.img.zst
+  Get-FileHash .\handshakeos-rg35xx-2024-v5.9.img -Algorithm SHA256
+The raw file must be exactly 2,218,426,368 bytes (it may look smaller
+on disk if the filesystem stored it sparse).
+
+Flash
+-----
+1. Open Rufus, Raspberry Pi Imager, or balenaEtcher.
+2. Select handshakeos-rg35xx-2024-v5.9.img (the raw file, not the .zst).
+3. Select the SPARE microSD card. Triple-check the drive letter.
+4. Write the image. Eject the card safely.
+5. Plug the card into the RG35XX 2024 (TF1 slot) and power on once
+   BEFORE you expect Windows to show the full card size.
+6. U-Boot loads /boot.scr and boots the v5.9 userspace (v5.8 kernel).
+
+Image layout (MBR)
+------------------
+  MBR label-id 0x48534f53
+  8 KiB              LPDDR3 u-boot-sunxi-with-spl (SHA-256 17ce4fb5…)
+  p1 sector 8192     FAT32, label HANDSHAKEOS, type 0x0c, bootable
+                     Packed size: 4,324,672 sectors (~2.06 GiB).
+                     FAT tables are already sized for 256 GiB at
+                     32 KiB clusters (FATSz32=65520). First boot
+                     grows only the MBR p1 end, BPB total sectors,
+                     and FSInfo free count — no data is moved.
+                     Writes are ordered so a power loss leaves a
+                     valid smaller filesystem.
+                       boot.scr, boot.cmd, boot-fallback.scr,
+                       boot-verbose.scr, Image.gz / Image-A.gz / Image-B.gz,
+                       sun50i-h700-anbernic-rg35xx-2024.dtb (SHA-256 814740b1…),
+                       handshakeos-initramfs-*.uimg, README.txt,
+                       FLASH-INSTRUCTIONS.txt, HSDEBUG.md, hsdebug.exe,
+                       ROMS/ …
+
+On first boot of a fresh v5.9 flash (no partition 2), p1 HANDSHAKEOS
+grows to the last usable sector of the card, or to the 256 GiB
+pre-sized maximum, whichever is smaller. Windows then shows one
+full-size volume. A second boot is a no-op.
+
+If a card already has a p2 HSROMS partition (an older layout that was
+not reflashed), v5.9 leaves p2 and its ROMs alone and does not grow p1.
+
+A card larger than 256 GiB is grown to the 256 GiB cap and that cap is
+logged in HANDSHAKE-BOOT.log.
+
+Kernel
+------
+Same v5.8 Handshake-patched device kernel (not rebuilt for v5.9).
+Linux 7.3.5 + ROCKNIX, Handshake patches 0001–0004, plus
+/proc/handshake_holds and /proc/handshake_spinsites.
+
+Default bootargs (Handshake policy ON, including defer=1):
+
+  console=ttyS0,115200 console=tty0 earlycon=uart8250,mmio32,0x05000000 fbcon=map:0
+  handshake_sched=1
+  handshake_sched.timekeeper=1
+  handshake_sched.local_timers=1
+  handshake_sched.defer=1
+  handshake_sched.futex=2
+  handshake_sched.futex_exit=1
+  handshake_sched.futex_nophash=1
+  handshake_sched.futex_rescue_us=1500
+  handshake_sched.tty_output=1
+
+Verbose log (hs.log=verbose)
+----------------------------
+Add hs.log=verbose to the U-Boot bootargs, or turn LOG LEVEL to
+VERBOSE in the boot config menu (saved in HANDSHAKE.CFG).
+
+A copy of boot-verbose.scr is on the volume: rename boot.scr to
+boot-hs.scr and copy boot-verbose.scr to boot.scr to boot with
+hs.log=verbose on every boot.
+
+When verbose is on, a bounded 64 x 192 ring is flushed to
+HANDSHAKE-BOOT.log (capped at 512 KiB). Faults fsync the ring, then
+return to the boot screen; they never power the unit off. The ring
+records input fd open/close, menu open/close, each USB gadget step
+with rc and UDC path, blank/unblank and power key, per-second audio
+xruns / pad-hold / peak / clip, per-session SNES emu_ms and
+render-skip counts, cfg save errno, and debug-service drops.
+
+Falling back at boot (no rebuild)
+---------------------------------
+The boot partition also has boot-fallback.scr. To run stock Linux
+scheduling on the same v5.8 kernel:
+
+  1. Open the HANDSHAKEOS FAT volume on a PC.
+  2. Rename boot.scr to boot-hs.scr (keep a copy).
+  3. Copy boot-fallback.scr to boot.scr.
+  4. Eject and boot the handheld.
+
+boot-fallback.scr uses:
+
+  handshake_sched=off handshake_sched.timekeeper=0 handshake_sched.local_timers=0
+  handshake_sched.defer=0 handshake_sched.futex=0 handshake_sched.futex_exit=0
+  handshake_sched.futex_nophash=0 handshake_sched.tty_output=0
+  handshake_sched.futex_rescue_us=0
+
+You can also edit boot.cmd and turn a single switch off. Putting
+handshake_sched=off alone returns the stock scheduler; the other =0
+knobs disable the remaining Handshake paths. /proc/handshake_*
+counters stay readable either way.
+
+USB debug
+---------
+The composite gadget exposes CDC-ACM (serial) and a mass-storage LUN
+together. ACM is up from the boot menu onward so you can pull data
+while a game runs. In USB MODE the LUN is backed by the ROM volume:
+p1 HANDSHAKEOS on a fresh v5.9 card, or p2 HSROMS if that older
+layout is still present. The LUN is empty otherwise so the FAT can
+stay mounted.
+
+Windows: a COM port appears. Then, from cmd.exe, PowerShell, or WSL:
+
+  hsdebug --port COMx --log file.csv --interval 1s
+
+Or omit --port and --log; hsdebug auto-detects the port and writes
+under handshake\_ops\device-logs\. After you finish playing:
+
+  hsdebug --summarize file.csv
+
+A copy of hsdebug.exe and HSDEBUG.md is on the HANDSHAKEOS volume.
+The debug service is read-only (no flash, write, or power-off commands)
+and a fault there is logged to HANDSHAKE-BOOT.log and returns to the
+boot screen; it does not power the unit off.
+
+U-Boot SPL SHA-256 17ce4fb5ce831b9f5c656b508e18e65ce1e184451ae412e1fedaf82a0f2d8d8d
+DTB SHA-256        814740b1b25b160f1109febe66e0ec26bf261fc169368126612bcc40113d4547
+
+The handheld cannot be flashed over USB. USB FEL only boots it from RAM;
+this image has to be written to the card in a card reader.
+
+SHA-256 of this release (also SHA256SUMS-v5.9 next to the image)
+  handshakeos-rg35xx-2024-v5.9.img      74539c7782c7cd914b356f1a373ad6f6c19977121ba9c294a548c804d4e5bc62
+  handshakeos-rg35xx-2024-v5.9.img.zst  bbc99d0bee071075055f8295de9f82270dbd67e058b02e9724b47dda3fc7542a
+  kernel Image.gz                       52100fe0c4a559c4d50b2ddc9c11e7f7804d6321c56133a752d3a6c1cd5d75e2  (v5.8, not rebuilt)

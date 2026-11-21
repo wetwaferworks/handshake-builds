@@ -1,0 +1,39 @@
+compiler: aarch64-linux-gnu-gcc-14 (Ubuntu 14.2.0-4ubuntu2~24.04.1) 14.2.0
+src: <handshake-root>/builds/v5/v5.8/linux-7.3.5
+kbuild: <handshake-root>/builds/v5/v5.8/kbuild
+start: Sat Nov 21 02:33:16 EST 2026
+end: Sat Nov 21 06:03:38 EST 2026
+BUILD_RC=0
+753e79759db22a120837af83eec0eac77c7ed91a206e6a6f5c1c3c3630793eeb  <handshake-root>/builds/v5/v5.8/kernel/Image
+52100fe0c4a559c4d50b2ddc9c11e7f7804d6321c56133a752d3a6c1cd5d75e2  <handshake-root>/builds/v5/v5.8/kernel/Image.gz
+963dc4fc1c59284fdd73039c671da4a03783e79e1e061500fce8e86c5efd2abb  <handshake-root>/builds/v5/v5.8/kernel/modules/libcomposite.ko
+3de4bbae044376f00d34386d185be622872673aa52b3f5a4c32e1ac168072225  <handshake-root>/builds/v5/v5.8/kernel/modules/u_serial.ko
+b344ed84fa234950eafcebe3f33e6edb625202bb0e922581b89cca0fdbafca1b  <handshake-root>/builds/v5/v5.8/kernel/modules/usb_f_acm.ko
+e0d93d06f500334fd1bc8826a4d86cc23e3e42c9831d0d1de87a89843f09ee55  <handshake-root>/builds/v5/v5.8/kernel/modules/usb_f_mass_storage.ko
+-rwxrwxrwx 1 root root 54376960 Nov 21 05:59 <handshake-root>/builds/v5/v5.8/kernel/Image
+-rwxrwxrwx 1 root root 16396310 Nov 21 05:59 <handshake-root>/builds/v5/v5.8/kernel/Image.gz
+-rwxrwxrwx 1 root root    34440 Nov 21 02:33 <handshake-root>/builds/v5/v5.8/kernel/sun50i-h700-anbernic-rg35xx-2024.dtb
+-rwxrwxrwx 1 root root    37242 Nov 21 02:33 <handshake-root>/builds/v5/v5.8/kernel/sun50i-h700-anbernic-rg35xx-h.dtb
+-rwxrwxrwx 1 root root    35289 Nov 21 02:33 <handshake-root>/builds/v5/v5.8/kernel/sun50i-h700-anbernic-rg35xx-plus.dtb
+-rwxrwxrwx 1 root root    35585 Nov 21 02:33 <handshake-root>/builds/v5/v5.8/kernel/sun50i-h700-anbernic-rg35xx-sp.dtb
+
+<handshake-root>/builds/v5/v5.8/kernel/modules:
+total 940
+-rwxrwxrwx 1 root root 473472 Nov 21 06:03 libcomposite.ko
+-rwxrwxrwx 1 root root 136832 Nov 21 06:03 u_serial.ko
+-rwxrwxrwx 1 root root  88848 Nov 21 06:03 usb_f_acm.ko
+-rwxrwxrwx 1 root root 258016 Nov 21 06:03 usb_f_mass_storage.ko
+vermagic:
+7.3.5-hs-v58 SMP preempt mod_unload aarch64
+HANDSHAKE config:
+CONFIG_HANDSHAKE_SCHED=y
+CONFIG_HANDSHAKE_TIMEKEEPER=y
+CONFIG_HANDSHAKE_LOCAL_TIMERS=y
+CONFIG_HANDSHAKE_DEFER_WAKE=y
+CONFIG_HANDSHAKE_WORKER_PIN=y
+CONFIG_HANDSHAKE_FUTEX=y
+CONFIG_HANDSHAKE_FUTEX_RESCUE=y
+CONFIG_HANDSHAKE_FUTEX_NOPHASH=y
+CONFIG_HANDSHAKE_FUTEX_EXIT=y
+CONFIG_HANDSHAKE_TTY_OUTPUT=y
+CONFIG_HANDSHAKE_LOCKSTAT=y

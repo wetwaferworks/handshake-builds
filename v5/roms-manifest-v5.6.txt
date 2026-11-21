@@ -1,0 +1,10 @@
+# HandshakeOS v5.6 built-in clean-room demos (all MIT, generated in-tree, no third-party assets)
+# file  sha256  system  source
+handshake-demo.gb  4a56fc02118450d1ca45d954e57082f1c3d706b72882866fdfe78c8a57af3f43  GB   tools/make_handshake_demo_gb.c
+hs_cgb_test.gbc  1d85c46c8e9bd3431dc8f934ca6af22145815ff5eaec648b5a9688dde7d0444d  GBC  hs-cores tests/test_hs_gbc.c
+hs_gba_demo.gba  e7f23fa83d3fae7453514e70b29881dd65c06f1b009e9c18dbf73bc7ef54e579  GBA  hs-gba tests/test_hs_gba.c
+hs_mode1_demo.sfc  c3bfd806fa6d986fac1405897099a8ba779db863dd1c548a3774c0877aa442d5  SNES hs-snes tests/snes_testroms.c tr_build_mode1_rom
+hs_mode7_floor.sfc  4d71a5954543cbff646c41e08e416cb8d9ec4a10bc423df7d6c76542ac6ca924  SNES hs-snes tests/snes_testroms.c tr_build_mode7_rom
+hs_genesis_demo.md  dce06dcac62a27cdadf9c9938201d302aa36de304c4d03798ff0db640be80cf2  GEN  hs-genesis tests/test_hs_genesis.c
+psx/psx_3d_demo.exe  6e31fc927f8021b898637311f576d06f4c89b166f38c25c9c50287542ed6d61d  PS1  hs-psx tools/gen_demo.c
+n64/hs_n64_demo.z64  3ca4749de78c891d12084a8f7c2ed9faa679eeb949364b782eabb2e92b1c3ca6  N64  hs-n64 tools/mk_n64_demo.c

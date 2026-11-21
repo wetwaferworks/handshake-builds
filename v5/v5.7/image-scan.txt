@@ -1,0 +1,22 @@
+CPIO_DUMMY_HCD 0 (want 0)
+CPIO_LIBCOMPOSITE PRESENT
+CPIO_MASS_STORAGE PRESENT
+CPIO_BENCH_N64 PRESENT
+CPIO_HS_PF_PROBE PRESENT
+===== NM LOCK/THREAD SCAN =====
+CLEAN bin/bench_n64
+CLEAN bin/handshake-gb
+CLEAN bin/hs_pf_probe
+CLEAN init
+CLEAN_NO_PTHREAD modules/libcomposite.ko
+KMOD_KERNEL_LOCK_SYMS modules/libcomposite.ko (kernel-side, not a userspace fail):
+mutex_init_generic
+mutex_lock
+mutex_unlock
+CLEAN_NO_PTHREAD modules/usb_f_mass_storage.ko
+KMOD_KERNEL_LOCK_SYMS modules/usb_f_mass_storage.ko (kernel-side, not a userspace fail):
+mutex_init_generic
+mutex_lock
+mutex_unlock
+LOCK_HITS 0 KMOD_PTHREAD 0
+IMAGE_ZERO_MUTEX_CLEAN

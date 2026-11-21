@@ -1,0 +1,121 @@
+From: HandshakeOS v5.8
+Subject: [PATCH] handshake: export hold and spin-site lockstat via /proc
+
+Live USB debug needs per-class hold times and per-site spin
+contention while games run. The counters already exist; they were
+only printed at reboot. Add read-only /proc/handshake_holds and
+/proc/handshake_spinsites. No new locks.
+
+---
+ kernel/locking/hs_lockstat.c | 90 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 90 insertions(+)
+
+--- a/kernel/locking/hs_lockstat.c
++++ b/kernel/locking/hs_lockstat.c
+@@ -14,6 +14,7 @@
+ #include <linux/irqflags.h>
+ #include <linux/kernel.h>
+ #include <linux/ftrace.h>
++#include <linux/slab.h>
+ #include <linux/sched.h>
+ #include <linux/sched/clock.h>
+ #include <linux/kernel.h>
+@@ -394,6 +395,90 @@ static void hs_hold_report(void)
+ 			s.hist[2], s.hist[3], s.hist[4]);
+ 	}
+ }
++
++static int hs_holds_show(struct seq_file *m, void *v)
++{
++	int c, cpu, i;
++
++	seq_puts(m, "class n avg_ns max_ns hist_lt1us hist_lt5us hist_lt20us hist_lt100us hist_ge100us\n");
++	for (c = 0; c < HS_HOLD_N; c++) {
++		struct hs_hold s = { };
++
++		for_each_possible_cpu(cpu) {
++			struct hs_hold *h = &per_cpu_ptr(hs_holds, cpu)[c];
++
++			s.n += READ_ONCE(h->n);
++			s.sum += READ_ONCE(h->sum);
++			s.max = max(s.max, READ_ONCE(h->max));
++			for (i = 0; i < 5; i++)
++				s.hist[i] += READ_ONCE(h->hist[i]);
++		}
++		seq_printf(m, "%s %lu %llu %llu %lu %lu %lu %lu %lu\n",
++			   hs_hold_name[c], s.n, s.n ? s.sum / s.n : 0, s.max,
++			   s.hist[0], s.hist[1], s.hist[2], s.hist[3], s.hist[4]);
++	}
++	return 0;
++}
++
++static int hs_sites_show(struct seq_file *m, void *v)
++{
++	struct hs_site *all;
++	unsigned long overflow = 0;
++	int cpu, i, j, n = 0;
++
++	all = kcalloc(HS_SITES * 4, sizeof(*all), GFP_KERNEL);
++	if (!all)
++		return -ENOMEM;
++
++	for_each_possible_cpu(cpu) {
++		struct hs_sites *t = per_cpu_ptr(&hs_sites, cpu);
++
++		overflow += READ_ONCE(t->overflow);
++		for (i = 0; i < HS_SITES; i++) {
++			unsigned long ip = READ_ONCE(t->s[i].ip), c = READ_ONCE(t->s[i].n);
++
++			if (!ip)
++				continue;
++			for (j = 0; j < n; j++)
++				if (all[j].ip == ip)
++					break;
++			if (j == n) {
++				if (n == (int)(HS_SITES * 4)) {
++					overflow += c;
++					continue;
++				}
++				all[n].ip = ip;
++				all[n].wsum = all[n].wmax = 0;
++				all[n++].n = 0;
++			}
++			all[j].n += c;
++			all[j].wsum += READ_ONCE(t->s[i].wsum);
++			all[j].wmax = max(all[j].wmax, READ_ONCE(t->s[i].wmax));
++		}
++	}
++	for (i = 0; i < n; i++) {
++		int best = i;
++		struct hs_site tmp;
++
++		for (j = i + 1; j < n; j++)
++			if (all[j].n > all[best].n)
++				best = j;
++		tmp = all[i];
++		all[i] = all[best];
++		all[best] = tmp;
++	}
++	seq_puts(m, "n wait_avg_ns wait_max_ns site\n");
++	for (i = 0; i < n; i++)
++		seq_printf(m, "%lu %llu %llu %pS\n", all[i].n,
++			   all[i].n ? all[i].wsum / all[i].n : 0, all[i].wmax,
++			   (void *)all[i].ip);
++	if (overflow)
++		seq_printf(m, "overflow %lu\n", overflow);
++	kfree(all);
++	return 0;
++}
+ 
+ static int hs_lu_show(struct seq_file *m, void *v)
+ {
+@@ -456,6 +541,8 @@ static struct notifier_block hs_ls_nb = {
+ static int __init hs_ls_init(void)
+ {
+ 	proc_create_single("handshake_locks", 0444, NULL, hs_ls_show);
+ 	proc_create_single("handshake_lockuse", 0444, NULL, hs_lu_show);
++	proc_create_single("handshake_holds", 0444, NULL, hs_holds_show);
++	proc_create_single("handshake_spinsites", 0444, NULL, hs_sites_show);
+ 	register_reboot_notifier(&hs_ls_nb);
+ 	return 0;
+ }

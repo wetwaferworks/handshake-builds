@@ -1,0 +1,4 @@
+echo "HandshakeOS v5.8 FEL RAM boot (Handshake phase-4 kernel)"
+unzip 0x44000000 0x40080000
+setenv bootargs "console=ttyS0,115200 console=tty0 earlycon=uart8250,mmio32,0x05000000 fbcon=map:0 handshake_sched=1 handshake_sched.timekeeper=1 handshake_sched.local_timers=1 handshake_sched.defer=1 handshake_sched.futex=2 handshake_sched.futex_exit=1 handshake_sched.futex_nophash=1 handshake_sched.futex_rescue_us=1500 handshake_sched.tty_output=1"
+booti 0x40080000 0x4ff00000 0x4fa00000

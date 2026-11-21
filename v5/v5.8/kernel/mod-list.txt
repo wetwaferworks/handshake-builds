@@ -1,0 +1,5 @@
+<handshake-root>/builds/v5/v5.8/modinst/lib/modules/7.3.5-hs-v58/kernel/drivers/usb/gadget/function/usb_f_acm.ko
+<handshake-root>/builds/v5/v5.8/modinst/lib/modules/7.3.5-hs-v58/kernel/drivers/usb/gadget/function/usb_f_mass_storage.ko
+<handshake-root>/builds/v5/v5.8/modinst/lib/modules/7.3.5-hs-v58/kernel/drivers/usb/gadget/function/u_serial.ko
+<handshake-root>/builds/v5/v5.8/modinst/lib/modules/7.3.5-hs-v58/kernel/drivers/usb/gadget/libcomposite.ko
+<handshake-root>/builds/v5/v5.8/modinst/lib/modules/7.3.5-hs-v58/kernel/drivers/usb/gadget/udc/dummy_hcd.ko

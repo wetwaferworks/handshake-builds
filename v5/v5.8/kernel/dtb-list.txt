@@ -1,0 +1,4 @@
+<handshake-root>/builds/v5/v5.8/kbuild/arch/arm64/boot/dts/allwinner/sun50i-h700-anbernic-rg35xx-2024.dtb
+<handshake-root>/builds/v5/v5.8/kbuild/arch/arm64/boot/dts/allwinner/sun50i-h700-anbernic-rg35xx-h.dtb
+<handshake-root>/builds/v5/v5.8/kbuild/arch/arm64/boot/dts/allwinner/sun50i-h700-anbernic-rg35xx-plus.dtb
+<handshake-root>/builds/v5/v5.8/kbuild/arch/arm64/boot/dts/allwinner/sun50i-h700-anbernic-rg35xx-sp.dtb
