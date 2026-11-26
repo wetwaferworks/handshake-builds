@@ -12,6 +12,6 @@ cceb4c45176926588f7251a9aa06cb9f8a791762a6cece4ed0b0e3adf8b65fae  fel-v5.8/hands
 814740b1b25b160f1109febe66e0ec26bf261fc169368126612bcc40113d4547  fel-v5.8/sun50i-h700-rg35xx-2024-nv3052c-proven.dtb
 17ce4fb5ce831b9f5c656b508e18e65ce1e184451ae412e1fedaf82a0f2d8d8d  fel-v5.8/u-boot-sunxi-with-spl-lpddr3.bin
 e0d93d06f500334fd1bc8826a4d86cc23e3e42c9831d0d1de87a89843f09ee55  fel-v5.8/usb_f_mass_storage.ko
-fdb89a3edf7a9336c9fa133102b4e3f6a76fb7d2d3c72201c2fa7af7671280e9  v5.8/scripts/build-v5.8.sh
-f9589f1ec313fc29cfb3ca54f06eb5c0e3aec81b0af6cc5ee0fc6635e9dd3341  v5.8/scripts/pack-v5.8.sh
+050f82baf1f9ab20e4ac8377ba259d4b716130af16b8295d0665056bbf1f006b  v5.8/scripts/build-v5.8.sh
+18c0e4faffaabf929b49d3d9f69d293f504daac4fe617438e5390f6e531d6707  v5.8/scripts/pack-v5.8.sh
 52100fe0c4a559c4d50b2ddc9c11e7f7804d6321c56133a752d3a6c1cd5d75e2  v5.8/kernel/Image.gz
